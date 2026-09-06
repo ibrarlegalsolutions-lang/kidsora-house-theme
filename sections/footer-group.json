@@ -2,17 +2,20 @@
   "type": "footer",
   "name": "t:names.footer",
   "sections": {
+    "footer_brand": {
+      "type": "footer",
+      "blocks": {
+        "brand_logo": { "type": "logo", "settings": { "unit": "pixel", "pixel_height": 40 } }
+      },
+      "block_order": ["brand_logo"],
+      "name": "Footer brand",
+      "settings": { "section_width": "page-width", "gap": 0, "background_color": "{{ settings.color_palette.background }}", "padding-block-start": 48, "padding-block-end": 8 }
+    },
     "footer_m9NzUG": {
       "type": "footer",
       "blocks": {
-        "shop_menu": {
-          "type": "menu",
-          "settings": { "menu": "footer", "heading": "Shop", "menu_spacing": 12, "show_as_accordion": true }
-        },
-        "help_menu": {
-          "type": "menu",
-          "settings": { "menu": "kidsora-footer-menu", "heading": "Help", "menu_spacing": 12, "show_as_accordion": true }
-        },
+        "shop_menu": { "type": "menu", "settings": { "menu": "footer", "heading": "Shop", "menu_spacing": 12, "show_as_accordion": true } },
+        "help_menu": { "type": "menu", "settings": { "menu": "kidsora-footer-menu", "heading": "Help", "menu_spacing": 12, "show_as_accordion": true } },
         "mission": {
           "type": "group",
           "settings": { "content_direction": "column", "vertical_on_mobile": true, "horizontal_alignment": "flex-start", "vertical_alignment": "center", "gap": 10, "width": "fill" },
@@ -21,24 +24,29 @@
             "mission_text": { "type": "text", "settings": { "text": "<p>Kidsora House was born out of a desire to provide high-quality, stylish and affordable clothing for kids. We take pride in genuinely caring for our customers and their little ones, and we hope to keep growing with your family for years to come.</p>", "width": "100%", "alignment": "left", "type_preset": "rte" } }
           },
           "block_order": ["mission_heading", "mission_text"]
-        },
-        "group_H6VpwJ": {
-          "type": "group",
-          "settings": { "content_direction": "column", "vertical_on_mobile": true, "horizontal_alignment": "flex-start", "vertical_alignment": "center", "gap": 6, "width": "fill" },
-          "blocks": {
-            "text_LWt8Pz": { "type": "text", "settings": { "text": "<h4>Join the Kidsora House Family</h4>", "width": "100%", "alignment": "left", "type_preset": "h4" } },
-            "text_f9CFLH": { "type": "text", "settings": { "text": "<p>New arrivals, restocks and offers, straight to your inbox.</p>", "width": "100%", "alignment": "left", "type_preset": "rte" } }
-          },
-          "block_order": ["text_LWt8Pz", "text_f9CFLH"]
-        },
-        "email_signup_crihX7": {
-          "type": "email-signup",
-          "settings": { "width": "fill", "heading_preset": "h3", "border_style": "all", "input_style": "custom", "border_width": 1, "border_radius": 100, "input_background_color": "{{ settings.color_palette.background }}", "input_text_color": "{{ settings.color_palette.color1 }}", "input_border_color": "{{ settings.color_palette.color2 }}", "input_type_preset": "paragraph", "style_class": "button-unstyled", "display_type": "arrow", "label": "Sign up", "integrated_button": true, "button_type_preset": "paragraph" }
         }
       },
-      "block_order": ["shop_menu", "help_menu", "mission", "group_H6VpwJ", "email_signup_crihX7"],
+      "block_order": ["shop_menu", "help_menu", "mission"],
       "name": "t:names.footer",
-      "settings": { "section_width": "page-width", "gap": 32, "background_color": "{{ settings.color_palette.background }}", "padding-block-start": 56, "padding-block-end": 40 }
+      "settings": { "section_width": "page-width", "gap": 32, "background_color": "{{ settings.color_palette.background }}", "padding-block-start": 24, "padding-block-end": 40 }
+    },
+    "footer_newsletter": {
+      "type": "footer",
+      "blocks": {
+        "newsletter_group": {
+          "type": "group",
+          "settings": { "content_direction": "column", "vertical_on_mobile": true, "horizontal_alignment": "center", "vertical_alignment": "center", "gap": 14, "width": "fill" },
+          "blocks": {
+            "nl_heading": { "type": "text", "settings": { "text": "<h4>Join the Kidsora House Family</h4>", "width": "100%", "alignment": "center", "type_preset": "h4" } },
+            "nl_text": { "type": "text", "settings": { "text": "<p>New arrivals, restocks and offers, straight to your inbox.</p>", "width": "100%", "alignment": "center", "type_preset": "rte" } },
+            "nl_form": { "type": "email-signup", "settings": { "width": "fill", "heading_preset": "h3", "border_style": "all", "input_style": "custom", "border_width": 1, "border_radius": 100, "input_background_color": "{{ settings.color_palette.background }}", "input_text_color": "{{ settings.color_palette.color1 }}", "input_border_color": "{{ settings.color_palette.color2 }}", "input_type_preset": "paragraph", "style_class": "button", "display_type": "text", "label": "Sign up", "integrated_button": false, "button_type_preset": "paragraph" } }
+          },
+          "block_order": ["nl_heading", "nl_text", "nl_form"]
+        }
+      },
+      "block_order": ["newsletter_group"],
+      "name": "Footer newsletter",
+      "settings": { "section_width": "page-width", "gap": 0, "background_color": "{{ settings.color_palette.background }}", "padding-block-start": 8, "padding-block-end": 32 }
     },
     "footer_utilities_jLGE8U": {
       "type": "footer-utilities",
@@ -52,5 +60,5 @@
       "settings": { "section_width": "page-width", "gap": 24, "divider_thickness": 1, "divider_color": "{{ settings.color_palette.color2 }}", "background_color": "{{ settings.color_palette.background }}", "padding-block-start": 20, "padding-block-end": 48 }
     }
   },
-  "order": ["footer_m9NzUG", "footer_utilities_jLGE8U"]
+  "order": ["footer_brand", "footer_m9NzUG", "footer_newsletter", "footer_utilities_jLGE8U"]
 }
