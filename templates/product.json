@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "blocks": {
+        "disclosures_g9mWze": { "type": "disclosures", "name": "t:names.disclosures", "settings": { "heading": "Disclosures", "heading_preset": "h5", "open_by_default": false, "icon": "caret", "disclosure_heading_preset": "h6", "text_color": "", "dividers": true, "divider_color": "{{ settings.color_palette.color2 }}", "padding-block-start": 0, "padding-block-end": 0, "padding-inline-start": 0, "padding-inline-end": 0 }, "blocks": {} },
+        "accordion_kidsora": {
+          "type": "accordion",
+          "settings": { "icon": "plus", "dividers": true, "type_preset": "h6", "padding-block-start": 8, "padding-block-end": 0 },
+          "blocks": {
+            "row_shipping": { "type": "_accordion-row", "settings": { "heading": "Shipping Information", "icon": "box", "open_by_default": false }, "blocks": { "text-1": { "type": "text", "settings": { "text": "<p>Tracked nationwide delivery across Pakistan. Orders are dispatched within 1-2 business days and typically arrive within 3-7 business days. Cash on Delivery available.</p>", "width": "100%" } } }, "block_order": ["text-1"] },
+            "row_details": { "type": "_accordion-row", "settings": { "heading": "Product Details", "icon": "shirt", "open_by_default": false }, "blocks": { "text-1": { "type": "text", "settings": { "text": "<p>{{ closest.product.description }}</p>", "width": "100%" } } }, "block_order": ["text-1"] },
+            "row_material": { "type": "_accordion-row", "settings": { "heading": "Material Information", "icon": "leaf", "open_by_default": false }, "blocks": { "text-1": { "type": "text", "settings": { "text": "<p>Soft, breathable and skin-friendly fabric selected for everyday comfort and durability wash after wash.</p>", "width": "100%" } } }, "block_order": ["text-1"] },
+            "row_care": { "type": "_accordion-row", "settings": { "heading": "Care Instructions", "icon": "washing", "open_by_default": false }, "blocks": { "text-1": { "type": "text", "settings": { "text": "<p>Machine wash cold with similar colours, gentle cycle. Do not bleach. Tumble dry low or line dry.</p>", "width": "100%" } } }, "block_order": ["text-1"] }
+          },
+          "block_order": ["row_shipping", "row_details", "row_material", "row_care"]
+        }
+      },
+      "block_order": ["disclosures_g9mWze", "accordion_kidsora"],
+      "settings": { "content_width": "content-center-aligned", "desktop_media_position": "left", "equal_columns": false, "limit_details_width": false, "gap": 48, "enable_sticky_add_to_cart": true, "background_color": "{{ settings.color_palette.background }}", "padding-block-start": 0, "padding-block-end": 0 }
+    },
+    "kidsora_product_trust": {
+      "type": "kidsora-trust-strip",
+      "blocks": {
+        "secure": { "type": "benefit", "settings": { "icon": "lock", "heading": "Secure Payments", "text": "" } },
+        "cod": { "type": "benefit", "settings": { "icon": "price_tag", "heading": "Cash on Delivery", "text": "" } },
+        "returns": { "type": "benefit", "settings": { "icon": "return", "heading": "Easy Returns", "text": "" } },
+        "delivery": { "type": "benefit", "settings": { "icon": "truck", "heading": "Tracked Nationwide", "text": "" } }
+      },
+      "block_order": ["secure", "cod", "returns", "delivery"],
+      "settings": { "heading": "", "background": "#F8F3EA", "text_color": "#3D3A36", "gap": 20 }
+    },
+    "product_recommendations_qggXJq": {
+      "type": "product-recommendations",
+      "blocks": {
+        "text_cbcgyb": { "type": "text", "name": "t:names.header", "settings": { "text": "<h3>You may also like </h3>", "width": "fit-content", "max_width": "normal", "alignment": "left", "type_preset": "h4", "font": "var(--font-body--family)", "font_size": "1rem", "line_height": "normal", "letter_spacing": "normal", "case": "none", "wrap": "pretty", "text_color": "", "background": false, "background_color": "#00000026", "corner_radius": 0, "padding-block-start": 0, "padding-block-end": 0, "padding-inline-start": 0, "padding-inline-end": 0 }, "blocks": {} },
+        "static-product-card": { "type": "_product-card", "name": "t:names.product_card", "static": true, "settings": { "product_card_gap": 8, "background_color": "", "border": "none", "border_width": 1, "border_opacity": 100, "border_color": "", "border_radius": 0, "padding-block-start": 0, "padding-block-end": 8, "padding-inline-start": 0, "padding-inline-end": 0 }, "blocks": { "product_card_gallery_DNizbJ": { "type": "_product-card-gallery", "name": "t:names.product_card_media", "settings": { "image_ratio": "adapt", "border": "none", "border_width": 1, "border_opacity": 100, "border_color": "", "border_radius": 0, "padding-block-start": 0, "padding-block-end": 0, "padding-inline-start": 0, "padding-inline-end": 0 }, "blocks": {} }, "product_title_M7MJkb": { "type": "product-title", "name": "t:names.product_title", "settings": { "width": "100%", "max_width": "normal", "alignment": "left", "type_preset": "rte", "font": "var(--font-body--family)", "font_size": "1rem", "line_height": "normal", "letter_spacing": "normal", "case": "none", "wrap": "pretty", "text_color": "", "background": false, "background_color": "#00000026", "corner_radius": 0, "padding-block-start": 4, "padding-block-end": 0, "padding-inline-start": 0, "padding-inline-end": 0 }, "blocks": {} }, "price_gLWgA6": { "type": "price", "settings": { "show_sale_price_first": true, "show_installments": false, "show_tax_info": false, "type_preset": "h6", "width": "100%", "alignment": "left", "font": "var(--font-body--family)", "font_size": "1rem", "line_height": "normal", "letter_spacing": "normal", "case": "none", "text_color": "", "padding-block-start": 0, "padding-block-end": 0, "padding-inline-start": 0, "padding-inline-end": 0 }, "blocks": {} } }, "block_order": ["product_card_gallery_DNizbJ", "product_title_M7MJkb", "price_gLWgA6"] }
+      },
+      "block_order": ["text_cbcgyb"],
+      "name": "t:names.product_recommendations",
+      "settings": { "product": "{{ closest.product }}", "recommendation_type": "related", "layout_type": "grid", "carousel_on_mobile": false, "max_products": 4, "columns": 4, "mobile_columns": "2", "columns_gap": 20, "rows_gap": 32, "icons_style": "arrow", "icons_shape": "none", "section_width": "page-width", "gap": 28, "background_color": "{{ settings.color_palette.background }}", "padding-block-start": 48, "padding-block-end": 48 }
+    },
+    "kidsora_product_reviews": {
+      "type": "kidsora-reviews",
+      "blocks": {
+        "review_1": { "type": "review", "settings": { "rating": 5, "text": "Beautiful quality and fast delivery. Highly recommend!", "name": "Verified buyer" } },
+        "review_2": { "type": "review", "settings": { "rating": 5, "text": "True to size and so soft. My little one loves it.", "name": "Verified buyer" } }
+      },
+      "block_order": ["review_1", "review_2"],
+      "settings": { "eyebrow": "REVIEWS", "heading": "What parents are saying", "text": "", "background": "#ffffff", "text_color": "#3D3A36", "accent_color": "#D9A1A5" }
+    }
+  },
+  "order": ["main", "kidsora_product_trust", "product_recommendations_qggXJq", "kidsora_product_reviews"]
+}

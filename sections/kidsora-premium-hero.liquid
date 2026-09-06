@@ -1,0 +1,53 @@
+{% liquid
+  assign desktop_image = section.settings.image
+  assign mobile_image = section.settings.mobile_image | default: desktop_image
+  assign loading = 'lazy'
+  assign priority = 'auto'
+  if section.index == 1
+    assign loading = 'eager'
+    assign priority = 'high'
+  endif
+%}
+<section class="kp-hero kp-hero--{{ section.id }}{% if section.settings.transparent_header %} kp-hero--under-header{% endif %}" style="--kp-height: {{ section.settings.height }}px; --kp-mobile-height: {{ section.settings.mobile_height }}px; --kp-content-width: {{ section.settings.content_width }}px; --kp-overlay: {{ section.settings.overlay | divided_by: 100.0 }}; --kp-text: {{ section.settings.text_color }}; --kp-accent: {{ section.settings.accent_color }};">
+  <picture class="kp-hero__media">
+    {% if mobile_image != blank %}
+      <source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 900 }}">
+    {% endif %}
+    {% if desktop_image != blank %}
+      {{ desktop_image | image_url: width: 2400 | image_tag: widths: '800, 1200, 1600, 2000, 2400', sizes: '100vw', loading: loading, fetchpriority: priority, class: 'kp-hero__image' }}
+    {% else %}
+      {{ 'hero-apparel-1' | placeholder_svg_tag: 'kp-hero__image kp-hero__placeholder' }}
+    {% endif %}
+  </picture>
+  <div class="kp-hero__shade"></div>
+  <div class="kp-hero__content kp-hero__content--{{ section.settings.position }} kp-hero__content--{{ section.settings.alignment }}">
+    {% if section.settings.eyebrow != blank %}<p class="kp-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+    {% if section.settings.heading != blank %}<h1>{{ section.settings.heading }}</h1>{% endif %}
+    {% if section.settings.text != blank %}<div class="kp-hero__text rte">{{ section.settings.text }}</div>{% endif %}
+    <div class="kp-hero__actions">
+      {% if section.settings.button_label != blank %}<a class="button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button_label | escape }}</a>{% endif %}
+      {% if section.settings.button_label_2 != blank %}<a class="button button-secondary" href="{{ section.settings.button_link_2 | default: routes.all_products_collection_url }}">{{ section.settings.button_label_2 | escape }}</a>{% endif %}
+    </div>
+  </div>
+  {% if section.settings.show_pagination %}<div class="kp-hero__pagination" aria-hidden="true"><span></span><span></span></div>{% endif %}
+</section>
+{% stylesheet %}
+  .kp-hero{position:relative;min-height:var(--kp-height);display:grid;overflow:hidden;background:#F8F3EA;color:var(--kp-text)}
+  .kp-hero__media,.kp-hero__shade,.kp-hero__content{grid-area:1/1}
+  .kp-hero__media,.kp-hero__image{width:100%;height:100%;min-height:var(--kp-height)}
+  .kp-hero__image{display:block;object-fit:cover}
+  .kp-hero__shade{z-index:1;background:rgba(0,0,0,var(--kp-overlay))}
+  .kp-hero__content{z-index:2;width:min(100%,1280px);margin:auto;padding:clamp(110px,10vw,150px) clamp(28px,6vw,88px) clamp(52px,7vw,90px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+  .kp-hero__content--center{text-align:center;align-items:center}.kp-hero__content--right{text-align:right;align-items:flex-end}
+  .kp-hero__content--bottom{justify-content:flex-end}.kp-hero__content--top{justify-content:flex-start}
+  .kp-hero__eyebrow{margin:0 0 10px;color:var(--kp-accent);font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+  .kp-hero h1{max-width:var(--kp-content-width);margin:0;font-family:var(--font-heading--family);font-size:clamp(2.5rem,4vw,4.2rem);line-height:1.05;letter-spacing:-.02em}
+  .kp-hero__text{max-width:58ch;margin-top:18px}.kp-hero__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}.kp-hero__actions .button{min-height:54px;padding-inline:34px;border-radius:999px}
+  .kp-hero__pagination{position:absolute;z-index:3;left:clamp(20px,4.5vw,86px);bottom:28px;display:flex;gap:9px}.kp-hero__pagination span{width:11px;height:11px;border:1px solid currentColor;border-radius:50%;background:transparent}.kp-hero__pagination span:first-child{background:currentColor}
+  body:has(.kp-hero--under-header) .shopify-section-group-header-group{position:absolute;z-index:20;top:0;left:0;width:100%;background:transparent;color:#fff}body:has(.kp-hero--under-header) .shopify-section-group-header-group .header{background:transparent}
+  @media(max-width:749px){.kp-hero{min-height:var(--kp-mobile-height)}.kp-hero__media,.kp-hero__image{min-height:var(--kp-mobile-height)}.kp-hero__content{padding:100px 20px 60px}.kp-hero h1{font-size:clamp(2.15rem,10vw,3.25rem)}.kp-hero__pagination{left:20px;bottom:20px}}
+  @media(prefers-reduced-motion:reduce){.kp-hero *{scroll-behavior:auto}}
+{% endstylesheet %}
+{% schema %}
+{"name":"Kidsora premium hero","settings":[{"type":"image_picker","id":"image","label":"Desktop image"},{"type":"image_picker","id":"mobile_image","label":"Mobile image"},{"type":"text","id":"eyebrow","label":"Eyebrow","default":"NEW SEASON"},{"type":"inline_richtext","id":"heading","label":"Heading","default":"Tiny ones, big firsts"},{"type":"richtext","id":"text","label":"Text","default":"<p>Soft premium everyday wear for little explorers.</p>"},{"type":"text","id":"button_label","label":"Primary button","default":"Shop Now"},{"type":"url","id":"button_link","label":"Primary link"},{"type":"text","id":"button_label_2","label":"Secondary button"},{"type":"url","id":"button_link_2","label":"Secondary link"},{"type":"select","id":"position","label":"Vertical position","options":[{"value":"top","label":"Top"},{"value":"middle","label":"Middle"},{"value":"bottom","label":"Bottom"}],"default":"middle"},{"type":"text_alignment","id":"alignment","label":"Text alignment","default":"left"},{"type":"range","id":"height","label":"Desktop height","min":600,"max":900,"step":10,"unit":"px","default":780},{"type":"range","id":"mobile_height","label":"Mobile height","min":480,"max":800,"step":10,"unit":"px","default":650},{"type":"range","id":"content_width","label":"Heading width","min":360,"max":760,"step":20,"unit":"px","default":620},{"type":"range","id":"overlay","label":"Overlay opacity","min":0,"max":80,"step":5,"unit":"%","default":15},{"type":"checkbox","id":"transparent_header","label":"Transparent header over hero","default":true},{"type":"checkbox","id":"show_pagination","label":"Show slider-style pagination","default":true},{"type":"color","id":"text_color","label":"Text color","default":"#ffffff"},{"type":"color","id":"accent_color","label":"Accent color","default":"#D9A1A5"}],"presets":[{"name":"Kidsora premium hero"}],"disabled_on":{"groups":["header","footer"]}}
+{% endschema %}

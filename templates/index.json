@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "kidsora_hero": {
+      "type": "kidsora-premium-hero",
+      "settings": {
+        "eyebrow": "NEW SEASON",
+        "heading": "Tiny ones, big firsts",
+        "text": "<p>Soft premium everyday wear for little explorers.</p>",
+        "button_label": "Shop Now",
+        "button_link": "shopify://collections/new-in",
+        "button_label_2": "",
+        "button_link_2": "",
+        "position": "middle",
+        "alignment": "left",
+        "height": 780,
+        "mobile_height": 650,
+        "overlay": 15,
+        "transparent_header": true,
+        "show_pagination": true,
+        "text_color": "#ffffff",
+        "accent_color": "#D9A1A5"
+      }
+    },
+    "kidsora_categories": {
+      "type": "kidsora-category-grid",
+      "blocks": {
+        "baby": { "type": "category", "settings": { "collection": "baby-0-3y", "title": "Baby Clothing", "subtitle": "Bodysuits & rompers", "button_label": "Shop now" } },
+        "sets": { "type": "category", "settings": { "collection": "sets", "title": "Sets", "subtitle": "Matching everyday looks", "button_label": "Shop now" } },
+        "blankets": { "type": "category", "settings": { "collection": "blankets-swaddles", "title": "Blankets & Swaddles", "subtitle": "Cosy essentials", "button_label": "Shop now" } },
+        "diaper_bags": { "type": "category", "settings": { "collection": "diaper-bags", "title": "Diaper Bags", "subtitle": "On-the-go ready", "button_label": "Shop now" } },
+        "footwear": { "type": "category", "settings": { "collection": "footwear-accessories", "title": "Footwear", "subtitle": "First steps & beyond", "button_label": "Shop now" } },
+        "new_arrivals": { "type": "category", "settings": { "collection": "new-in", "title": "New Arrivals", "subtitle": "Fresh in this week", "button_label": "Shop now" } }
+      },
+      "block_order": ["baby", "sets", "blankets", "diaper_bags", "footwear", "new_arrivals"],
+      "settings": { "eyebrow": "EXPLORE", "heading": "Shop by category", "text": "", "columns": 3, "gap": 20, "radius": 16, "background": "#ffffff" }
+    },
+    "kidsora_new_arrivals": {
+      "type": "kidsora-product-showcase",
+      "settings": { "collection": "new-in", "eyebrow": "FRESH IN", "heading": "New Arrivals", "subtitle": "<p>Fresh in this week.</p>", "view_all": "View all", "sold_out_label": "Sold out", "sale_label": "Sale", "show_rating": true, "product_limit": 8, "columns": 4, "gap": 20, "show_vendor": false, "background": "#F8F3EA" }
+    },
+    "kidsora_editorial": {
+      "type": "kidsora-editorial-banner",
+      "settings": { "eyebrow": "KIDSORA HOUSE", "heading": "Made for real days", "text": "<p>Soft cotton essentials designed for everyday comfort.</p>", "button_label": "Shop Essentials", "button_link": "shopify://collections/essentials", "layout": "image-left", "image_ratio": "4/3", "background": "#F8F3EA", "text_color": "#3D3A36" }
+    },
+    "kidsora_best_sellers": {
+      "type": "kidsora-product-showcase",
+      "settings": { "collection": "best-sellers", "eyebrow": "MOST LOVED", "heading": "Best Sellers", "subtitle": "<p>Loved by parents everywhere.</p>", "view_all": "View all", "sold_out_label": "Sold out", "sale_label": "Sale", "show_rating": true, "product_limit": 8, "columns": 4, "gap": 20, "show_vendor": false, "background": "#ffffff" }
+    },
+    "kidsora_brand_story": {
+      "type": "kidsora-trust-strip",
+      "blocks": {
+        "quality": { "type": "benefit", "settings": { "icon": "check_box", "heading": "Handpicked Quality", "text": "" } },
+        "photos": { "type": "benefit", "settings": { "icon": "eye", "heading": "Real Photos on Request", "text": "" } },
+        "cod": { "type": "benefit", "settings": { "icon": "price_tag", "heading": "Cash on Delivery", "text": "" } },
+        "tracked": { "type": "benefit", "settings": { "icon": "truck", "heading": "Tracked Nationwide", "text": "" } },
+        "trusted": { "type": "benefit", "settings": { "icon": "star", "heading": "Trusted Since 2021", "text": "" } }
+      },
+      "block_order": ["quality", "photos", "cod", "tracked", "trusted"],
+      "settings": { "heading": "<p>Little clothes, chosen carefully — because the people wearing them matter most.</p>", "background": "#5B7075", "text_color": "#F8F3EA", "gap": 24 }
+    },
+    "kidsora_reviews": {
+      "type": "kidsora-reviews",
+      "blocks": {
+        "review_1": { "type": "review", "settings": { "rating": 5, "text": "I ordered winter clothes for my daughter, and I'm so happy with the quality.", "name": "Happy parent" } },
+        "review_2": { "type": "review", "settings": { "rating": 5, "text": "Very nice fabric and true to size. Will be ordering again.", "name": "Verified buyer" } },
+        "review_3": { "type": "review", "settings": { "rating": 5, "text": "Amazing products, soft and breathable fabric, gentle on newborn skin.", "name": "Verified buyer" } }
+      },
+      "block_order": ["review_1", "review_2", "review_3"],
+      "settings": { "eyebrow": "TESTIMONIALS", "heading": "Let customers speak for us", "text": "", "background": "#F8F3EA", "text_color": "#3D3A36", "accent_color": "#D9A1A5" }
+    },
+    "kidsora_trust_badges": {
+      "type": "kidsora-trust-strip",
+      "blocks": {
+        "secure": { "type": "benefit", "settings": { "icon": "lock", "heading": "Secure Payments", "text": "" } },
+        "premium": { "type": "benefit", "settings": { "icon": "heart", "heading": "Premium Quality", "text": "" } },
+        "returns": { "type": "benefit", "settings": { "icon": "return", "heading": "Easy Returns", "text": "" } },
+        "delivery": { "type": "benefit", "settings": { "icon": "truck", "heading": "Nationwide Delivery", "text": "" } }
+      },
+      "block_order": ["secure", "premium", "returns", "delivery"],
+      "settings": { "heading": "", "background": "#ffffff", "text_color": "#3D3A36", "gap": 24 }
+    },
+    "kidsora_newsletter": {
+      "type": "kidsora-newsletter",
+      "settings": { "eyebrow": "JOIN THE FAMILY", "heading": "Join the Kidsora House family", "text": "<p>New arrivals, restocks and offers — straight to your inbox.</p>", "label": "Email address", "placeholder": "Enter your email", "button": "Subscribe", "success": "Thank you for subscribing.", "consent": "By subscribing you agree to receive marketing emails from Kidsora House.", "background": "#5B7075", "text_color": "#F8F3EA", "accent_color": "#D9A1A5" }
+    }
+  },
+  "order": ["kidsora_hero", "kidsora_categories", "kidsora_new_arrivals", "kidsora_editorial", "kidsora_best_sellers", "kidsora_brand_story", "kidsora_reviews", "kidsora_trust_badges", "kidsora_newsletter"]
+}
