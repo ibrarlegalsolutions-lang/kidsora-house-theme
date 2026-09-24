@@ -1,0 +1,245 @@
+{%- doc -%}
+  Compact product card used by zx- sections (image, badges, available sizes, title, price).
+
+  @param {product} [product] - Product to render; a placeholder card is rendered when blank
+  @param {string} [sizes] - The sizes attribute for the product image
+  @param {string} [size_option] - Option name that holds sizes (default "Size")
+  @param {boolean} [show_sizes] - Show the list of size values under the image
+  @param {boolean} [lazy] - Lazy-load the image (default true)
+{%- enddoc -%}
+
+{%- liquid
+  assign sizes = sizes | default: '(min-width: 990px) 20vw, 45vw'
+  assign size_option = size_option | default: 'Size' | downcase
+  if lazy == false
+    assign loading = 'eager'
+  else
+    assign loading = 'lazy'
+  endif
+-%}
+
+<article class="zx-card">
+  {%- if product != blank -%}
+    {%- liquid
+      assign zx_new_tag = settings.zx_badge_new_tag | strip | downcase
+      assign is_new = false
+      if zx_new_tag != blank
+        for tag in product.tags
+          assign tag_down = tag | downcase
+          if tag_down == zx_new_tag
+            assign is_new = true
+            break
+          endif
+        endfor
+      endif
+      assign on_sale = false
+      if product.compare_at_price > product.price
+        assign on_sale = true
+      endif
+    -%}
+    <a class="zx-card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_media -%}
+        {{
+          product.featured_media
+          | image_url: width: 900
+          | image_tag:
+            class: 'zx-card__image',
+            widths: '240, 360, 480, 640, 900',
+            sizes: sizes,
+            loading: loading,
+            alt: product.featured_media.alt | default: product.title
+        }}
+        {%- if product.media.size > 1 and settings.show_second_image_on_hover -%}
+          {{
+            product.media[1]
+            | image_url: width: 900
+            | image_tag:
+              class: 'zx-card__image zx-card__image--hover',
+              widths: '240, 360, 480, 640, 900',
+              sizes: sizes,
+              loading: 'lazy',
+              alt: ''
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-apparel-1' | placeholder_svg_tag: 'zx-card__image zx-card__image--placeholder' }}
+      {%- endif -%}
+      {%- if product.available == false or on_sale or is_new -%}
+        <span class="zx-card__badges">
+          {%- if product.available == false -%}
+            <span class="zx-card__badge zx-card__badge--soldout">{{ 'content.product_badge_sold_out' | t }}</span>
+          {%- elsif on_sale -%}
+            <span class="zx-card__badge zx-card__badge--sale">
+              {%- if settings.zx_badge_sale_percent -%}
+                {%- assign saving = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+                -{{ saving }}%
+              {%- else -%}
+                {{- 'content.product_badge_sale' | t -}}
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- if is_new -%}
+            <span class="zx-card__badge zx-card__badge--new" style="background: {{ settings.zx_badge_new_color }};">
+              {{- 'content.zx_badge_new' | t -}}
+            </span>
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+    </a>
+
+    {%- if show_sizes -%}
+      {%- for option in product.options_with_values -%}
+        {%- assign option_name = option.name | downcase -%}
+        {%- if option_name == size_option -%}
+          <ul class="zx-card__sizes list-unstyled" aria-label="{{ option.name | escape }}">
+            {%- for value in option.values -%}
+              <li class="zx-card__size{% unless value.available %} zx-card__size--unavailable{% endunless %}">
+                {{- value -}}
+              </li>
+            {%- endfor -%}
+          </ul>
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    <h3 class="zx-card__title">
+      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+    </h3>
+    <p class="zx-card__price">
+      {%- if on_sale -%}
+        <span class="visually-hidden">{{ 'content.price_sale' | t }}</span>
+        <span class="zx-card__price-now">{{ product.price | money }}</span>
+        <span class="visually-hidden">{{ 'content.price_regular' | t }}</span>
+        <s class="zx-card__price-was">{{ product.compare_at_price | money }}</s>
+      {%- else -%}
+        {%- if product.price_varies -%}
+          {{ 'content.price_from' | t: price: product.price_min | money }}
+        {%- else -%}
+          {{ product.price | money }}
+        {%- endif -%}
+      {%- endif -%}
+    </p>
+  {%- else -%}
+    <div class="zx-card__media">
+      {{ 'product-apparel-1' | placeholder_svg_tag: 'zx-card__image zx-card__image--placeholder' }}
+    </div>
+    <h3 class="zx-card__title">{{ 'content.product_card_placeholder' | t }}</h3>
+    <p class="zx-card__price">{{ 1999 | money }}</p>
+  {%- endif -%}
+</article>
+
+{% stylesheet %}
+  .zx-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  .zx-card__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--zx-card-media-bg, #f2f2f2);
+  }
+
+  .zx-card__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.35s ease;
+  }
+
+  .zx-card__image--placeholder {
+    object-fit: cover;
+    fill: rgb(0 0 0 / 0.25);
+  }
+
+  .zx-card__image--hover {
+    opacity: 0;
+  }
+
+  @media (hover: hover) {
+    .zx-card:hover .zx-card__image--hover {
+      opacity: 1;
+    }
+  }
+
+  .zx-card__badges {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .zx-card__badge {
+    padding: 3px 6px;
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #111;
+  }
+
+  .zx-card__badge--soldout {
+    color: #111;
+    background: #e5e5e5;
+  }
+
+  .zx-card__sizes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px 10px;
+    margin: 6px 0 2px;
+    padding: 0;
+    font-size: 10px;
+    text-transform: uppercase;
+  }
+
+  .zx-card__size--unavailable {
+    opacity: 0.4;
+  }
+
+  .zx-card__title {
+    margin: 4px 0 0;
+    font-family: var(--font-body--family);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .zx-card__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .zx-card__title a:hover {
+    text-decoration: underline;
+  }
+
+  .zx-card__price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .zx-card__price-was {
+    font-weight: 400;
+    color: var(--zx-sale, #b1141b);
+  }
+{% endstylesheet %}

@@ -1,0 +1,112 @@
+/*
+  Kidsora House storefront refinements (zx- namespace).
+  Loaded after base.css. Colours, fonts, radii and button styles come from theme settings;
+  this file only adds layout/detail rules that settings cannot express.
+*/
+
+:root {
+  --zx-card-media-bg: #f2f2f2;
+  --zx-muted: #6b6b6b;
+  --zx-sale: #b1141b;
+  --zx-letter-spacing: 0.04em;
+}
+
+/* ---------- Product cards (native Horizon cards) ---------- */
+.card-gallery {
+  background-color: var(--zx-card-media-bg);
+}
+
+.product-card .product-card__content {
+  row-gap: 4px;
+}
+
+.product-card :is(.product-title, [class*='product-title']) {
+  letter-spacing: var(--zx-letter-spacing);
+}
+
+.product-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.product-badges .product-badges__badge {
+  --badge-rectangle-padding-block: 3px;
+  --badge-rectangle-padding-inline: 6px;
+
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.product-badges .zx-badge-new {
+  background: var(--zx-badge-new-bg, #008083);
+  color: #fff;
+}
+
+/* Sizes row rendered by the product-card custom Liquid block */
+.zx-card-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  justify-content: center;
+  padding-block: 8px 2px;
+  margin: 0;
+  list-style: none;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.zx-card-sizes__size--unavailable {
+  color: var(--zx-muted);
+  opacity: 0.45;
+}
+
+/* ---------- Collection grid: edge-to-edge, 4 columns on desktop ---------- */
+@media screen and (min-width: 990px) {
+  .collection-wrapper--grid-full-width
+    .product-grid--grid:not([product-grid-view='zoom-out']):not([product-grid-view='mobile-single']) {
+    --product-grid-columns-desktop: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.collection-wrapper--grid-full-width .product-grid__item .product-card__content > :not(.card-gallery, [class*='gallery']) {
+  padding-inline: 8px;
+}
+
+.facets .facets-toggle__button,
+.facets :is(summary, .facets__label, .sorting-filter__label) {
+  text-transform: uppercase;
+  letter-spacing: var(--zx-letter-spacing);
+  font-size: 12px;
+}
+
+/* ---------- Product page ---------- */
+.variant-option--buttons .variant-option__button-label {
+  min-width: 56px;
+  letter-spacing: 0.04em;
+}
+
+.buy-buttons-block .button,
+.add-to-cart-button {
+  letter-spacing: 0.06em;
+}
+
+.accordion .details__header,
+.accordion summary {
+  text-transform: uppercase;
+  letter-spacing: var(--zx-letter-spacing);
+}
+
+/* ---------- Headings rhythm ---------- */
+:is(h1, h2, h3, h4, .h1, .h2, .h3, .h4) {
+  letter-spacing: var(--zx-letter-spacing);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-scroller {
+    scroll-behavior: auto;
+  }
+}
