@@ -1,0 +1,234 @@
+{%- liquid
+  assign layout = section.settings.layout
+-%}
+
+<div class="zx-features section section--page-width" style="--zx-feat-pt: {{ section.settings.padding_top }}px; --zx-feat-pb: {{ section.settings.padding_bottom }}px;">
+  <ul class="zx-features__list zx-features__list--{{ layout }}" style="--zx-feat-cols: {{ section.settings.columns }};">
+    {%- for block in section.blocks -%}
+      <li class="zx-features__item" {{ block.shopify_attributes }}>
+        <span class="zx-features__icon" aria-hidden="true">
+          {%- if block.settings.custom_icon != blank -%}
+            {{ block.settings.custom_icon | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
+          {%- else -%}
+            {%- case block.settings.icon -%}
+              {%- when 'money' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="5" y="13" width="38" height="22" rx="2"/><circle cx="24" cy="24" r="6"/><path d="M11 18v12M37 18v12"/></svg>
+              {%- when 'support' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 9l6 7-4 4c2 5 6 9 11 11l4-4 7 6-4 5C22 38 10 26 9 13z"/><path d="M28 7h13v9h-7l-4 3v-3h-2z"/></svg>
+              {%- when 'payment' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="9" width="36" height="26" rx="2"/><path d="M4 16h36M9 23h8M9 28h12"/><rect x="30" y="29" width="14" height="11" rx="1.5"/><path d="M33 29v-3a4 4 0 0 1 8 0v3"/></svg>
+              {%- when 'check' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18"/><path d="M16 24.5l6 6 11-12"/></svg>
+              {%- when 'phone' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 17c0-5 8-8 18-8s18 3 18 8v3h-8v-4H14v4H6z"/><path d="M12 22l-4 16h32l-4-16"/><circle cx="24" cy="30" r="5"/></svg>
+              {%- when 'truck' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 12h26v22H4zM30 19h8l6 7v8H30z"/><circle cx="12" cy="36" r="4"/><circle cx="36" cy="36" r="4"/></svg>
+              {%- when 'return' -%}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20a15 15 0 1 1 2 14"/><path d="M8 11v10h10"/></svg>
+            {%- endcase -%}
+          {%- endif -%}
+        </span>
+        <span class="zx-features__text">
+          {%- if block.settings.title != blank -%}
+            <span class="zx-features__title">{{ block.settings.title }}</span>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <span class="zx-features__desc">{{ block.settings.text }}</span>
+          {%- endif -%}
+        </span>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% stylesheet %}
+  .zx-features {
+    padding-block: var(--zx-feat-pt) var(--zx-feat-pb);
+  }
+
+  .zx-features__list {
+    display: grid;
+    grid-template-columns: repeat(var(--zx-feat-cols), minmax(0, 1fr));
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .zx-features__item {
+    display: flex;
+    gap: 16px;
+  }
+
+  .zx-features__list--stacked .zx-features__item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .zx-features__icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+  }
+
+  .zx-features__icon svg,
+  .zx-features__icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .zx-features__list--stacked .zx-features__icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #f1f1f1;
+    color: #333;
+  }
+
+  .zx-features__list--stacked .zx-features__icon svg,
+  .zx-features__list--stacked .zx-features__icon img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .zx-features__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .zx-features__title {
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: 14px;
+    line-height: 1.4;
+    color: #111;
+  }
+
+  .zx-features__list--stacked .zx-features__title {
+    font-family: var(--font-body--family);
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .zx-features__desc {
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  @media screen and (max-width: 749px) {
+    .zx-features__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .zx-features__list--inline {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Icon features",
+  "tag": "section",
+  "class": "zx-features-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "stacked", "label": "Icon above text" },
+        { "value": "inline", "label": "Icon beside text" }
+      ],
+      "default": "stacked"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "money", "label": "Money" },
+            { "value": "support", "label": "Support" },
+            { "value": "payment", "label": "Secure payment" },
+            { "value": "check", "label": "Check mark" },
+            { "value": "phone", "label": "Phone" },
+            { "value": "truck", "label": "Delivery" },
+            { "value": "return", "label": "Returns" }
+          ],
+          "default": "money"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Money Guarantee"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Hassle-free returns under our refund policy"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon features",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "money", "title": "Money Guarantee", "text": "Hassle-free returns under our refund policy" } },
+        { "type": "feature", "settings": { "icon": "support", "title": "Online Support", "text": "Message us anytime, we are happy to help" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

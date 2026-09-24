@@ -646,6 +646,12 @@
         window.ProductModel.loadShopifyXR();
       </script>
     {%- endif -%}
+    {%- comment -%} zx: discount percentage badge on the product page gallery {%- endcomment -%}
+    {%- assign zx_variant = closest.product.selected_or_first_available_variant -%}
+    {%- if zx_variant.compare_at_price > zx_variant.price -%}
+      {%- assign zx_discount = zx_variant.compare_at_price | minus: zx_variant.price | times: 100.0 | divided_by: zx_variant.compare_at_price | round -%}
+      <span class="zx-pdp-badge color-custom-badge-sale">-{{ zx_discount }}%</span>
+    {%- endif -%}
   </media-gallery>
 {% endif %}
 

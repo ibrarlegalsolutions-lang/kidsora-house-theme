@@ -1,0 +1,178 @@
+{%- liquid
+  assign repeat = section.settings.repeat | at_least: 1
+  assign tag = 'div'
+  if section.settings.link != blank
+    assign tag = 'a'
+  endif
+-%}
+
+<{{ tag }}
+  {% if tag == 'a' %}href="{{ section.settings.link }}"{% endif %}
+  class="zx-sale-band{% if section.settings.scroll %} zx-sale-band--scroll{% endif %}"
+  style="
+    --zx-band-color: {{ section.settings.background_color }};
+    --zx-band-text: {{ section.settings.text_color }};
+    --zx-band-height: {{ section.settings.height }}px;
+    --zx-band-size: {{ section.settings.font_size }}px;
+  "
+>
+  <span class="zx-sale-band__track">
+    {%- for i in (1..repeat) -%}
+      <span class="zx-sale-band__text">{{ section.settings.text }}</span>
+    {%- endfor -%}
+    {%- if section.settings.scroll -%}
+      {%- for i in (1..repeat) -%}
+        <span class="zx-sale-band__text" aria-hidden="true">{{ section.settings.text }}</span>
+      {%- endfor -%}
+    {%- endif -%}
+  </span>
+</{{ tag }}>
+
+{% stylesheet %}
+  .zx-sale-band {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--zx-band-height);
+    overflow: hidden;
+    color: var(--zx-band-text);
+    text-decoration: none;
+    background: #fff;
+  }
+
+  /* Red band that fades softly into white on every edge */
+  .zx-sale-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--zx-band-color);
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 22%, #000 78%, transparent 100%),
+      linear-gradient(to bottom, transparent 0, #000 30%, #000 70%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0, #000 22%, #000 78%, transparent 100%),
+      linear-gradient(to bottom, transparent 0, #000 30%, #000 70%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  .zx-sale-band__track {
+    position: relative;
+    display: flex;
+    white-space: nowrap;
+  }
+
+  .zx-sale-band__text {
+    font-family: var(--font-heading--family);
+    font-weight: 700;
+    font-size: var(--zx-band-size);
+    line-height: 1;
+    color: var(--zx-band-text);
+  }
+
+  @media screen and (max-width: 749px) {
+    .zx-sale-band {
+      height: calc(var(--zx-band-height) * 0.7);
+    }
+
+    .zx-sale-band__text {
+      font-size: calc(var(--zx-band-size) * 0.8);
+    }
+
+    .zx-sale-band:not(.zx-sale-band--scroll) .zx-sale-band__text:not(:first-child) {
+      display: none;
+    }
+  }
+
+  .zx-sale-band--scroll {
+    justify-content: flex-start;
+  }
+
+  .zx-sale-band--scroll .zx-sale-band__track {
+    animation: zx-sale-band-scroll 20s linear infinite;
+  }
+
+  @keyframes zx-sale-band-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .zx-sale-band--scroll .zx-sale-band__track {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sale band",
+  "tag": "section",
+  "class": "zx-sale-band-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Biggest Sale is live!!!"
+    },
+    {
+      "type": "range",
+      "id": "repeat",
+      "label": "Repeat text",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "scroll",
+      "label": "Scroll text",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Band color",
+      "default": "#a50f24"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Height",
+      "min": 40,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 78
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sale band"
+    }
+  ]
+}
+{% endschema %}

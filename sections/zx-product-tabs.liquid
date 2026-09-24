@@ -1,0 +1,144 @@
+{%- liquid
+  assign tab_id = 'ZxTabs-' | append: section.id
+  assign app_blocks = section.blocks | where: 'type', '@app'
+  assign has_description = false
+  if product.description != blank
+    assign has_description = true
+  endif
+-%}
+
+{%- if product != blank -%}
+  <div class="zx-tabs section section--page-width">
+    <div class="zx-tabs__inner">
+      <input class="zx-tabs__radio" type="radio" name="{{ tab_id }}" id="{{ tab_id }}-description" checked>
+      {%- if app_blocks.size > 0 -%}
+        <input class="zx-tabs__radio" type="radio" name="{{ tab_id }}" id="{{ tab_id }}-reviews">
+      {%- endif -%}
+
+      <div class="zx-tabs__nav" role="presentation">
+        <label class="zx-tabs__label zx-tabs__label--description" for="{{ tab_id }}-description">
+          {{- section.settings.description_label -}}
+        </label>
+        {%- if app_blocks.size > 0 -%}
+          <label class="zx-tabs__label zx-tabs__label--reviews" for="{{ tab_id }}-reviews">
+            {{- section.settings.reviews_label -}}
+          </label>
+        {%- endif -%}
+      </div>
+
+      <div class="zx-tabs__panel zx-tabs__panel--description rte">
+        {%- if has_description -%}
+          {{ product.description }}
+        {%- endif -%}
+      </div>
+
+      {%- if app_blocks.size > 0 -%}
+        <div class="zx-tabs__panel zx-tabs__panel--reviews">
+          {%- for block in app_blocks -%}
+            {% render block %}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .zx-tabs {
+    padding-block: 32px 48px;
+  }
+
+  .zx-tabs__radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .zx-tabs__nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .zx-tabs__label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 122px;
+    padding: 10px 32px;
+    border: 1px solid #ececec;
+    border-radius: 999px;
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+
+  .zx-tabs__panel {
+    display: none;
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    line-height: 1.8;
+    color: #222;
+  }
+
+  .zx-tabs__radio:nth-of-type(1):checked ~ .zx-tabs__nav .zx-tabs__label--description,
+  .zx-tabs__radio:nth-of-type(2):checked ~ .zx-tabs__nav .zx-tabs__label--reviews {
+    border-color: #111;
+    color: #111;
+  }
+
+  .zx-tabs__radio:nth-of-type(1):checked ~ .zx-tabs__panel--description,
+  .zx-tabs__radio:nth-of-type(2):checked ~ .zx-tabs__panel--reviews {
+    display: block;
+  }
+
+  .zx-tabs__radio:focus-visible ~ .zx-tabs__nav .zx-tabs__label {
+    outline-offset: 2px;
+  }
+
+  .zx-tabs__radio:nth-of-type(1):focus-visible ~ .zx-tabs__nav .zx-tabs__label--description,
+  .zx-tabs__radio:nth-of-type(2):focus-visible ~ .zx-tabs__nav .zx-tabs__label--reviews {
+    outline: 2px solid #111;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product tabs",
+  "tag": "section",
+  "class": "zx-tabs-section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "description_label",
+      "label": "Description tab label",
+      "default": "Description"
+    },
+    {
+      "type": "text",
+      "id": "reviews_label",
+      "label": "Reviews tab label",
+      "default": "Reviews",
+      "info": "The reviews tab appears when a reviews app block is added to this section."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product tabs"
+    }
+  ]
+}
+{% endschema %}

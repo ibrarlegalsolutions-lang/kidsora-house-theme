@@ -1,0 +1,136 @@
+/*
+ * Miniclub storefront skin for Horizon.
+ * Global overrides only; section-specific styles live in the zx-* sections.
+ */
+
+:root {
+  --zx-red: #e3242b;
+  --zx-price-red: #e23d3d;
+  --zx-coral: #ea5448;
+  --zx-ink: #111111;
+  --zx-line: #ececec;
+}
+
+/* ---------- Layout: ~1176px content column, as on the reference ---------- */
+body.page-width-narrow {
+  --page-content-width: 73.5rem;
+}
+
+/* ---------- Header ---------- */
+.dropdown-localization {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.header__row--bottom .menu-list__link-title {
+  font-weight: 500;
+}
+
+/* ---------- Product cards ---------- */
+.card-gallery .product-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.product-badges .product-badges__badge {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+product-price .compare-at-price,
+.price-item--regular.compare-at-price {
+  color: #8a8a8a;
+  text-decoration-color: #8a8a8a;
+  font-size: 0.92em;
+}
+
+/* Sale price follows the struck compare-at price in red */
+product-price .compare-at-price + .price,
+product-price .price:has(+ .compare-at-price) {
+  color: var(--zx-price-red);
+}
+
+.price-item__group + .price-item__group {
+  margin-inline-start: 6px;
+}
+
+/* ---------- Product page ---------- */
+.zx-pdp-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  padding: 3px 9px;
+  font-family: var(--font-body--family);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-foreground);
+  background: var(--color-background);
+  pointer-events: none;
+}
+
+.product-details .variant-option__button-label {
+  min-height: 36px;
+  padding-inline: 10px;
+  font-size: 12px;
+}
+
+.product-details .quantity-selector {
+  --height-buy-buttons: 40px;
+}
+
+.product-details .quantity-selector .quantity-minus,
+.product-details .quantity-selector .quantity-plus {
+  background: var(--zx-red);
+  color: #fff;
+  border-radius: 0;
+}
+
+.product-details .product-form-buttons button,
+.product-details .shopify-payment-button__button {
+  min-height: 40px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.product-details .shopify-payment-button__button--unbranded {
+  background: var(--zx-coral);
+  color: #fff;
+  border-radius: 0;
+}
+
+.product-details .shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  background: #d9463b;
+}
+
+/* ---------- Collection page: sidebar filters and toolbar ---------- */
+.facets--vertical .facets__label,
+.facets--vertical .facets__summary {
+  font-family: var(--font-heading--family);
+  font-size: 16px;
+}
+
+.sorting-filter .facets__summary {
+  padding: 8px 14px;
+  background: var(--zx-red);
+  color: #fff;
+}
+
+.sorting-filter .facets__summary .svg-wrapper {
+  color: #fff;
+}
+
+@media screen and (max-width: 749px) {
+  .sorting-filter__select-wrapper {
+    background: var(--zx-red);
+    color: #fff;
+  }
+
+  .sorting-filter__select {
+    color: #fff;
+  }
+}

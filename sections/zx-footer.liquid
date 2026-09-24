@@ -1,0 +1,411 @@
+{%- liquid
+  assign s = section.settings
+  assign socials = 'facebook,instagram,pinterest,tiktok,youtube,twitter,whatsapp' | split: ','
+-%}
+
+<footer class="zx-footer" style="--zx-footer-bg: {{ s.background_color }}; --zx-footer-text: {{ s.text_color }}; --zx-footer-accent: {{ s.button_color }};">
+  <div class="section section--page-width">
+    <div class="zx-footer__grid">
+      <div class="zx-footer__col zx-footer__col--social">
+        {%- if s.social_heading != blank -%}
+          <h2 class="zx-footer__heading">{{ s.social_heading }}</h2>
+        {%- endif -%}
+        <ul class="zx-footer__social" role="list">
+          {%- for network in socials -%}
+            {%- assign key = network | append: '_url' -%}
+            {%- assign url = s[key] -%}
+            {%- if url != blank -%}
+              <li>
+                <a href="{{ url }}" target="_blank" rel="noopener" aria-label="{{ network | capitalize }}">
+                  {%- case network -%}
+                    {%- when 'facebook' -%}
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8z"/></svg>
+                    {%- when 'instagram' -%}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+                    {%- when 'pinterest' -%}
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.2 2.5c-5.3 0-8 3.8-8 7 0 1.9.7 3.6 2.3 4.3.3.1.5 0 .6-.3l.2-.9c.1-.3 0-.4-.2-.7-.5-.6-.8-1.3-.8-2.3 0-3 2.2-5.6 5.8-5.6 3.2 0 4.9 1.9 4.9 4.5 0 3.4-1.5 6.3-3.8 6.3-1.2 0-2.2-1-1.9-2.3.4-1.5 1.1-3.1 1.1-4.2 0-.9-.5-1.7-1.6-1.7-1.3 0-2.3 1.3-2.3 3.1 0 1.1.4 1.9.4 1.9l-1.5 6.4c-.4 1.9-.1 4.2 0 4.4 0 .1.2.2.3.1.1-.2 1.5-1.9 2-3.6l.8-3c.4.7 1.5 1.4 2.7 1.4 3.6 0 6-3.3 6-7.6 0-3.3-2.8-6.3-7-6.3z"/></svg>
+                    {%- when 'tiktok' -%}
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 3c.4 2.2 1.8 3.6 4 3.8v3.1c-1.4.1-2.8-.3-4-1.1v6.1c0 3.6-3 5.8-6 5.3-4.3-.8-5.7-6.5-2-9 .9-.6 2.1-1 3.4-.9v3.2c-.4-.1-.8-.2-1.2-.1-1.6.3-2.3 2.3-1.2 3.5 1.2 1.3 3.7.6 3.7-1.6V3z"/></svg>
+                    {%- when 'youtube' -%}
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2c-.2-.9-.9-1.5-1.8-1.7C18.2 5 12 5 12 5s-6.2 0-7.8.5c-.9.2-1.6.8-1.8 1.7C2 8.8 2 12 2 12s0 3.2.4 4.8c.2.9.9 1.5 1.8 1.7C5.8 19 12 19 12 19s6.2 0 7.8-.5c.9-.2 1.6-.8 1.8-1.7.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3z"/></svg>
+                    {%- when 'twitter' -%}
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7 8 10.3h-6.2l-4.9-6.3L5.4 21H2.3l7.2-8.3L1.8 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg>
+                    {%- when 'whatsapp' -%}
+                      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.8L2.2 21.8l4.9-1.3A9.8 9.8 0 1 0 12 2.2zm0 17.8c-1.5 0-3-.4-4.2-1.2l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 20zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.1 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.4-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.1-.2z"/></svg>
+                  {%- endcase -%}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      {%- if s.menu_1 != blank -%}
+        <div class="zx-footer__col">
+          <h2 class="zx-footer__heading">{{ s.menu_1_heading | default: s.menu_1.title }}</h2>
+          <ul class="zx-footer__links" role="list">
+            {%- for link in s.menu_1.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if s.menu_2 != blank -%}
+        <div class="zx-footer__col">
+          <h2 class="zx-footer__heading">{{ s.menu_2_heading | default: s.menu_2.title }}</h2>
+          <ul class="zx-footer__links" role="list">
+            {%- for link in s.menu_2.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if s.show_newsletter -%}
+        <div class="zx-footer__col zx-footer__col--newsletter">
+          {%- if s.newsletter_heading != blank -%}
+            <h2 class="zx-footer__heading">{{ s.newsletter_heading }}</h2>
+          {%- endif -%}
+          {%- if s.newsletter_text != blank -%}
+            <p class="zx-footer__text">{{ s.newsletter_text }}</p>
+          {%- endif -%}
+          {%- form 'customer', id: 'ZxFooterNewsletter', class: 'zx-footer__form' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            {%- if form.posted_successfully? -%}
+              <p class="zx-footer__notice" role="status">{{ 'blocks.email_signup.success' | t }}</p>
+            {%- else -%}
+              {%- if form.errors -%}
+                <p class="zx-footer__notice zx-footer__notice--error" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+              {%- endif -%}
+              <label class="visually-hidden" for="ZxFooterNewsletterEmail">{{ 'blocks.email_signup.label' | t }}</label>
+              <input
+                id="ZxFooterNewsletterEmail"
+                class="zx-footer__input"
+                type="email"
+                name="contact[email]"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+                placeholder="{{ 'blocks.email_signup.placeholder' | t }}"
+              >
+              <button type="submit" class="zx-footer__button">{{ s.newsletter_button }}</button>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="zx-footer__bottom">
+      <p class="zx-footer__copyright">
+        {%- if s.copyright != blank -%}
+          {{ s.copyright }}
+        {%- else -%}
+          &copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}
+        {%- endif -%}
+      </p>
+      {%- if s.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <ul class="zx-footer__payments" role="list" aria-label="{{ 'blocks.payment_methods' | t }}">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'zx-footer__payment-icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .zx-footer {
+    background: var(--zx-footer-bg);
+    color: var(--zx-footer-text);
+    font-family: var(--font-body--family);
+  }
+
+  .zx-footer .section {
+    padding-block: 64px 24px;
+  }
+
+  .zx-footer__grid {
+    display: grid;
+    grid-template-columns: 1.65fr 1fr 1fr 1.2fr;
+    gap: 32px;
+  }
+
+  .zx-footer__heading {
+    margin: 0 0 18px;
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    font-size: 15px;
+    line-height: 1.3;
+    color: var(--zx-footer-text);
+  }
+
+  .zx-footer__links,
+  .zx-footer__social,
+  .zx-footer__payments {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .zx-footer__links li + li {
+    margin-top: 8px;
+  }
+
+  .zx-footer__links a,
+  .zx-footer__copyright,
+  .zx-footer__copyright a {
+    color: rgb(255 255 255 / 0.82);
+    font-size: 12px;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+
+  .zx-footer__links a:hover {
+    color: var(--zx-footer-text);
+    text-decoration: underline;
+  }
+
+  .zx-footer__social {
+    display: flex;
+    gap: 14px;
+  }
+
+  .zx-footer__social a {
+    display: inline-flex;
+    color: var(--zx-footer-text);
+  }
+
+  .zx-footer__social svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .zx-footer__text {
+    margin: 0 0 16px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .zx-footer__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .zx-footer__input {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+    color: #111;
+    font-family: var(--font-body--family);
+    font-size: 12px;
+  }
+
+  .zx-footer__button {
+    width: 100%;
+    height: 40px;
+    border: 0;
+    border-radius: 2px;
+    background: var(--zx-footer-accent);
+    color: #fff;
+    font-family: var(--font-body--family);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: filter 0.2s ease;
+  }
+
+  .zx-footer__button:hover {
+    filter: brightness(0.92);
+  }
+
+  .zx-footer__notice {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .zx-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 56px;
+  }
+
+  .zx-footer__copyright {
+    margin: 0;
+  }
+
+  .zx-footer__payments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .zx-footer__payment-icon {
+    display: block;
+    width: 34px;
+    height: 22px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .zx-footer__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .zx-footer .section {
+      padding-block: 40px 20px;
+    }
+
+    .zx-footer__grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .zx-footer__bottom {
+      flex-direction: column;
+      margin-top: 36px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Footer (Miniclub)",
+  "tag": "div",
+  "class": "zx-footer-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Social"
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Heading",
+      "default": "Stay Connected"
+    },
+    { "type": "url", "id": "facebook_url", "label": "Facebook" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram" },
+    { "type": "url", "id": "pinterest_url", "label": "Pinterest" },
+    { "type": "url", "id": "tiktok_url", "label": "TikTok" },
+    { "type": "url", "id": "youtube_url", "label": "YouTube" },
+    { "type": "url", "id": "twitter_url", "label": "X (Twitter)" },
+    { "type": "url", "id": "whatsapp_url", "label": "WhatsApp" },
+    {
+      "type": "header",
+      "content": "Menus"
+    },
+    {
+      "type": "text",
+      "id": "menu_1_heading",
+      "label": "First menu heading",
+      "default": "Informations"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_1",
+      "label": "First menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_2_heading",
+      "label": "Second menu heading",
+      "default": "Customer Service"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Second menu",
+      "default": "footer"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading",
+      "default": "Newsletter"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Text",
+      "default": "Enter your email to receive daily news, new arrivals and exclusive offers. No spam, we promise."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button",
+      "label": "Button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "copyright",
+      "label": "Copyright text",
+      "info": "Leave empty to show the year and store name"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Subscribe button",
+      "default": "#d93a3a"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer (Miniclub)"
+    }
+  ]
+}
+{% endschema %}

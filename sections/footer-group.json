@@ -141,7 +141,8 @@
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 30,
         "padding-block-end": 30
-      }
+      },
+      "disabled": true
     },
     "footer_utilities_jLGE8U": {
       "type": "footer-utilities",
@@ -189,11 +190,35 @@
         "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 20,
         "padding-block-end": 48
+      },
+      "disabled": true
+    },
+    "zx_footer": {
+      "type": "zx-footer",
+      "settings": {
+        "social_heading": "Stay Connected",
+        "facebook_url": "https://www.facebook.com/",
+        "instagram_url": "https://www.instagram.com/",
+        "tiktok_url": "https://www.tiktok.com/",
+        "menu_1_heading": "Informations",
+        "menu_1": "main-menu",
+        "menu_2_heading": "Customer Service",
+        "menu_2": "footer",
+        "show_newsletter": true,
+        "newsletter_heading": "Newsletter",
+        "newsletter_text": "Enter your email to receive daily news, new arrivals and exclusive offers. No spam, we promise.",
+        "newsletter_button": "Subscribe",
+        "copyright": "",
+        "show_payment_icons": true,
+        "background_color": "#111111",
+        "text_color": "#ffffff",
+        "button_color": "#d93a3a"
       }
     }
   },
   "order": [
     "footer_m9NzUG",
-    "footer_utilities_jLGE8U"
+    "footer_utilities_jLGE8U",
+    "zx_footer"
   ]
 }

@@ -1,0 +1,97 @@
+<div class="zx-breadcrumbs" style="--zx-crumb-bg: {{ section.settings.background_color }};">
+  <nav class="zx-breadcrumbs__nav section section--page-width" aria-label="Breadcrumb">
+    <ol class="zx-breadcrumbs__list">
+      <li><a href="{{ routes.root_url }}">{{ section.settings.home_label }}</a></li>
+      {%- if template.name == 'product' and product -%}
+        {%- if collection -%}
+          <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+        {%- endif -%}
+        <li aria-current="page">{{ product.title }}</li>
+      {%- elsif template.name == 'collection' and collection -%}
+        <li aria-current="page">{{ collection.title }}</li>
+      {%- elsif template.name == 'article' and article -%}
+        <li><a href="{{ blog.url }}">{{ blog.title }}</a></li>
+        <li aria-current="page">{{ article.title }}</li>
+      {%- elsif template.name == 'blog' and blog -%}
+        <li aria-current="page">{{ blog.title }}</li>
+      {%- elsif template.name == 'page' and page -%}
+        <li aria-current="page">{{ page.title }}</li>
+      {%- elsif template.name == 'search' -%}
+        <li aria-current="page">{{ 'content.search_results' | t }}</li>
+      {%- else -%}
+        <li aria-current="page">{{ page_title }}</li>
+      {%- endif -%}
+    </ol>
+  </nav>
+</div>
+
+{% stylesheet %}
+  .zx-breadcrumbs {
+    background: var(--zx-crumb-bg);
+  }
+
+  .zx-breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 12px 0;
+    list-style: none;
+    font-family: var(--font-body--family);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .zx-breadcrumbs__list li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .zx-breadcrumbs__list li + li::before {
+    content: '\203A';
+    color: #777;
+  }
+
+  .zx-breadcrumbs__list a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  .zx-breadcrumbs__list a:hover {
+    text-decoration: underline;
+  }
+
+  .zx-breadcrumbs__list [aria-current] {
+    color: #111;
+    font-weight: 500;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Breadcrumbs",
+  "tag": "section",
+  "class": "zx-breadcrumbs-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "home_label",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f7f7f7"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breadcrumbs"
+    }
+  ]
+}
+{% endschema %}
