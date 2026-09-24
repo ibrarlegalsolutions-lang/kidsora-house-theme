@@ -1,109 +1,285 @@
-{
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */{
   "sections": {
-    "kidsora_hero": {
-      "type": "kidsora-premium-hero",
+    "hero_jVaWmY": {
+      "type": "hero",
+      "blocks": {
+        "text_YLPk4p": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<p>Browse our latest products</p>",
+            "text_color": "{{ settings.color_palette.background }}",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_H9gpTf": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "Shop all",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button-custom",
+            "custom_button_background": "rgba(0,0,0,0)",
+            "custom_button_text": "{{ settings.color_palette.background }}",
+            "custom_button_border": "{{ settings.color_palette.background }}",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_YLPk4p",
+        "button_H9gpTf"
+      ],
+      "name": "t:names.hero",
       "settings": {
-        "eyebrow": "NEW SEASON",
-        "heading": "Tiny ones, big firsts",
-        "text": "<p>Soft premium everyday wear for little explorers.</p>",
-        "button_label": "Shop Now",
-        "button_link": "shopify://collections/new-in",
-        "button_label_2": "",
-        "button_link_2": "",
-        "position": "middle",
-        "alignment": "left",
-        "height": 780,
-        "mobile_height": 650,
-        "overlay": 15,
-        "transparent_header": true,
-        "show_pagination": true,
-        "text_color": "#ffffff",
-        "accent_color": "#D9A1A5"
+        "media_type_1": "image",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "space-between",
+        "vertical_alignment": "flex-end",
+        "align_baseline": true,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 24,
+        "section_width": "page-width",
+        "section_height": "medium",
+        "section_height_custom": 50,
+        "background_color": "rgba(0,0,0,0)",
+        "toggle_overlay": true,
+        "overlay_color": "#12121266",
+        "overlay_style": "solid",
+        "gradient_direction": "to bottom",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 100,
+        "padding-block-end": 72
       }
     },
-    "kidsora_categories": {
-      "type": "kidsora-category-grid",
+    "product_list_fa6P9H": {
+      "type": "product-list",
       "blocks": {
-        "baby": { "type": "category", "settings": { "collection": "baby-0-3y", "title": "Baby Clothing", "subtitle": "Bodysuits & rompers", "button_label": "Shop now" } },
-        "sets": { "type": "category", "settings": { "collection": "sets", "title": "Sets", "subtitle": "Matching everyday looks", "button_label": "Shop now" } },
-        "blankets": { "type": "category", "settings": { "collection": "blankets-swaddles", "title": "Blankets & Swaddles", "subtitle": "Cosy essentials", "button_label": "Shop now" } },
-        "diaper_bags": { "type": "category", "settings": { "collection": "diaper-bags", "title": "Diaper Bags", "subtitle": "On-the-go ready", "button_label": "Shop now" } },
-        "footwear": { "type": "category", "settings": { "collection": "footwear-accessories", "title": "Footwear", "subtitle": "First steps & beyond", "button_label": "Shop now" } },
-        "new_arrivals": { "type": "category", "settings": { "collection": "new-in", "title": "New Arrivals", "subtitle": "Fresh in this week", "button_label": "Shop now" } }
+        "static-header": {
+          "type": "_product-list-content",
+          "name": "t:names.header",
+          "static": true,
+          "settings": {
+            "content_direction": "row",
+            "vertical_on_mobile": false,
+            "horizontal_alignment": "space-between",
+            "vertical_alignment": "flex-end",
+            "align_baseline": true,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_list_text_YFtzcL": {
+              "type": "_product-list-text",
+              "name": "t:names.collection_title",
+              "settings": {
+                "text": "<h3>{{ closest.collection.title }}</h3>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_list_button_MWeP9V": {
+              "type": "_product-list-button",
+              "name": "t:names.product_list_button",
+              "settings": {
+                "label": "View all",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_list_text_YFtzcL",
+            "product_list_button_MWeP9V"
+          ]
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 4,
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery_677WP3": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "adapt",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_YXxMTj": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 4,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_JQzVV4": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "h6",
+                "width": "100%",
+                "alignment": "left",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery_677WP3",
+            "product_title_YXxMTj",
+            "price_JQzVV4"
+          ]
+        }
       },
-      "block_order": ["baby", "sets", "blankets", "diaper_bags", "footwear", "new_arrivals"],
-      "settings": { "eyebrow": "", "heading": "Shop by category", "text": "", "columns": 3, "gap": 20, "radius": 14, "background": "#ffffff" }
-    },
-    "kidsora_new_arrivals": {
-      "type": "kidsora-product-showcase",
-      "settings": { "collection": "new-in", "eyebrow": "", "heading": "New arrivals", "subtitle": "<p>Fresh in this week.</p>", "view_all": "View all", "sold_out_label": "Sold out", "sale_label": "Sale", "show_rating": true, "product_limit": 8, "columns": 4, "gap": 20, "show_vendor": false, "background": "#F8F3EA" }
-    },
-    "kidsora_editorial": {
-      "type": "kidsora-premium-hero",
+      "name": "t:names.product_list",
       "settings": {
-        "eyebrow": "",
-        "heading": "Made for real days",
-        "text": "<p>Soft cotton that keeps up with playtime.</p>",
-        "button_label": "Shop best sellers",
-        "button_link": "shopify://collections/best-sellers",
-        "button_label_2": "",
-        "button_link_2": "",
-        "position": "bottom",
-        "alignment": "center",
-        "height": 600,
-        "mobile_height": 480,
-        "overlay": 20,
-        "transparent_header": false,
-        "show_pagination": false,
-        "text_color": "#ffffff",
-        "accent_color": "#D9A1A5"
+        "collection": "all",
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "max_products": 8,
+        "columns": 4,
+        "mobile_columns": "2",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "horizontal_alignment": "flex-start",
+        "gap": 28,
+        "background_color": "{{ settings.color_palette.background }}",
+        "padding-block-start": 48,
+        "padding-block-end": 48
       }
-    },
-    "kidsora_best_sellers": {
-      "type": "kidsora-product-showcase",
-      "settings": { "collection": "best-sellers", "eyebrow": "", "heading": "Best sellers", "subtitle": "<p>Loved by parents everywhere.</p>", "view_all": "View all", "sold_out_label": "Sold out", "sale_label": "Sale", "show_rating": true, "product_limit": 8, "columns": 4, "gap": 20, "show_vendor": false, "background": "#ffffff" }
-    },
-    "kidsora_fabric_note": {
-      "type": "section",
-      "blocks": {
-        "note_text": { "type": "text", "settings": { "text": "<p>We choose breathable, skin-safe fabrics that hold up to real toddler days — gentle washes, snug fit, and colours that stay true wash after wash.</p>", "width": "100%", "max_width": "60ch", "alignment": "center", "type_preset": "rte", "font": "var(--font-body--family)", "line_height": "normal", "letter_spacing": "normal", "case": "none", "wrap": "pretty", "background": false, "background_color": "#00000026", "corner_radius": 0, "padding-block-start": 0, "padding-block-end": 0, "padding-inline-start": 0, "padding-inline-end": 0 }, "blocks": {} }
-      },
-      "block_order": ["note_text"],
-      "settings": { "content_direction": "column", "vertical_on_mobile": true, "horizontal_alignment": "center", "vertical_alignment": "center", "align_baseline": false, "horizontal_alignment_flex_direction_column": "center", "vertical_alignment_flex_direction_column": "center", "gap": 12, "section_width": "page-width", "background_media": "none", "background_color": "#F8F3EA", "video_position": "cover", "background_image_position": "cover", "border": "none", "border_width": 1, "border_opacity": 100, "border_radius": 0, "toggle_overlay": false, "overlay_color": "#00000026", "overlay_style": "solid", "gradient_direction": "to top", "padding-block-start": 32, "padding-block-end": 32 }
-    },
-    "kidsora_reviews": {
-      "type": "kidsora-reviews",
-      "blocks": {
-        "review_1": { "type": "review", "settings": { "rating": 5, "title": "Excellent", "text": "I ordered winter clothes for my daughter, and I'm so happy with the quality.", "name": "Happy parent", "product_name": "Knitted Baby Romper" } },
-        "review_2": { "type": "review", "settings": { "rating": 5, "title": "Awesome", "text": "Very nice fabric and true to size. Will be ordering again.", "name": "Verified buyer", "product_name": "3-Piece Vest Set" } },
-        "review_3": { "type": "review", "settings": { "rating": 5, "title": "Blankets and rompers", "text": "Amazing products, soft and breathable fabric, gentle on newborn skin.", "name": "Verified buyer", "product_name": "Sherpa Baby Blanket" } }
-      },
-      "block_order": ["review_1", "review_2", "review_3"],
-      "settings": { "eyebrow": "", "heading": "Let customers speak for us", "text": "<p>★★★★★ from 649 reviews</p>", "background": "#F8F3EA", "text_color": "#3D3A36", "accent_color": "#D9A1A5" }
-    },
-    "kidsora_brand_story": {
-      "type": "kidsora-trust-strip",
-      "blocks": {
-        "quality": { "type": "benefit", "settings": { "icon": "check_box", "heading": "Handpicked Quality", "text": "" } },
-        "photos": { "type": "benefit", "settings": { "icon": "eye", "heading": "Real Photos on Request", "text": "" } },
-        "cod": { "type": "benefit", "settings": { "icon": "price_tag", "heading": "Cash on Delivery", "text": "" } },
-        "tracked": { "type": "benefit", "settings": { "icon": "truck", "heading": "Tracked Nationwide", "text": "" } },
-        "trusted": { "type": "benefit", "settings": { "icon": "star", "heading": "Trusted Since 2021", "text": "" } }
-      },
-      "block_order": ["quality", "photos", "cod", "tracked", "trusted"],
-      "settings": { "heading": "<p>Little clothes, chosen carefully — because the people wearing them matter most.</p>", "background": "#5B7075", "text_color": "#F8F3EA", "gap": 24 }
-    },
-    "kidsora_trust_badges": {
-      "type": "kidsora-trust-strip",
-      "blocks": {
-        "secure": { "type": "benefit", "settings": { "icon": "lock", "heading": "Secure Payments", "text": "" } },
-        "premium": { "type": "benefit", "settings": { "icon": "heart", "heading": "Premium Quality", "text": "" } },
-        "returns": { "type": "benefit", "settings": { "icon": "return", "heading": "Easy Returns", "text": "" } },
-        "delivery": { "type": "benefit", "settings": { "icon": "truck", "heading": "Nationwide Delivery", "text": "" } }
-      },
-      "block_order": ["secure", "premium", "returns", "delivery"],
-      "settings": { "heading": "", "background": "#ffffff", "text_color": "#3D3A36", "gap": 24 }
     }
   },
-  "order": ["kidsora_hero", "kidsora_categories", "kidsora_new_arrivals", "kidsora_editorial", "kidsora_best_sellers", "kidsora_fabric_note", "kidsora_reviews", "kidsora_brand_story", "kidsora_trust_badges"]
+  "order": [
+    "hero_jVaWmY",
+    "product_list_fa6P9H"
+  ]
 }
