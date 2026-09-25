@@ -1,0 +1,32 @@
+{% comment %}
+  Renders a WhatsApp "order stitched" button for a product.
+  Accepts:
+  - product: {Object} Product object (required)
+  - label: {String} Button text (optional, falls back to theme setting)
+  - note: {String} Small second line (optional)
+
+  Usage:
+  {% render 'zx-whatsapp-order', product: product %}
+{% endcomment %}
+{%- liquid
+  assign wa_number = settings.zx_whatsapp_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+  assign wa_label = label | default: settings.zx_whatsapp_order_label
+  assign wa_note = note | default: settings.zx_whatsapp_order_note
+-%}
+{%- if wa_number != blank and product -%}
+  {%- capture wa_text -%}{{ settings.zx_whatsapp_message }} {{ product.title }} - {{ shop.url }}{{ product.url }}{%- endcapture -%}
+  <a
+    class="zx-wa-order"
+    href="https://wa.me/{{ wa_number }}?text={{ wa_text | strip | url_encode }}"
+    target="_blank"
+    rel="noopener"
+  >
+    <span class="zx-wa-order__title">
+      {{- 'zx-icon-whatsapp.svg' | inline_asset_content -}}
+      {{- wa_label | escape -}}
+    </span>
+    {%- if wa_note != blank -%}
+      <span class="zx-wa-order__note">{{ wa_note | escape }}</span>
+    {%- endif -%}
+  </a>
+{%- endif -%}

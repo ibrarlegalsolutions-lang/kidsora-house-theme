@@ -1,0 +1,69 @@
+.zx-tabs-section .zx-title-wrap {
+  display: flex;
+  margin-bottom: 1.2rem;
+}
+
+.zx-tabs-section .zx-title {
+  margin: 0;
+}
+
+.zx-tabs__list {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 0.4rem 2.4rem;
+  margin: 0 0 2.4rem;
+  padding: 0 0 0.2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.zx-tabs__list::-webkit-scrollbar {
+  display: none;
+}
+
+.zx-tabs__tab {
+  flex: none;
+  padding: 0.8rem 0;
+  border: 0;
+  border-bottom: 0.2rem solid transparent;
+  background: none;
+  color: rgba(var(--color-foreground), 0.6);
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--duration-short) ease, border-color var(--duration-short) ease;
+}
+
+.zx-tabs__tab:hover,
+.zx-tabs__tab[aria-selected='true'] {
+  color: rgb(var(--color-foreground));
+}
+
+.zx-tabs__tab[aria-selected='true'] {
+  border-bottom-color: rgb(var(--color-foreground));
+}
+
+.zx-tabs__tab:focus-visible {
+  outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
+  outline-offset: 0.2rem;
+}
+
+.zx-tabs__panel .collection__view-all {
+  margin-top: 3.2rem;
+}
+
+@media screen and (max-width: 749px) {
+  .zx-tabs__list {
+    justify-content: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zx-tabs__tab {
+    transition: none;
+  }
+}

@@ -1,0 +1,252 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'zx-collection-tabs.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'zx-tabs.js' | asset_url }}" defer="defer"></script>
+
+{%- if section.settings.quick_add == 'standard' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="zx-tabs-section page-width section-{{ section.id }}-padding">
+    {%- if section.settings.title != blank -%}
+      <div class="zx-title-wrap">
+        <h2 class="zx-title h2">{{ section.settings.title | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    <zx-tabs class="zx-tabs">
+      {%- if section.blocks.size > 1 -%}
+        <div class="zx-tabs__list" role="tablist" aria-label="{{ section.settings.title | default: 'Collections' | escape }}">
+          {%- for block in section.blocks -%}
+            {%- assign tab_label = block.settings.label | default: block.settings.collection.title | default: 'Collection' -%}
+            <button
+              type="button"
+              class="zx-tabs__tab"
+              role="tab"
+              id="ZxTab-{{ block.id }}"
+              aria-controls="ZxPanel-{{ block.id }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {{ tab_label | escape }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- for block in section.blocks -%}
+        {%- assign collection = block.settings.collection -%}
+        <div
+          class="zx-tabs__panel"
+          id="ZxPanel-{{ block.id }}"
+          {% if section.blocks.size > 1 %}
+            role="tabpanel" aria-labelledby="ZxTab-{{ block.id }}"
+          {% endif %}
+          {% unless forloop.first %}
+            hidden
+          {% endunless %}
+        >
+          <ul
+            class="grid product-grid contains-card--product grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
+            role="list"
+          >
+            {%- if collection != blank and collection.products_count > 0 -%}
+              {%- for product in collection.products limit: section.settings.products_to_show -%}
+                <li class="grid__item">
+                  {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    image_shape: 'default',
+                    lazy_load: true,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: false,
+                    show_rating: false,
+                    section_id: section.id,
+                    quick_add: section.settings.quick_add,
+                    product_view_context: 'collection'
+                  %}
+                </li>
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..4) -%}
+                <li class="grid__item">
+                  {% render 'card-product', media_aspect_ratio: section.settings.image_ratio, lazy_load: false %}
+                </li>
+              {%- endfor -%}
+            {%- endif -%}
+          </ul>
+
+          {%- if section.settings.show_view_all and collection != blank and collection.products_count > section.settings.products_to_show -%}
+            <div class="center collection__view-all">
+              <a href="{{ collection.url }}" class="button">
+                {{- section.settings.view_all_label | escape -}}
+                <span class="visually-hidden"> {{ collection.title | escape }}</span>
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </zx-tabs>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection tabs",
+  "tag": "section",
+  "class": "section zx-collection-tabs collection",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop by collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "label": "Products per tab",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Columns on desktop",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "label": "Quick add",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "standard", "label": "Standard" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'view all' button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "'View all' button label",
+      "default": "Show more"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Tab label",
+          "info": "Defaults to the collection title."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection tabs",
+      "blocks": [{ "type": "tab" }, { "type": "tab" }, { "type": "tab" }]
+    }
+  ]
+}
+{% endschema %}

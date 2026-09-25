@@ -1,0 +1,18 @@
+{% comment %}
+  Floating WhatsApp chat button. Controlled by Theme settings > Storefront style.
+{% endcomment %}
+{%- liquid
+  assign wa_number = settings.zx_whatsapp_number | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')'
+-%}
+{%- if settings.zx_whatsapp_float and wa_number != blank -%}
+  <a
+    class="zx-wa-float"
+    href="https://wa.me/{{ wa_number }}?text={{ settings.zx_whatsapp_message | url_encode }}"
+    target="_blank"
+    rel="noopener"
+    aria-label="{{ settings.zx_whatsapp_float_label | escape }}"
+  >
+    {{- 'zx-icon-whatsapp.svg' | inline_asset_content -}}
+    <span class="zx-wa-float__label">{{ settings.zx_whatsapp_float_label | escape }}</span>
+  </a>
+{%- endif -%}

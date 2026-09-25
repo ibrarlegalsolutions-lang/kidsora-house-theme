@@ -1,0 +1,666 @@
+{
+  "sections": {
+    "slideshow_W6DcMU": {
+      "type": "slideshow",
+      "blocks": {
+        "slide_TnPgDQ": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/c5d60069-6e26-4b1c-bf03-ebafef4d599e.png",
+            "image_overlay_opacity": 0,
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "",
+            "button_style_secondary": false,
+            "show_text_box": false,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-1"
+          }
+        },
+        "slide_biDQDh": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Aug_16_2026_02_30_48_PM.png",
+            "image_overlay_opacity": 0,
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "",
+            "button_style_secondary": false,
+            "show_text_box": false,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-1"
+          }
+        },
+        "slide_bKfXa3": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/8fb5529e-f3f2-4c17-b6ca-73225fa1275f.png",
+            "image_overlay_opacity": 0,
+            "heading": "",
+            "heading_size": "h1",
+            "subheading": "",
+            "button_label": "",
+            "link": "",
+            "button_style_secondary": false,
+            "show_text_box": false,
+            "box_align": "middle-center",
+            "text_alignment": "center",
+            "text_alignment_mobile": "center",
+            "color_scheme": "scheme-1"
+          }
+        }
+      },
+      "block_order": [
+        "slide_TnPgDQ",
+        "slide_biDQDh",
+        "slide_bKfXa3"
+      ],
+      "name": "t:sections.slideshow.presets.name",
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "adapt_image",
+        "slider_visual": "dots",
+        "auto_rotate": true,
+        "change_slides_speed": 3,
+        "image_behavior": "none",
+        "show_text_below": true,
+        "accessibility_info": "Slideshow about our brand"
+      }
+    },
+    "collection_list_gyR9NH": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_EtTBam": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "luxury-formals"
+          }
+        },
+        "featured_collection_URMDWz": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "printed-marina"
+          }
+        },
+        "featured_collection_EGkfy9": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "ambose-silk"
+          }
+        },
+        "featured_collection_yqFtUh": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "barosha-silk"
+          }
+        },
+        "featured_collection_RpPDMj": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "china-pati-pure-silk"
+          }
+        },
+        "featured_collection_Cgbb8t": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "velvet"
+          }
+        },
+        "featured_collection_UDJaxN": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "palachi"
+          }
+        },
+        "featured_collection_4r9crc": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "lawn"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_EtTBam",
+        "featured_collection_URMDWz",
+        "featured_collection_EGkfy9",
+        "featured_collection_yqFtUh",
+        "featured_collection_RpPDMj",
+        "featured_collection_Cgbb8t",
+        "featured_collection_UDJaxN",
+        "featured_collection_4r9crc"
+      ],
+      "custom_css": [
+        ".collection-list .card__media img {border-radius: 50% !important; aspect-ratio: 1 / 1; object-fit: cover;}"
+      ],
+      "name": "t:sections.collection-list.presets.name",
+      "settings": {
+        "title": "Our Collection",
+        "heading_size": "h2",
+        "image_ratio": "square",
+        "columns_desktop": 6,
+        "color_scheme": "scheme-1",
+        "show_view_all": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_gBDjWM": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "collection": "new-arrivals",
+        "products_to_show": 8,
+        "title": "New Arrivals",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_kgLVqF": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_BtcUDG": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>About Insaf Fabrics</strong>",
+            "heading_size": "h0"
+          }
+        },
+        "text_XpEUdU": {
+          "type": "text",
+          "settings": {
+            "text": "Insaf Fabrics Official is a Rawalpindi-based house of premium unstitched women's wear — built on the belief that quality fabric is the foundation of every great outfit.From breathable summer lawn to rich winter velvet, each collection — Barosha Silk, Ambose Silk, Palachi, Designer Wear and more — is chosen for its texture, drape and finish, so what arrives at your door looks exactly like what you saw on screen.",
+            "text_style": "body"
+          }
+        },
+        "buttons_48B6z4": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_BtcUDG",
+        "text_XpEUdU",
+        "buttons_48B6z4"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/White_and_Green_Watercolor_Wedding_Banner_Horizontal_1.png",
+        "image_overlay_opacity": 0,
+        "image_height": "small",
+        "image_behavior": "fixed",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "color_scheme": "scheme-2",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "custom_css": [],
+      "settings": {
+        "collection": "all",
+        "products_to_show": 8,
+        "title": "All products",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-1",
+        "image_ratio": "portrait",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    },
+    "image_with_text_drahFF": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_KwnLPG": {
+          "type": "heading",
+          "settings": {
+            "heading": "Off WhiteBarosha SilkFloral Suit",
+            "heading_size": "h1"
+          }
+        },
+        "text_cczB3X": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Made with care and unconditionally loved by our customers — this signature bestseller exceeds all expectations.<br/><br/></p>",
+            "text_style": "body"
+          }
+        },
+        "button_4fefLy": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop the Bestseller →",
+            "button_link": "shopify://products/barosha-silk-floral-3-piece-suit-off-white",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_KwnLPG",
+        "text_cczB3X",
+        "button_4fefLy"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Minimalist_Photo_Grid_New_Collection_Instagram_Post_2.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "image_behavior": "zoom-in",
+        "content_layout": "no-overlap",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "section_color_scheme": "scheme-2",
+        "color_scheme": "scheme-2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_YVq36p": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_BKnzX9": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Add_a_heading_800_x_800_px_2.png",
+            "title": "<strong>Fast Delivery</strong>",
+            "text": "<p>Get your favorite unstitched suit delivered to your doorstep quickly, anywhere across Pakistan.<br/><br/><br/></p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_pQyN4b": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Add_a_heading_800_x_800_px_3.png",
+            "title": "<strong>Premium Quality</strong>",
+            "text": "<p>Every suit is crafted from the finest lawn, silk, and velvet fabric — no compromise on quality.<br/><br/></p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_4N4ahP": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Add_a_heading_800_x_800_px_4.png",
+            "title": "<strong>Easy Returns</strong>",
+            "text": "<p>Not satisfied? We offer a simple and hassle-free return & exchange policy.<br/><br/></p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_BKnzX9",
+        "column_pQyN4b",
+        "column_4N4ahP"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h0",
+        "image_width": "third",
+        "image_ratio": "circle",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collapsible_content_DMwMke": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_Q8kazc": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Do you deliver across Pakistan?",
+            "icon": "none",
+            "row_content": "<p>Yes, we ship nationwide. Orders over Rs. 10,000 qualify for free shipping; smaller orders carry a standard delivery charge calculated at checkout.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_PxzYmy": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Is the fabric unstitched or ready to wear?",
+            "icon": "none",
+            "row_content": "<p>All our suits are sold unstitched as 3-piece sets (shirt, trouser/shalwar and dupatta), so you can have them tailored to your exact measurements.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_mityfY": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Will the colours match the product photos?",
+            "icon": "none",
+            "row_content": "<p>We photograph every piece in natural light to keep colours as true as possible. Minor variation can occur due to screen settings, but the fabric quality and design always match.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_Qa4CDL": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What is your return & exchange policy?",
+            "icon": "none",
+            "row_content": "<p>Unstitched pieces can be returned or exchanged within our refund policy window if unworn and in original packaging. See our Refund Policy page for full details.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_Q8kazc",
+        "collapsible_row_PxzYmy",
+        "collapsible_row_mityfY",
+        "collapsible_row_Qa4CDL"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "Frequently Asked Questions",
+        "heading_size": "h0",
+        "heading_alignment": "center",
+        "layout": "none",
+        "container_color_scheme": "",
+        "color_scheme": "scheme-2",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_ybKaEL": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_kiiweC": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "heading_size": "h1"
+          }
+        },
+        "text_8K6Xi6": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        },
+        "buttons_chinnd": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_kiiweC",
+        "text_8K6Xi6",
+        "buttons_chinnd"
+      ],
+      "name": "t:sections.image-banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/1000212751.png",
+        "image_overlay_opacity": 0,
+        "image_height": "adapt",
+        "image_behavior": "none",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": false,
+        "color_scheme": "",
+        "stack_images_on_mobile": true,
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      }
+    },
+    "contact_form_8MgnTG": {
+      "type": "contact-form",
+      "disabled": true,
+      "name": "t:sections.contact-form.presets.name",
+      "settings": {
+        "heading": "Contact Us",
+        "heading_size": "h1",
+        "color_scheme": "scheme-2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "zx_dual_banner_1": {
+      "type": "zx-dual-banner",
+      "disabled": true,
+      "blocks": {
+        "image_a": {
+          "type": "image",
+          "settings": {
+            "link": "shopify://collections/luxury-formals",
+            "heading": "",
+            "cta": ""
+          }
+        },
+        "image_b": {
+          "type": "image",
+          "settings": {
+            "link": "shopify://collections/lawn",
+            "heading": "",
+            "cta": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_a",
+        "image_b"
+      ],
+      "settings": {
+        "aspect_ratio": "4 / 5",
+        "gap": 0,
+        "full_width": false,
+        "stack_on_mobile": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "zx_tabs_shop": {
+      "type": "zx-collection-tabs",
+      "blocks": {
+        "tab_luxury_formals": {
+          "type": "tab",
+          "settings": {
+            "collection": "luxury-formals",
+            "label": ""
+          }
+        },
+        "tab_barosha_silk": {
+          "type": "tab",
+          "settings": {
+            "collection": "barosha-silk",
+            "label": ""
+          }
+        },
+        "tab_ambose_silk": {
+          "type": "tab",
+          "settings": {
+            "collection": "ambose-silk",
+            "label": ""
+          }
+        },
+        "tab_printed_marina": {
+          "type": "tab",
+          "settings": {
+            "collection": "printed-marina",
+            "label": ""
+          }
+        },
+        "tab_lawn": {
+          "type": "tab",
+          "settings": {
+            "collection": "lawn",
+            "label": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_luxury_formals",
+        "tab_barosha_silk",
+        "tab_ambose_silk",
+        "tab_printed_marina",
+        "tab_lawn"
+      ],
+      "settings": {
+        "title": "Shop by collection",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "image_ratio": "portrait",
+        "show_secondary_image": true,
+        "quick_add": "standard",
+        "show_view_all": true,
+        "view_all_label": "Show more",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "zx_tabs_winter": {
+      "type": "zx-collection-tabs",
+      "blocks": {
+        "tab_velvet": {
+          "type": "tab",
+          "settings": {
+            "collection": "velvet",
+            "label": ""
+          }
+        },
+        "tab_palachi": {
+          "type": "tab",
+          "settings": {
+            "collection": "palachi",
+            "label": ""
+          }
+        },
+        "tab_china_pati_pure_silk": {
+          "type": "tab",
+          "settings": {
+            "collection": "china-pati-pure-silk",
+            "label": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_velvet",
+        "tab_palachi",
+        "tab_china_pati_pure_silk"
+      ],
+      "settings": {
+        "title": "Winter collection",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "image_ratio": "portrait",
+        "show_secondary_image": true,
+        "quick_add": "standard",
+        "show_view_all": true,
+        "view_all_label": "Show more",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "zx_store_map": {
+      "type": "zx-store-map",
+      "settings": {
+        "heading": "Visit our store",
+        "text": "<p>See the full fabric range in person at our Rawalpindi store.</p>",
+        "address": "Ashiyana Center, Rehmanabad Chowk, Satellite Town, Rawalpindi",
+        "zoom": 15,
+        "button_label": "Find the store",
+        "button_link": "",
+        "map_height": 420,
+        "map_height_mobile": 300,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "slideshow_W6DcMU",
+    "featured_collection_gBDjWM",
+    "zx_dual_banner_1",
+    "collection_list_gyR9NH",
+    "zx_tabs_shop",
+    "featured_collection",
+    "image_banner_kgLVqF",
+    "zx_tabs_winter",
+    "image_with_text_drahFF",
+    "multicolumn_YVq36p",
+    "collapsible_content_DMwMke",
+    "image_banner_ybKaEL",
+    "zx_store_map",
+    "contact_form_8MgnTG"
+  ]
+}

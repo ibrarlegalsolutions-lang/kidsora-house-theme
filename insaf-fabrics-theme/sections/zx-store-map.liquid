@@ -1,0 +1,192 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .zx-store-map__intro {
+    max-width: 56rem;
+    margin: 0 auto 2.4rem;
+    text-align: center;
+  }
+
+  .zx-store-map__intro .zx-store-map__heading {
+    margin: 0 0 1rem;
+  }
+
+  .zx-store-map__text {
+    margin: 0 0 1.6rem;
+    color: rgba(var(--color-foreground), 0.75);
+  }
+
+  .zx-store-map__frame {
+    display: block;
+    width: 100%;
+    height: {{ section.settings.map_height_mobile }}px;
+    border: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .zx-store-map__frame {
+      height: {{ section.settings.map_height }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="zx-store-map__intro">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="zx-store-map__heading h2">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="zx-store-map__text rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        {%- liquid
+          assign map_link = section.settings.button_link
+          if map_link == blank and section.settings.address != blank
+            assign encoded_address = section.settings.address | url_encode
+            assign map_link = 'https://www.google.com/maps/search/?api=1&query=' | append: encoded_address
+          endif
+        -%}
+        <a
+          class="button button--secondary"
+          {% if map_link != blank %}
+            href="{{ map_link }}" target="_blank" rel="noopener"
+          {% else %}
+            role="link" aria-disabled="true"
+          {% endif %}
+        >
+          {{- section.settings.button_label | escape -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if section.settings.address != blank -%}
+    <iframe
+      class="zx-store-map__frame"
+      src="https://maps.google.com/maps?q={{ section.settings.address | url_encode }}&z={{ section.settings.zoom }}&output=embed"
+      title="{{ section.settings.heading | default: 'Store location' | escape }}"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen
+    ></iframe>
+  {%- elsif request.design_mode -%}
+    <div class="page-width"><p class="center">Add your store address to show the map.</p></div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Store map",
+  "tag": "section",
+  "class": "section zx-store-map",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Visit our store"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Come and see our fabrics in person.</p>"
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Address shown on the map",
+      "info": "Street address or place name as you would type it into Google Maps."
+    },
+    {
+      "type": "range",
+      "id": "zoom",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "label": "Map zoom",
+      "default": 15
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Find a store"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Leave empty to open the address in Google Maps."
+    },
+    {
+      "type": "range",
+      "id": "map_height",
+      "min": 200,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "label": "Map height on desktop",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "map_height_mobile",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Map height on mobile",
+      "default": 300
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Store map"
+    }
+  ]
+}
+{% endschema %}
