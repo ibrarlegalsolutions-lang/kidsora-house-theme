@@ -289,6 +289,7 @@
           --zx-band-text: {{ settings.zx_menu_bar_text }};
           --zx-sale: {{ settings.zx_sale_price_color }};
           --zx-wa: #25d366;
+          --zx-card-title-lines: {{ settings.zx_card_title_lines }};
         }
       {%- endstyle -%}
     {%- endif -%}
@@ -334,7 +335,7 @@
     </script>
   </head>
 
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{% if settings.zx_style_enable %} zx-style{% if settings.zx_heading_lines %} zx-lined-titles{% endif %}{% endif %}">
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{% if settings.zx_style_enable %} zx-style{% if settings.zx_heading_lines %} zx-lined-titles{% endif %}{% if settings.zx_card_border %} zx-card-border{% endif %}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

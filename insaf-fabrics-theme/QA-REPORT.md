@@ -2,8 +2,8 @@
 
 **Outcome: IMPORT-READY.** Not FULLY TESTED: I had no preview of the new theme, so nothing has been checked in a browser yet (see §5).
 
-- ZIP: `insaf-fabrics-dawn-umar-style-v1.zip`, 394 files, 1,067,740 bytes
-- SHA-256: `035ee4ba20a5301c2482f65990ca3cafc1a969d3d923bb9e314071ab723afb94`
+- ZIP: `insaf-fabrics-dawn-umar-style-v2.zip` (v2 = product-card repair, see §8). Previous: `insaf-fabrics-dawn-umar-style-v1.zip`, 394 files, 1,068,438 bytes
+- SHA-256: `ad30033478d9ce1ca507821d55fcd1a6020f78785202b3e9ccfca3744f6b309a`
 - Source: `theme_export__insaffabricsofficial-com-dawn__25SEP2026-0446pm.zip` (left unchanged, SHA-256 `46a97492…`)
 - Mode: SINGLE_REFERENCE. The only reference was 3 screenshots of Umar Fabrics (collection, product page, homepage). I had no live site to inspect, so all sizes are estimated from the screenshots, and hover and scroll behaviour was not seen.
 
@@ -54,3 +54,15 @@ Online Store › Themes › Add theme › Upload zip › leave it **unpublished*
 
 ## 7. Rollback
 Your original ZIP is unchanged. To roll back, re-upload it or keep your current live theme published.
+
+## 8. v2: product card repair (PRECISION_REPAIR, from your screenshot of the live build)
+| Defect | Fix | Status |
+|---|---|---|
+| ADD TO CART buttons at different heights when a title wraps | Dawn wraps each card in `<product-component>`, which has no height, so cards never filled their grid cell. The chain (grid item › product-component › card › content) now stretches to full height, and the button is pinned to the bottom | FIXED: tested on a local mock of Dawn's card markup and CSS; buttons line up at 1440 and 390 px |
+| Titles wrapping to 3 lines | Titles are cut to 1 line with "…". Change it in **Storefront style › Product title lines** (1–3) | FIXED (mock) |
+| No card outline | Thin light border around each card (**Show thin border around product cards**) | FIXED (mock) |
+| Prices showing "PKR" and sometimes wrapping | Currency code turned off (Theme settings › Currency format). Price is bolder and larger, and the struck-through price sits beside the sale price | FIXED (mock) |
+| Button text small | Button 48 px tall, 14 px bold uppercase | FIXED (mock) |
+| Tabs and section titles lighter than the reference | Tabs bold, dark and more widely spaced, with a small arrow under the active tab. Title lines 2 px and dark, title larger | FIXED (mock) |
+
+The mock used Dawn's real CSS with stand-in images, not your live store. Check it in the store preview.

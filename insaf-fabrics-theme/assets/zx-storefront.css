@@ -94,8 +94,8 @@
 .zx-style.zx-lined-titles .zx-title::after {
   content: '';
   flex: 1 1 0;
-  height: 1px;
-  background: rgba(var(--color-foreground), 0.25);
+  height: 0.2rem;
+  background: rgba(var(--color-foreground), 0.85);
 }
 
 @media screen and (min-width: 750px) {
@@ -103,7 +103,8 @@
   .zx-style.zx-lined-titles .title-wrapper-with-link .title,
   .zx-style.zx-lined-titles .related-products__heading,
   .zx-style.zx-lined-titles .zx-title {
-    font-size: calc(var(--font-heading-scale) * 2.2rem);
+    font-size: calc(var(--font-heading-scale) * 3rem);
+    gap: 4rem;
   }
 }
 
@@ -116,36 +117,132 @@
 }
 
 /* ---------- Product cards ---------- */
-.zx-style .card-wrapper .card__heading {
-  font-size: 1.3rem;
-  font-weight: 400;
-  line-height: 1.4;
+/* Equal-height cards: Dawn wraps each card in an unsized <product-component>, so the
+   card never fills the grid cell and long titles push the button out of line.
+   Stretch the whole chain and pin the add-to-cart button to the bottom. */
+.zx-style .grid__item:has(> product-component) {
+  display: flex;
+  flex-direction: column;
 }
 
-.zx-style .card-wrapper .price {
-  font-size: 1.3rem;
+.zx-style .grid__item > product-component {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.zx-style .product-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.zx-style .product-card-wrapper > .card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: auto;
+}
+
+.zx-style .product-card-wrapper > .card > .card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: 0 1.2rem 1.2rem;
+}
+
+.zx-style .product-card-wrapper > .card > .card__content > .card__information {
+  flex: 1 1 auto;
+  padding: 2.4rem 0 1.6rem;
+}
+
+.zx-style.zx-card-border .product-card-wrapper > .card {
+  border: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+.zx-style .product-card-wrapper .card__heading {
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--zx-card-title-lines, 1);
+  overflow: hidden;
+}
+
+.zx-style .product-card-wrapper .card-information {
+  margin-top: 1rem;
+}
+
+.zx-style .product-card-wrapper .price {
+  font-size: 1.5rem;
   font-weight: 600;
+  letter-spacing: 0.02rem;
 }
 
-.zx-style .card-wrapper .price--on-sale .price-item--regular {
-  font-weight: 400;
+.zx-style .product-card-wrapper .price .price__container {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.zx-style .card-wrapper .price--on-sale .price-item--sale {
+.zx-style .product-card-wrapper .price--on-sale .price__sale {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 0.8rem;
+}
+
+.zx-style .product-card-wrapper .price--on-sale .price-item--regular {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+}
+
+.zx-style .product-card-wrapper .price--on-sale .price-item--sale {
+  margin: 0;
   color: var(--zx-sale);
 }
 
-.zx-style .quick-add {
-  margin: 0.8rem 0 0;
+.zx-style .product-card-wrapper .quick-add {
+  margin: auto 0 0;
 }
 
-.zx-style .quick-add__submit.button {
-  min-height: 3.8rem;
+.zx-style .product-card-wrapper .quick-add__submit.button {
+  min-height: 4.8rem;
   padding: 0 1rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   letter-spacing: 0.1rem;
   text-transform: uppercase;
+}
+
+@media screen and (max-width: 749px) {
+  .zx-style .product-card-wrapper > .card > .card__content {
+    padding: 0 0.8rem 0.8rem;
+  }
+
+  .zx-style .product-card-wrapper > .card > .card__content > .card__information {
+    padding: 1.4rem 0 1.2rem;
+  }
+
+  .zx-style .product-card-wrapper .card__heading {
+    font-size: 1.3rem;
+  }
+
+  .zx-style .product-card-wrapper .price,
+  .zx-style .product-card-wrapper .price--on-sale .price-item--regular {
+    font-size: 1.3rem;
+  }
+
+  .zx-style .product-card-wrapper .quick-add__submit.button {
+    min-height: 4rem;
+    font-size: 1.2rem;
+    letter-spacing: 0.05rem;
+  }
 }
 
 /* "View all" under product grids reads as a compact black "Show more" button */

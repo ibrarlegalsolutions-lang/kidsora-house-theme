@@ -114,7 +114,7 @@
     "predictive_search_enabled": true,
     "predictive_search_show_vendor": false,
     "predictive_search_show_price": false,
-    "currency_code_enabled": true,
+    "currency_code_enabled": false,
     "cart_type": "notification",
     "show_vendor": false,
     "show_cart_note": false,
@@ -219,7 +219,9 @@
     "zx_whatsapp_order_label": "Order Stitched Suit on WhatsApp",
     "zx_whatsapp_order_note": "(Custom sizes available)",
     "zx_whatsapp_float": true,
-    "zx_whatsapp_float_label": "Chat with us"
+    "zx_whatsapp_float_label": "Chat with us",
+    "zx_card_border": true,
+    "zx_card_title_lines": 1
   },
   "presets": {
     "Dawn": {
