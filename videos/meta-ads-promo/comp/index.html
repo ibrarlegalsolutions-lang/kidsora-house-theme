@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Meta Ads Expert Promo</title>
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Poppins"; font-weight: 600; src: url("assets/poppins-latin-600-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Poppins"; font-weight: 800; src: url("assets/poppins-latin-800-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Poppins"; font-weight: 900; src: url("assets/poppins-latin-900-normal.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 400; src: url("assets/Inter-400-latin.woff2") format("woff2"); }
+      @font-face { font-family: "Inter"; font-weight: 700; src: url("assets/Inter-700-latin.woff2") format("woff2"); }
+      :root {
+        --blue: #0866ff;
+        --violet: #8a3ffc;
+        --pink: #ff3d7f;
+        --yellow: #ffe14d;
+        --ink: #0b1020;
+        --glass: rgba(11, 16, 32, 0.86);
+        --grad: linear-gradient(100deg, #0866ff 0%, #8a3ffc 55%, #ff3d7f 100%);
+      }
+      body { margin: 0; background: #000; font-family: "Inter", sans-serif; color: #fff; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000; }
+      .layer { position: absolute; inset: 0; }
+      #cam { position: absolute; inset: 0; transform-origin: 50% 34%; }
+      #cam video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      #shade { position: absolute; left: 0; right: 0; bottom: 0; height: 900px;
+        background: linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0)); opacity: 0; }
+      #flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+      #ctaDim { position: absolute; inset: 0; opacity: 0;
+        background: radial-gradient(120% 80% at 50% 45%, rgba(8,20,60,0.72), rgba(3,6,18,0.94)); }
+
+      /* ---------- captions ---------- */
+      #captions { position: absolute; left: 50px; right: 50px; top: 1150px; height: 170px; }
+      .cap { position: absolute; left: 0; right: 0; top: 0; text-align: center; opacity: 0;
+        font-family: "Poppins"; font-weight: 800; font-size: 66px; line-height: 1.12; text-transform: uppercase;
+        letter-spacing: -0.5px; }
+      .cap .w { display: inline-block; margin: 0 9px; color: #fff;
+        -webkit-text-stroke: 10px #000; paint-order: stroke fill;
+        text-shadow: 0 6px 18px rgba(0,0,0,0.55); }
+      .cap .w.hl { color: var(--yellow); }
+
+      /* ---------- shared panel ---------- */
+      .panel { position: absolute; left: 60px; right: 60px; top: 1340px; opacity: 0; }
+      .card { background: var(--glass); border-radius: 34px; border: 2px solid rgba(255,255,255,0.10);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.45); padding: 34px 38px; box-sizing: border-box; }
+      .kicker { font-family: "Poppins"; font-weight: 800; font-size: 26px; letter-spacing: 4px; text-transform: uppercase;
+        background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; display: inline-block; }
+      .big { font-family: "Poppins"; font-weight: 900; font-size: 60px; line-height: 1.05; text-transform: uppercase; }
+      .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .row { display: flex; align-items: center; }
+      .icon { width: 84px; height: 84px; flex: none; }
+
+      /* top tag */
+      #toptag { position: absolute; left: 0; right: 0; top: 110px; display: flex; justify-content: center; opacity: 0; }
+      #toptag .pill { display: flex; align-items: center; gap: 14px; padding: 14px 30px; border-radius: 60px;
+        background: var(--glass); border: 2px solid rgba(255,255,255,0.12);
+        font-family: "Poppins"; font-weight: 800; font-size: 30px; letter-spacing: 2px; text-transform: uppercase; }
+      #toptag .dot { width: 16px; height: 16px; border-radius: 50%; background: #ff3b3b; display: block; }
+
+      /* hook */
+      #hookTop { position: absolute; left: 0; right: 0; top: 150px; display: flex; justify-content: center; opacity: 0; }
+      #hookTop .pill { padding: 18px 38px; border-radius: 22px; background: #ff2d55; transform: rotate(-2deg);
+        font-family: "Poppins"; font-weight: 900; font-size: 46px; text-transform: uppercase; box-shadow: 0 16px 40px rgba(255,45,85,0.4); }
+      #hookMain { position: absolute; left: 40px; right: 40px; top: 1180px; text-align: center; }
+      #hookMain .l { display: block; font-family: "Poppins"; font-weight: 900; text-transform: uppercase; line-height: 1.0;
+        -webkit-text-stroke: 12px #000; paint-order: stroke fill; opacity: 0; }
+      #hk1 { font-size: 92px; color: #fff; }
+      #hk2 { font-size: 64px; color: var(--yellow); margin: 10px 0; }
+      #hk3 { font-size: 150px; color: #fff; }
+      #hk3 span { display: inline-block; padding: 6px 34px 14px; border-radius: 28px; background: var(--grad);
+        -webkit-text-stroke: 0; }
+
+      /* lower third */
+      #lt { top: 1350px; }
+      #lt .card { display: flex; align-items: center; gap: 28px; }
+      #lt .name { font-family: "Poppins"; font-weight: 900; font-size: 58px; line-height: 1; text-transform: uppercase; }
+      #lt .sub { font-family: "Inter"; font-weight: 700; font-size: 30px; color: #c9d4ff; margin-top: 10px; }
+      #lt .bar { height: 8px; border-radius: 4px; background: var(--grad); margin-top: 16px; width: 100%; transform-origin: left center; display: block; }
+      #lt .plats { display: flex; gap: 14px; margin-left: auto; }
+      #lt .plats svg { width: 70px; height: 70px; display: block; }
+
+      /* CPR topic */
+      #cpr .card { display: flex; gap: 30px; align-items: center; }
+      #cpr .left { flex: 1; }
+      #cpr .chip { display: inline-block; padding: 10px 22px; border-radius: 14px; background: rgba(8,102,255,0.22);
+        border: 2px solid rgba(8,102,255,0.6); font-family: "Inter"; font-weight: 700; font-size: 30px; margin-top: 18px; }
+      #cpr svg { width: 330px; height: 250px; flex: none; display: block; }
+
+      /* creative reason */
+      #reason .card { display: flex; gap: 34px; align-items: center; }
+      #phone { width: 230px; height: 330px; flex: none; border-radius: 34px; background: #111827; border: 6px solid #2b3245; position: relative; overflow: hidden; display: block; }
+      #phone .hdr { position: absolute; left: 14px; top: 16px; right: 14px; display: flex; align-items: center; gap: 10px; }
+      #phone .av { width: 34px; height: 34px; border-radius: 50%; background: var(--grad); display: block; }
+      #phone .sp { font-size: 15px; font-weight: 700; color: #aab3c8; }
+      #phone .media { position: absolute; left: 0; right: 0; top: 64px; height: 190px;
+        background: linear-gradient(135deg, #1e3a8a, #7c3aed 60%, #db2777); display: flex; align-items: center; justify-content: center; }
+      #phone .play { width: 74px; height: 74px; border-radius: 50%; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; }
+      #phone .cta { position: absolute; left: 14px; right: 14px; bottom: 16px; height: 44px; border-radius: 10px; background: var(--blue);
+        font-size: 18px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+      #reason .num { font-family: "Poppins"; font-weight: 900; font-size: 120px; line-height: 0.9; }
+
+      /* flow */
+      #flow .card { padding: 30px 26px; }
+      #flow .steps { display: flex; align-items: stretch; justify-content: space-between; gap: 10px; margin-top: 18px; }
+      #flow .st { flex: 1; text-align: center; background: rgba(255,255,255,0.06); border-radius: 22px; padding: 22px 10px; opacity: 0; }
+      #flow .st svg { width: 86px; height: 86px; display: block; margin: 0 auto 12px; }
+      #flow .st b { display: block; font-family: "Poppins"; font-weight: 800; font-size: 28px; line-height: 1.1; text-transform: uppercase; }
+      #flow .arr { width: 40px; flex: none; display: flex; align-items: center; justify-content: center; opacity: 0;
+        font-family: "Poppins"; font-weight: 900; font-size: 44px; color: #7ea6ff; }
+
+      /* ads manager */
+      #am { top: 1345px; transform-origin: 50% 0%; }
+      #am .win { background: #f4f6fb; border-radius: 26px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.5); color: #1c2333; }
+      #am .tb { height: 62px; background: #fff; display: flex; align-items: center; gap: 14px; padding: 0 24px; border-bottom: 2px solid #e3e7f0; }
+      #am .tb svg { width: 46px; height: 46px; display: block; }
+      #am .tb .t { font-family: "Inter"; font-weight: 700; font-size: 28px; }
+      #am .tb .btn { margin-left: auto; background: #1a7f37; color: #fff; font-weight: 700; font-size: 22px; padding: 10px 20px; border-radius: 10px; }
+      #am .tabs { display: flex; gap: 30px; padding: 14px 24px 0; font-size: 22px; font-weight: 700; color: #6b7590; }
+      #am .tabs .on { color: var(--blue); border-bottom: 4px solid var(--blue); padding-bottom: 10px; }
+      #am .rows { padding: 8px 18px 18px; }
+      #am .r { display: flex; align-items: center; gap: 16px; background: #fff; border-radius: 14px; padding: 9px 16px; margin-top: 8px; opacity: 0; }
+      #am .tg { width: 58px; height: 32px; border-radius: 16px; background: var(--blue); position: relative; flex: none; display: block; }
+      #am .tg::after { content: ""; position: absolute; right: 4px; top: 4px; width: 24px; height: 24px; border-radius: 50%; background: #fff; }
+      #am .th { width: 52px; height: 52px; border-radius: 10px; flex: none; display: flex; align-items: center; justify-content: center; }
+      #am .nm { font-weight: 700; font-size: 26px; }
+      #am .ty { font-size: 20px; color: #5a6380; margin-top: 2px; }
+      #am .stt { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 21px; font-weight: 700; color: #1a7f37; }
+      #am .stt i { width: 12px; height: 12px; border-radius: 50%; background: #22c55e; display: block; }
+
+      /* creative grid */
+      #grid .card { padding: 28px 30px 30px; }
+      #grid .head { display: flex; align-items: center; justify-content: space-between; }
+      #grid .tiles { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 40px; }
+      #grid .tile { height: 200px; border-radius: 18px; position: relative; display: flex; align-items: center; justify-content: center; opacity: 0; }
+      #grid .tile .lbl { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font-weight: 700; font-size: 20px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
+      #grid .badge { position: absolute; left: 50%; top: -26px; margin-left: -62px; width: 124px; height: 44px; border-radius: 22px;
+        background: var(--yellow); color: #1a1300; font-family: "Poppins"; font-weight: 900; font-size: 20px;
+        display: flex; align-items: center; justify-content: center; opacity: 0; }
+      #grid .ring { position: absolute; inset: -6px; border-radius: 22px; border: 6px solid var(--yellow); opacity: 0; }
+
+      /* iterate */
+      #iter .card { display: flex; align-items: center; gap: 22px; }
+      #iter .win1 { width: 210px; height: 250px; border-radius: 22px; flex: none; position: relative; display: flex; align-items: center; justify-content: center;
+        background: linear-gradient(135deg, #f59e0b, #ef4444); box-shadow: 0 0 0 6px var(--yellow); }
+      #iter .win1 .badge2 { position: absolute; top: -22px; left: 40px; right: 40px; height: 40px; border-radius: 20px; background: var(--yellow); color: #1a1300;
+        font-family: "Poppins"; font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+      #iter .ar { font-family: "Poppins"; font-weight: 900; font-size: 64px; color: var(--yellow); opacity: 0; }
+      #iter .vars { display: flex; flex-direction: column; gap: 14px; flex: 1; }
+      #iter .v { height: 70px; border-radius: 16px; display: flex; align-items: center; gap: 16px; padding: 0 20px; opacity: 0;
+        background: rgba(255,255,255,0.08); border: 2px solid rgba(255,225,77,0.5); font-family: "Poppins"; font-weight: 800; font-size: 28px; }
+      #iter .v i { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b, #ef4444); display: block; }
+
+      /* loop / scale */
+      #loop .card { padding: 30px; }
+      #loop .cyc { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
+      #loop .c { flex: 1; text-align: center; opacity: 0; }
+      #loop .c .o { width: 120px; height: 120px; margin: 0 auto 12px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        background: rgba(255,255,255,0.08); border: 3px solid rgba(126,166,255,0.6); }
+      #loop .c .o svg { width: 62px; height: 62px; display: block; }
+      #loop .c b { font-family: "Poppins"; font-weight: 800; font-size: 26px; text-transform: uppercase; }
+      #loop .c.scale .o { background: var(--grad); border-color: transparent; box-shadow: 0 0 40px rgba(138,63,252,0.7); }
+      #loop .dash { font-family: "Poppins"; font-weight: 900; font-size: 36px; color: #7ea6ff; opacity: 0; margin-top: -40px; }
+      #scaleBig { position: absolute; left: 0; right: 0; top: 150px; text-align: center; opacity: 0; }
+      #scaleBig span { display: inline-block; font-family: "Poppins"; font-weight: 900; font-size: 170px; text-transform: uppercase;
+        padding: 0 50px 18px; border-radius: 40px; background: var(--grad); box-shadow: 0 30px 90px rgba(138,63,252,0.55); }
+
+      /* CTA */
+      #cta { position: absolute; left: 60px; right: 60px; top: 300px; opacity: 0; text-align: center; }
+      #cta .icons { display: flex; justify-content: center; gap: 26px; }
+      #cta .icons svg { width: 120px; height: 120px; display: block; opacity: 0; }
+      #cta h1 { margin: 46px 0 0; font-family: "Poppins"; font-weight: 900; font-size: 86px; line-height: 1.02; text-transform: uppercase; }
+      #cta h1 .grad-text { display: inline-block; }
+      #cta .sub { font-family: "Inter"; font-weight: 700; font-size: 36px; color: #c9d4ff; margin-top: 22px; }
+      #cta ul { list-style: none; padding: 0; margin: 50px auto 0; width: 820px; text-align: left; }
+      #cta li { display: flex; align-items: center; gap: 24px; font-family: "Poppins"; font-weight: 800; font-size: 42px; padding: 16px 28px; margin-top: 16px;
+        border-radius: 22px; background: rgba(255,255,255,0.07); border: 2px solid rgba(255,255,255,0.1); opacity: 0; }
+      #cta li svg { width: 50px; height: 50px; flex: none; display: block; }
+      #cta .btnwrap { margin-top: 64px; display: flex; justify-content: center; }
+      #cta .btn { display: flex; align-items: center; gap: 22px; padding: 34px 60px; border-radius: 80px; background: var(--grad);
+        font-family: "Poppins"; font-weight: 900; font-size: 52px; text-transform: uppercase; box-shadow: 0 24px 70px rgba(138,63,252,0.6); opacity: 0; }
+      #cta .btn svg { width: 56px; height: 56px; display: block; }
+      #cta .foot { font-family: "Inter"; font-weight: 700; font-size: 32px; color: #9fb0e6; margin-top: 36px; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="46" data-fps="30">
+      <!-- SVG symbol library -->
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <linearGradient id="gMeta" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0866ff"/><stop offset="0.55" stop-color="#8a3ffc"/><stop offset="1" stop-color="#ff3d7f"/></linearGradient>
+          <linearGradient id="gIg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#feda75"/><stop offset="0.35" stop-color="#fa7e1e"/><stop offset="0.6" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient>
+          <symbol id="iMeta" viewBox="0 0 120 120"><rect width="120" height="120" rx="30" fill="#fff"/><path d="M22 62c0-16 8-28 18-28 9 0 15 8 20 17 5 9 11 19 20 19 7 0 12-6 12-15 0-11-6-21-13-21-8 0-14 9-19 17-5 9-11 19-20 19-10 0-18-8-18-8z" fill="none" stroke="url(#gMeta)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+          <symbol id="iFb" viewBox="0 0 120 120"><circle cx="60" cy="60" r="60" fill="#0866ff"/><path d="M66 120V76h14l2-17H66V48c0-5 2-8 8-8h9V25c-2 0-7-1-13-1-13 0-21 8-21 22v13H35v17h14v44z" fill="#fff"/></symbol>
+          <symbol id="iIg" viewBox="0 0 120 120"><rect width="120" height="120" rx="32" fill="url(#gIg)"/><rect x="26" y="26" width="68" height="68" rx="20" fill="none" stroke="#fff" stroke-width="8"/><circle cx="60" cy="60" r="16" fill="none" stroke="#fff" stroke-width="8"/><circle cx="82" cy="38" r="5" fill="#fff"/></symbol>
+          <symbol id="iCheck" viewBox="0 0 50 50"><circle cx="25" cy="25" r="25" fill="#22c55e"/><path d="M14 26l7 7 15-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+          <symbol id="iPlay" viewBox="0 0 40 40"><path d="M13 9l18 11-18 11z" fill="#111827"/></symbol>
+          <symbol id="iImg" viewBox="0 0 40 40"><rect x="4" y="7" width="32" height="26" rx="4" fill="none" stroke="#fff" stroke-width="3"/><circle cx="14" cy="16" r="3.5" fill="#fff"/><path d="M6 31l10-10 7 7 5-5 8 8" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></symbol>
+          <symbol id="iStar" viewBox="0 0 40 40"><path d="M20 3l5 11 12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1z" fill="#ffe14d"/></symbol>
+          <symbol id="iBrain" viewBox="0 0 80 80"><circle cx="40" cy="40" r="36" fill="none" stroke="#7ea6ff" stroke-width="5"/><circle cx="40" cy="40" r="10" fill="#7ea6ff"/><g stroke="#7ea6ff" stroke-width="5" stroke-linecap="round"><path d="M40 4v18M40 58v18M4 40h18M58 40h18M15 15l12 12M53 53l12 12M65 15L53 27M27 53L15 65"/></g></symbol>
+          <symbol id="iDown" viewBox="0 0 80 80"><circle cx="40" cy="40" r="36" fill="#16a34a"/><path d="M40 18v40M24 44l16 16 16-16" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+          <symbol id="iFlask" viewBox="0 0 60 60"><path d="M22 6h16M25 6v16L10 50c-2 4 0 6 4 6h32c4 0 6-2 4-6L35 22V6" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><path d="M15 42h30" stroke="#fff" stroke-width="5"/></symbol>
+          <symbol id="iTrophy" viewBox="0 0 60 60"><path d="M18 8h24v14c0 8-5 14-12 14S18 30 18 22z" fill="#ffe14d"/><path d="M18 12H8c0 10 5 14 10 14M42 12h10c0 10-5 14-10 14" fill="none" stroke="#ffe14d" stroke-width="4"/><path d="M26 36h8v8h-8zM18 50h24v5H18z" fill="#ffe14d"/></symbol>
+          <symbol id="iCopy" viewBox="0 0 60 60"><rect x="8" y="16" width="30" height="36" rx="5" fill="none" stroke="#fff" stroke-width="5"/><path d="M22 8h26a4 4 0 0 1 4 4v30" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/></symbol>
+          <symbol id="iRocket" viewBox="0 0 60 60"><path d="M30 4c10 6 15 16 14 30l-6 8H22l-6-8C15 20 20 10 30 4z" fill="#fff"/><circle cx="30" cy="24" r="6" fill="#8a3ffc"/><path d="M22 42l-8 10 12-4M38 42l8 10-12-4" fill="#fff"/><path d="M26 46h8l-4 12z" fill="#ffe14d"/></symbol>
+          <symbol id="iMsg" viewBox="0 0 60 60"><path d="M30 6C16 6 6 16 6 28c0 7 3 13 9 17v9l9-5c2 0 4 1 6 1 14 0 24-10 24-22S44 6 30 6z" fill="#fff"/><path d="M16 34l10-11 6 6 11-7-10 11-6-6z" fill="#8a3ffc"/></symbol>
+        </defs>
+      </svg>
+
+      <div id="cam">
+        <video id="aroll" src="assets/base_ext.mp4" muted playsinline data-start="0" data-duration="46" data-track-index="0"></video>
+      </div>
+      <div id="shade"></div>
+      <div id="ctaDim"></div>
+
+      <!-- HOOK -->
+      <div id="hookTop"><div class="pill">Is your CPR too high?</div></div>
+      <div id="hookMain">
+        <span class="l" id="hk1">Meta Ads</span>
+        <span class="l" id="hk2">are basically</span>
+        <span class="l" id="hk3"><span>Testing</span></span>
+      </div>
+
+      <!-- persistent tag -->
+      <div id="toptag"><div class="pill"><i class="dot"></i>How to lower your CPR</div></div>
+
+      <!-- lower third -->
+      <div class="panel" id="lt">
+        <div class="card">
+          <svg class="icon" style="width:110px;height:110px"><use href="#iMeta"/></svg>
+          <div>
+            <div class="name">Meta Ads <span class="grad-text">Expert</span></div>
+            <div class="sub">Facebook &amp; Instagram Advertising</div>
+            <i class="bar"></i>
+          </div>
+          <div class="plats"><svg><use href="#iFb"/></svg><svg><use href="#iIg"/></svg></div>
+        </div>
+      </div>
+
+      <!-- CPR topic -->
+      <div class="panel" id="cpr">
+        <div class="card">
+          <div class="left">
+            <div class="kicker">Today's topic</div>
+            <div class="big" style="margin-top:10px">Why is your <span class="grad-text">CPR</span> high?</div>
+            <div class="chip">CPR = Cost Per Result</div>
+          </div>
+          <svg viewBox="0 0 330 250">
+            <g stroke="rgba(255,255,255,0.12)" stroke-width="2"><path d="M20 60H310M20 120H310M20 180H310"/></g>
+            <path id="cprLine" d="M24 210 C80 200 100 170 140 160 S210 110 240 80 S290 40 306 30" fill="none" stroke="#ff4d4d" stroke-width="10" stroke-linecap="round"/>
+            <g id="cprTag"><rect x="210" y="0" width="110" height="44" rx="12" fill="#ff4d4d"/><text x="265" y="31" text-anchor="middle" font-family="Poppins" font-weight="900" font-size="24" fill="#fff">HIGH ↑</text></g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- main reason -->
+      <div class="panel" id="reason">
+        <div class="card">
+          <div id="phone">
+            <div class="hdr"><i class="av"></i><div><div style="font-size:16px;font-weight:700">Your Brand</div><div class="sp">Sponsored</div></div></div>
+            <div class="media"><div class="play"><svg width="40" height="40"><use href="#iPlay"/></svg></div></div>
+            <div class="cta">Learn More</div>
+          </div>
+          <div>
+            <div class="kicker">The main reason</div>
+            <div class="big" style="margin-top:12px;font-size:76px">Your <span class="grad-text">video creatives</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- flow -->
+      <div class="panel" id="flow">
+        <div class="card">
+          <div class="kicker">How it works</div>
+          <div class="steps">
+            <div class="st" id="fs1"><svg><use href="#iStar"/></svg><b>Good creative</b></div>
+            <div class="arr" id="fa1">›</div>
+            <div class="st" id="fs2"><svg><use href="#iBrain"/></svg><b>Meta recognizes it</b></div>
+            <div class="arr" id="fa2">›</div>
+            <div class="st" id="fs3"><svg><use href="#iDown"/></svg><b>CPR goes down</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ads manager -->
+      <div class="panel" id="am">
+        <div class="win">
+          <div class="tb"><svg><use href="#iMeta"/></svg><span class="t">Ads Manager</span><span class="btn">+ Create</span></div>
+          <div class="tabs"><span>Campaigns</span><span>Ad sets</span><span class="on">Ads</span></div>
+          <div class="rows">
+            <div class="r" id="r1"><i class="tg"></i><div class="th" style="background:linear-gradient(135deg,#1e3a8a,#7c3aed)"><svg width="34" height="34"><use href="#iPlay" style="fill:#fff"/></svg></div><div><div class="nm">Video Creative A</div><div class="ty">Video · Reels &amp; Feed</div></div><span class="stt"><i></i>Active</span></div>
+            <div class="r" id="r2"><i class="tg"></i><div class="th" style="background:linear-gradient(135deg,#0e7490,#2563eb)"><svg width="34" height="34"><use href="#iPlay"/></svg></div><div><div class="nm">Video Creative B</div><div class="ty">Video · Reels &amp; Feed</div></div><span class="stt"><i></i>Active</span></div>
+            <div class="r" id="r3"><i class="tg"></i><div class="th" style="background:linear-gradient(135deg,#db2777,#f59e0b)"><svg width="40" height="40"><use href="#iImg"/></svg></div><div><div class="nm">Image Creative 1</div><div class="ty">Image · Feed &amp; Stories</div></div><span class="stt"><i></i>Active</span></div>
+            <div class="r" id="r4"><i class="tg"></i><div class="th" style="background:linear-gradient(135deg,#16a34a,#0ea5e9)"><svg width="40" height="40"><use href="#iImg"/></svg></div><div><div class="nm">Image Creative 2</div><div class="ty">Image · Feed &amp; Stories</div></div><span class="stt"><i></i>Active</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- creative grid -->
+      <div class="panel" id="grid">
+        <div class="card">
+          <div class="head"><div class="big" style="font-size:52px">Test <span class="grad-text" id="gridNum">4–6</span> creatives</div><svg width="64" height="64"><use href="#iFlask"/></svg></div>
+          <div class="tiles">
+            <div class="tile" id="t1" style="background:linear-gradient(160deg,#1e3a8a,#7c3aed)"><svg width="44" height="44"><use href="#iImg"/></svg><span class="lbl">#1</span><i class="ring"></i></div>
+            <div class="tile" id="t2" style="background:linear-gradient(160deg,#f59e0b,#ef4444)"><svg width="44" height="44"><use href="#iImg"/></svg><span class="lbl">#2</span><i class="ring"></i><span class="badge">WINNER</span></div>
+            <div class="tile" id="t3" style="background:linear-gradient(160deg,#0e7490,#2563eb)"><svg width="44" height="44"><use href="#iImg"/></svg><span class="lbl">#3</span><i class="ring"></i></div>
+            <div class="tile" id="t4" style="background:linear-gradient(160deg,#db2777,#8a3ffc)"><svg width="44" height="44"><use href="#iImg"/></svg><span class="lbl">#4</span><i class="ring"></i></div>
+            <div class="tile" id="t5" style="background:linear-gradient(160deg,#f97316,#eab308)"><svg width="44" height="44"><use href="#iImg"/></svg><span class="lbl">#5</span><i class="ring"></i><span class="badge">WINNER</span></div>
+            <div class="tile" id="t6" style="background:linear-gradient(160deg,#16a34a,#0ea5e9)"><svg width="44" height="44"><use href="#iImg"/></svg><span class="lbl">#6</span><i class="ring"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- iterate -->
+      <div class="panel" id="iter">
+        <div class="card">
+          <div class="win1"><span class="badge2">WINNER</span><svg width="90" height="90"><use href="#iTrophy"/></svg></div>
+          <div class="ar" id="iterAr">›</div>
+          <div class="vars">
+            <div class="kicker" style="font-size:24px">Make more like it</div>
+            <div class="v" id="v1"><i></i>New variation 1</div>
+            <div class="v" id="v2"><i></i>New variation 2</div>
+            <div class="v" id="v3"><i></i>New variation 3</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- loop / scale -->
+      <div class="panel" id="loop">
+        <div class="card">
+          <div class="kicker">The winning formula</div>
+          <div class="cyc">
+            <div class="c" id="c1"><div class="o"><svg><use href="#iFlask"/></svg></div><b>Test</b></div>
+            <div class="dash" id="d1">›</div>
+            <div class="c" id="c2"><div class="o"><svg><use href="#iTrophy"/></svg></div><b>Find winners</b></div>
+            <div class="dash" id="d2">›</div>
+            <div class="c" id="c3"><div class="o"><svg><use href="#iCopy"/></svg></div><b>Repeat</b></div>
+            <div class="dash" id="d3">›</div>
+            <div class="c scale" id="c4"><div class="o"><svg><use href="#iRocket"/></svg></div><b>Scale</b></div>
+          </div>
+        </div>
+      </div>
+      <div id="scaleBig"><span>Scale!</span></div>
+
+      <!-- captions -->
+      <div id="captions"></div>
+
+      <!-- CTA -->
+      <div id="cta">
+        <div class="icons"><svg id="ci1"><use href="#iMeta"/></svg><svg id="ci2"><use href="#iFb"/></svg><svg id="ci3"><use href="#iIg"/></svg></div>
+        <h1>Ready to grow with <span class="grad-text">Meta Ads?</span></h1>
+        <div class="sub">Professional Facebook &amp; Instagram Ads Management</div>
+        <ul>
+          <li><svg><use href="#iCheck"/></svg>Facebook &amp; Instagram Ads</li>
+          <li><svg><use href="#iCheck"/></svg>Campaign Setup &amp; Management</li>
+          <li><svg><use href="#iCheck"/></svg>Lead Generation Campaigns</li>
+          <li><svg><use href="#iCheck"/></svg>Creative Testing &amp; Scaling</li>
+        </ul>
+        <div class="btnwrap"><div class="btn"><svg><use href="#iMsg"/></svg>Message me today</div></div>
+        <div class="foot">Let's grow your business together</div>
+      </div>
+
+      <div id="flash"></div>
+    </div>
+
+    <script>
+      // Source-time segments of the edited A-roll: [srcStart, srcEnd, outStart]
+      const SEGS = [[27.68, 31.25, 0], [0, 8.95, 3.57], [11.47, 26.37, 12.52], [31.25, 37.53, 27.42], [39.33, 46.10, 33.70]];
+      const o = (seg, t) => t - SEGS[seg][0] + SEGS[seg][2];
+
+      // English captions (translated from Urdu), timed in source seconds per segment. *word* = highlight.
+      const CAPS = [
+        [1, 0.00, 1.76, "Assalam-o-Alaikum! How are you?"],
+        [1, 1.76, 3.22, "I'm here with you —"],
+        [1, 3.22, 4.70, "your *Meta Ads Expert*"],
+        [1, 4.70, 6.66, "Today let's talk about"],
+        [1, 6.66, 8.95, "why your *CPR* is so *high*"],
+        [2, 11.47, 12.36, "The *main reason?*"],
+        [2, 12.36, 13.78, "Your *video creatives*"],
+        [2, 13.78, 16.00, "When your creatives are *good*,"],
+        [2, 16.00, 17.58, "*Meta* will *recognize* them"],
+        [2, 17.58, 19.16, "and your *CPR* goes *down*"],
+        [2, 19.16, 20.78, "So, to *lower* it,"],
+        [2, 20.78, 22.04, "what should you do?"],
+        [2, 22.04, 24.52, "*Test* strong *video creatives*"],
+        [2, 24.52, 26.37, "and test *image creatives* too"],
+        [3, 31.25, 32.92, "First, test *4 to 6*"],
+        [3, 32.92, 34.52, "*different creatives*"],
+        [3, 34.52, 35.76, "If you find"],
+        [3, 35.76, 37.53, "*1–2 winning creatives*"],
+        [4, 39.33, 40.60, "start making *more*"],
+        [4, 40.60, 42.44, "just like your *winners*"],
+        [4, 42.44, 43.42, "*Test* them again,"],
+        [4, 43.42, 44.90, "keep repeating —"],
+        [4, 44.90, 46.00, "Insha'Allah, you'll *scale!*"],
+      ];
+
+      const capBox = document.getElementById("captions");
+      const capEls = CAPS.map(([seg, s, e, text], i) => {
+        const el = document.createElement("div");
+        el.className = "cap";
+        el.id = "cap" + i;
+        const parts = text.split(/(\*[^*]+\*)/).filter(Boolean);
+        parts.forEach((p) => {
+          const hl = p.startsWith("*");
+          p.replace(/\*/g, "").trim().split(/\s+/).forEach((w) => {
+            const sp = document.createElement("span");
+            sp.className = "w" + (hl ? " hl" : "");
+            sp.textContent = w;
+            el.appendChild(sp);
+          });
+        });
+        capBox.appendChild(el);
+        return { el, start: o(seg, s), end: Math.min(o(seg, e), 40.45) };
+      });
+
+      const tl = gsap.timeline({ paused: true });
+      const pop = (sel, t, extra = {}) =>
+        tl.fromTo(sel, { opacity: 0, y: 60, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.6)", ...extra }, t);
+      const out = (sel, t) => tl.to(sel, { opacity: 0, y: 30, scale: 0.96, duration: 0.25, ease: "power2.in" }, t);
+
+      // ---------- camera: jump-zoom cuts + slow push ----------
+      const CAM = [
+        [0, 1.20, 1.27], [3.57, 1.0, 1.05], [8.22, 1.12, 1.16], [12.52, 1.22, 1.26],
+        [14.90, 1.04, 1.07], [20.28, 1.14, 1.17], [23.16, 1.03, 1.06], [27.49, 1.18, 1.22],
+        [30.76, 1.05, 1.08], [33.77, 1.15, 1.19], [36.88, 1.03, 1.06], [39.30, 1.20, 1.24], [40.47, 1.0, 1.0],
+      ];
+      CAM.forEach(([t, a, b], i) => {
+        const next = i + 1 < CAM.length ? CAM[i + 1][0] : 46;
+        tl.set("#cam", { scale: a }, t);
+        if (b !== a) tl.to("#cam", { scale: b, duration: next - t, ease: "none" }, t);
+      });
+      // hook -> intro flash transition
+      tl.fromTo("#flash", { opacity: 0 }, { opacity: 0.85, duration: 0.08, ease: "none" }, 3.49);
+      tl.to("#flash", { opacity: 0, duration: 0.3, ease: "power2.out" }, 3.57);
+      tl.fromTo("#shade", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0);
+
+      // ---------- HOOK (0 - 3.57) ----------
+      tl.fromTo("#hookTop", { opacity: 0, y: -60 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, 0.05);
+      tl.fromTo("#hk1", { opacity: 0, scale: 1.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 0.10);
+      tl.fromTo("#hk2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.95);
+      tl.fromTo("#hk3", { opacity: 0, scale: 0.4, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.45, ease: "back.out(2.2)" }, 1.85);
+      tl.to("#hk3", { scale: 1.06, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 2.32);
+      tl.to(["#hookTop", "#hookMain"], { opacity: 0, duration: 0.15 }, 3.45);
+
+      // ---------- persistent tag ----------
+      tl.fromTo("#toptag", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, 8.4);
+      tl.to("#toptag", { opacity: 0, duration: 0.2 }, 39.2);
+
+      // ---------- lower third (intro) ----------
+      pop("#lt", 4.75);
+      tl.fromTo("#lt .bar", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 5.1);
+      tl.fromTo("#lt .plats svg", { scale: 0 }, { scale: 1, duration: 0.4, stagger: 0.12, ease: "back.out(2.5)" }, 5.3);
+      out("#lt", 8.0);
+
+      // ---------- CPR topic ----------
+      pop("#cpr", 8.3);
+      tl.fromTo("#cprLine", { strokeDasharray: 420, strokeDashoffset: 420 }, { strokeDashoffset: 0, duration: 1.2, ease: "power2.out" }, 8.6);
+      tl.fromTo("#cprTag", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2)" }, 9.6);
+      out("#cpr", 12.3);
+
+      // ---------- main reason ----------
+      pop("#reason", 12.6);
+      tl.fromTo("#phone", { rotation: -8, x: -40 }, { rotation: 0, x: 0, duration: 0.6, ease: "back.out(1.6)" }, 12.6);
+      tl.fromTo("#phone .play", { scale: 0.6 }, { scale: 1.08, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 2 }, 13.0);
+      out("#reason", 14.75);
+
+      // ---------- flow ----------
+      pop("#flow", 14.95);
+      pop("#fs1", 15.05);
+      tl.fromTo("#fa1", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3 }, 16.9);
+      pop("#fs2", 17.12);
+      tl.fromTo("#fa2", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3 }, 18.5);
+      pop("#fs3", 18.70);
+      tl.fromTo("#fs3 svg", { y: -16 }, { y: 6, duration: 0.4, yoyo: true, repeat: 1, ease: "sine.inOut" }, 19.15);
+      out("#flow", 20.15);
+
+      // ---------- ads manager ----------
+      tl.fromTo("#am", { opacity: 0, y: 140, rotationX: 18, transformPerspective: 1200 }, { opacity: 1, y: 0, rotationX: 0, duration: 0.6, ease: "power3.out" }, 20.35);
+      pop("#r1", 22.95); pop("#r2", 23.45);
+      pop("#r3", 25.64); pop("#r4", 26.05);
+      out("#am", 27.35);
+
+      // ---------- creative grid + winners ----------
+      pop("#grid", 27.6);
+      ["#t1", "#t2", "#t3", "#t4", "#t5", "#t6"].forEach((s, i) => pop(s, 28.0 + i * 0.32, { ease: "back.out(2.4)" }));
+      tl.fromTo("#gridNum", { scale: 1 }, { scale: 1.2, duration: 0.25, yoyo: true, repeat: 1, transformOrigin: "50% 60%" }, 28.1);
+      tl.to(["#t1", "#t3", "#t4", "#t6"], { opacity: 0.28, scale: 0.92, duration: 0.4 }, 32.0);
+      tl.to(["#t2", "#t5"], { scale: 1.08, duration: 0.45, ease: "back.out(2.5)" }, 32.0);
+      tl.fromTo(["#t2 .ring", "#t5 .ring"], { opacity: 0 }, { opacity: 1, duration: 0.3 }, 32.0);
+      tl.fromTo(["#t2 .badge", "#t5 .badge"], { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(2.5)", stagger: 0.12 }, 32.15);
+      out("#grid", 33.6);
+
+      // ---------- iterate ----------
+      pop("#iter", 33.85);
+      tl.fromTo("#iterAr", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3 }, 34.4);
+      ["#v1", "#v2", "#v3"].forEach((s, i) => tl.fromTo(s, { opacity: 0, x: -80 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" }, 34.6 + i * 0.45));
+      out("#iter", 36.75);
+
+      // ---------- loop / scale ----------
+      pop("#loop", 36.95);
+      [["#c1", 37.1], ["#d1", 37.4], ["#c2", 37.6], ["#d2", 38.0], ["#c3", 38.2], ["#d3", 38.9], ["#c4", 39.3]].forEach(([s, t]) => pop(s, t));
+      tl.fromTo("#scaleBig", { opacity: 0, scale: 0.3, rotation: -8 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.45, ease: "back.out(2.4)" }, 39.4);
+      tl.to("#scaleBig", { opacity: 0, scale: 1.25, duration: 0.3, ease: "power2.in" }, 40.35);
+      out("#loop", 40.3);
+
+      // ---------- captions ----------
+      capEls.forEach(({ el, start, end }) => {
+        const words = el.querySelectorAll(".w");
+        tl.set(el, { opacity: 1 }, start);
+        const step = Math.min(0.12, (end - start) / (words.length + 1));
+        words.forEach((w, k) => {
+          tl.fromTo(w, { opacity: 0, y: 24, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.18, ease: "back.out(2)" }, start + k * step);
+        });
+        el.querySelectorAll(".w.hl").forEach((w) => {
+          tl.to(w, { scale: 1.12, duration: 0.15, yoyo: true, repeat: 1, ease: "sine.out" }, start + 0.25);
+        });
+        tl.set(el, { opacity: 0 }, end);
+      });
+
+      // ---------- CTA (40.54 - 46) ----------
+      tl.fromTo("#cam", { filter: "blur(0px)" }, { filter: "blur(16px)", duration: 0.6, ease: "power2.out" }, 40.42);
+      tl.fromTo("#ctaDim", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 40.42);
+      tl.set("#cta", { opacity: 1 }, 40.6);
+      tl.fromTo("#cta .icons svg", { opacity: 0, scale: 0, y: 40 }, { opacity: 1, scale: 1, y: 0, duration: 0.45, stagger: 0.1, ease: "back.out(2.2)" }, 40.6);
+      tl.fromTo("#cta h1", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 40.85);
+      tl.fromTo("#cta .sub", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 41.1);
+      tl.fromTo("#cta li", { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 0.4, stagger: 0.18, ease: "power3.out" }, 41.4);
+      tl.fromTo("#cta .btn", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }, 42.4);
+      tl.to("#cta .btn", { scale: 1.06, duration: 0.45, yoyo: true, repeat: 5, ease: "sine.inOut" }, 43.0);
+      tl.fromTo("#cta .foot", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 42.9);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

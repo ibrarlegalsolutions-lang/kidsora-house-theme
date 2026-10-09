@@ -1,0 +1,7 @@
+# Large media stays out of the theme repo (rendered outputs, source footage, stems, previews)
+*.mp4
+*.wav
+*.mp3
+frames/
+snapshots/
+renders/
