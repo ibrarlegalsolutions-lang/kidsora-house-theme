@@ -1,0 +1,72 @@
+<section class="zx-section zx-services">
+  <ul class="zx-services__list" role="list">
+    {%- for block in section.blocks -%}
+      <li class="zx-services__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="zx-services__link">{%- endif -%}
+        <span class="zx-services__icon">
+          {%- if block.settings.icon_image != blank -%}
+            {{ block.settings.icon_image | image_url: width: 80 | image_tag: loading: 'lazy', width: 32, height: 32, alt: '' }}
+          {%- else -%}
+            {% render 'zx-icon', icon: block.settings.icon %}
+          {%- endif -%}
+        </span>
+        <span class="zx-services__title">{{ block.settings.title | escape }}</span>
+        {%- if block.settings.text != blank -%}<span class="zx-services__text">{{ block.settings.text | escape }}</span>{%- endif -%}
+        {%- if block.settings.link != blank -%}</a>{%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% stylesheet %}
+  .zx-services { background: var(--zx-band); padding: 40px var(--zx-gutter); }
+  .zx-services__list { list-style: none; margin: 0 auto; padding: 0; max-width: 1080px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; }
+  .zx-services__item, .zx-services__link { display: flex; flex-direction: column; align-items: center; text-align: center; color: var(--zx-ink); text-decoration: none; }
+  .zx-services__icon { width: 40px; height: 40px; margin-bottom: 12px; display: grid; place-items: center; }
+  .zx-services__icon .zx-icon { width: 40px; height: 40px; }
+  .zx-services__title { font-size: 14px; line-height: 16px; max-width: 120px; }
+  .zx-services__text { font-size: 12px; line-height: 14px; margin-top: 4px; max-width: 120px; color: var(--zx-ink); }
+  @media (max-width: 749px) {
+    .zx-services { padding: 32px 16px; }
+    .zx-services__list { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZX Service strip",
+  "class": "zx-services-section",
+  "max_blocks": 6,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "service",
+      "name": "Service",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [
+          { "value": "truck", "label": "Delivery" }, { "value": "gift", "label": "Gift" }, { "value": "lips", "label": "Lips" },
+          { "value": "wand", "label": "Wand" }, { "value": "phone", "label": "Phone" }, { "value": "chat", "label": "Consultation" },
+          { "value": "sparkle", "label": "Sparkle" }, { "value": "heart", "label": "Heart" }, { "value": "coin", "label": "Coin" }
+        ] },
+        { "type": "image_picker", "id": "icon_image", "label": "Custom icon (overrides icon)" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free delivery & returns" },
+        { "type": "text", "id": "text", "label": "Text" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZX Service strip",
+      "blocks": [
+        { "type": "service", "settings": { "icon": "truck", "title": "Delivery & Returns", "text": "See our shipping policy" } },
+        { "type": "service", "settings": { "icon": "gift", "title": "Gift Cards", "text": "The perfect present" } },
+        { "type": "service", "settings": { "icon": "lips", "title": "Customer Care", "text": "We're here to help" } },
+        { "type": "service", "settings": { "icon": "wand", "title": "Track Your Order", "text": "From your account" } },
+        { "type": "service", "settings": { "icon": "phone", "title": "Contact Us", "text": "Get in touch" } },
+        { "type": "service", "settings": { "icon": "chat", "title": "FAQ", "text": "Answers to common questions" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

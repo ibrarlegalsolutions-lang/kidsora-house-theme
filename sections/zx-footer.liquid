@@ -1,0 +1,201 @@
+{% render 'zx-brand-styles' %}
+<footer class="zx-section zx-footer">
+  <div class="zx-footer__main zx-wrap">
+    <div class="zx-footer__cols">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'menu' -%}
+            <div class="zx-footer__col" {{ block.shopify_attributes }}>
+              {%- assign menu = block.settings.menu -%}
+              {%- if block.settings.heading != blank -%}<h2 class="zx-footer__heading">{{ block.settings.heading | escape }}</h2>{%- endif -%}
+              {%- if menu.links.size > 0 -%}
+                <ul class="zx-footer__links" role="list">
+                  {%- for link in menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+              {%- if block.settings.show_localization -%}
+                <h2 class="zx-footer__heading zx-footer__heading--spaced">{{ block.settings.localization_heading | escape }}</h2>
+                <p class="zx-footer__locale">{{ localization.country.name }} | {{ localization.language.iso_code | upcase }} | {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}</p>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+    <div class="zx-footer__signup">
+      <h2 class="zx-footer__signup-heading">{{ section.settings.newsletter_heading | escape }}</h2>
+      {%- if section.settings.newsletter_text != blank -%}<p class="zx-footer__small">{{ section.settings.newsletter_text | escape }}</p>{%- endif -%}
+      {%- form 'customer', id: 'zx-footer-newsletter', class: 'zx-footer__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label for="zx-footer-email" class="zx-footer__label">Email Address</label>
+        <div class="zx-footer__field">
+          <input id="zx-footer-email" type="email" name="contact[email]" autocomplete="email" required aria-required="true"
+            {% if form.errors %}aria-invalid="true" aria-describedby="zx-footer-email-error"{% endif %}>
+          <button type="submit" class="zx-footer__submit">{{ section.settings.newsletter_button | escape }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p id="zx-footer-email-error" class="zx-footer__small" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+        {%- elsif form.posted_successfully? -%}
+          <p class="zx-footer__small" role="status">{{ section.settings.newsletter_success | escape }}</p>
+        {%- endif -%}
+      {%- endform -%}
+      {%- if section.settings.legal_text != blank -%}<div class="zx-footer__legal-text">{{ section.settings.legal_text }}</div>{%- endif -%}
+      <ul class="zx-footer__social" role="list">
+        {%- assign socials = 'facebook,instagram,tiktok,x,youtube,pinterest' | split: ',' -%}
+        {%- for s in socials -%}
+          {%- assign key = 'social_' | append: s -%}
+          {%- if section.settings[key] != blank -%}
+            <li><a href="{{ section.settings[key] }}" target="_blank" rel="noopener" aria-label="{{ s | capitalize }}">{% render 'zx-icon', icon: s %}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  {%- if section.settings.show_quote -%}
+    <div class="zx-footer__quote">
+      {%- if section.settings.quote_image_left != blank -%}
+        <div class="zx-footer__quote-img zx-footer__quote-img--left">{{ section.settings.quote_image_left | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '30vw', widths: '400, 600, 800', alt: '' }}</div>
+      {%- endif -%}
+      <div class="zx-footer__quote-body">
+        <blockquote class="zx-footer__quote-text">“{{ section.settings.quote | escape }}”</blockquote>
+        {%- if section.settings.signature != blank -%}
+          {{ section.settings.signature | image_url: width: 300 | image_tag: loading: 'lazy', class: 'zx-footer__signature', alt: section.settings.quote_caption | escape }}
+        {%- endif -%}
+        {%- if section.settings.quote_caption != blank -%}<p class="zx-footer__quote-caption">{{ section.settings.quote_caption | escape }}</p>{%- endif -%}
+      </div>
+      {%- if section.settings.quote_image_right != blank -%}
+        <div class="zx-footer__quote-img zx-footer__quote-img--right">{{ section.settings.quote_image_right | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '30vw', widths: '400, 600, 800', alt: '' }}</div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="zx-footer__base zx-wrap">
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <ul class="zx-footer__payments" role="list">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag: class: 'zx-footer__pay' }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <p class="zx-footer__copy">&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}. {{ section.settings.copyright_text | escape }}</p>
+    {%- if section.settings.legal_menu.links.size > 0 -%}
+      <ul class="zx-footer__policies" role="list">
+        {%- for link in section.settings.legal_menu.links -%}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- endfor -%}
+      </ul>
+    {%- elsif shop.policies.size > 0 -%}
+      <ul class="zx-footer__policies" role="list">
+        {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% stylesheet %}
+  .zx-footer { background: #fff; color: var(--zx-ink); font-size: 14px; line-height: 20px; }
+  .zx-footer a { color: inherit; text-decoration: none; }
+  .zx-footer a:hover { text-decoration: underline; }
+  .zx-footer__main { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 64px; padding-top: 40px; padding-bottom: 48px; }
+  .zx-footer__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; padding-right: 64px; border-right: 1px solid #e5dcdc; }
+  .zx-footer__heading { margin: 0 0 20px; font-family: var(--zx-font-condensed); font-size: 14px; font-weight: 700; line-height: 18px; text-transform: uppercase; letter-spacing: var(--zx-tracking); }
+  .zx-footer__heading--spaced { margin-top: 32px; }
+  .zx-footer__links { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
+  .zx-footer__locale { margin: 0; }
+  .zx-footer__signup-heading { margin: 0 0 12px; font-family: var(--zx-font-condensed); font-size: 18px; font-weight: 400; text-transform: uppercase; letter-spacing: var(--zx-tracking); }
+  .zx-footer__small, .zx-footer__legal-text { font-size: 12px; line-height: 16px; margin: 0; }
+  .zx-footer__legal-text { margin-top: 24px; }
+  .zx-footer__legal-text p { margin: 0; }
+  .zx-footer__legal-text a { text-decoration: underline; }
+  .zx-footer__form { margin-top: 24px; }
+  .zx-footer__label { display: block; font-size: 14px; margin-bottom: 6px; }
+  .zx-footer__field { display: flex; gap: 8px; }
+  .zx-footer__field input { flex: 1; min-width: 0; height: 44px; border: 1px solid #b9a9a9; border-radius: 0; padding: 0 12px; font: inherit; color: var(--zx-ink); background: #fff; }
+  .zx-footer__submit { height: 44px; padding: 0 24px; border: 0; background: #dcd3d3; color: #fff; font-family: var(--zx-font-condensed); font-size: 16px; text-transform: uppercase; letter-spacing: var(--zx-tracking); cursor: pointer; }
+  .zx-footer__submit:hover { background: var(--zx-ink); }
+  .zx-footer__social { list-style: none; margin: 24px 0 0; padding: 0; display: flex; gap: 16px; }
+  .zx-footer__social .zx-icon { width: 20px; height: 20px; }
+  .zx-footer__quote { position: relative; display: grid; grid-template-columns: 1fr minmax(0, 620px) 1fr; align-items: center; min-height: 290px; background: #1d0f0d; color: #fff; overflow: hidden; }
+  .zx-footer__quote-img { height: 100%; }
+  .zx-footer__quote-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .zx-footer__quote-img--left { grid-column: 1; grid-row: 1; }
+  .zx-footer__quote-img--right { grid-column: 3; grid-row: 1; }
+  .zx-footer__quote-body { grid-column: 2; grid-row: 1; text-align: center; padding: 32px 16px; }
+  .zx-footer__quote-text { margin: 0; font-family: var(--zx-font-display); font-size: 34px; line-height: 1.15; }
+  .zx-footer__signature { display: block; margin: 16px auto 0; max-width: 140px; height: auto; filter: invert(1); }
+  .zx-footer__quote-caption { margin: 12px 0 0; font-size: 14px; }
+  .zx-footer__base { padding-top: 24px; padding-bottom: 32px; background: #f8f7f7; }
+  .zx-footer__payments { list-style: none; margin: 0 0 24px; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .zx-footer__pay { width: 38px; height: 24px; }
+  .zx-footer__copy { margin: 0 0 8px; font-size: 11px; }
+  .zx-footer__policies { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; font-size: 11px; }
+  .zx-footer__policies li + li::before { content: '|'; margin: 0 8px; }
+  .zx-footer__policies a { text-decoration: underline; }
+  @media (max-width: 989px) {
+    .zx-footer__main { grid-template-columns: 1fr; gap: 40px; }
+    .zx-footer__cols { border-right: 0; padding-right: 0; }
+  }
+  @media (max-width: 749px) {
+    .zx-footer__cols { grid-template-columns: 1fr 1fr; }
+    .zx-footer__quote { grid-template-columns: 1fr; }
+    .zx-footer__quote-img { display: none; }
+    .zx-footer__quote-body { grid-column: 1; }
+    .zx-footer__quote-text { font-size: 24px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZX Footer",
+  "class": "zx-footer-section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "header", "content": "Newsletter" },
+    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Sign up to receive emails" },
+    { "type": "text", "id": "newsletter_text", "label": "Text", "default": "Be the first to know about products, offers and tips" },
+    { "type": "text", "id": "newsletter_button", "label": "Button label", "default": "Sign up" },
+    { "type": "text", "id": "newsletter_success", "label": "Success message", "default": "Thanks for subscribing!" },
+    { "type": "richtext", "id": "legal_text", "label": "Consent text", "default": "<p>By submitting your email address, you agree to receive marketing emails. See our privacy policy for how we use your information. You can unsubscribe at any time.</p>" },
+    { "type": "header", "content": "Social links" },
+    { "type": "url", "id": "social_facebook", "label": "Facebook" },
+    { "type": "url", "id": "social_instagram", "label": "Instagram" },
+    { "type": "url", "id": "social_tiktok", "label": "TikTok" },
+    { "type": "url", "id": "social_x", "label": "X" },
+    { "type": "url", "id": "social_youtube", "label": "YouTube" },
+    { "type": "url", "id": "social_pinterest", "label": "Pinterest" },
+    { "type": "header", "content": "Quote banner" },
+    { "type": "checkbox", "id": "show_quote", "label": "Show quote banner", "default": true },
+    { "type": "textarea", "id": "quote", "label": "Quote", "default": "Beauty that makes every single day feel like a celebration." },
+    { "type": "image_picker", "id": "signature", "label": "Signature image", "info": "Transparent PNG, dark ink" },
+    { "type": "text", "id": "quote_caption", "label": "Caption", "default": "Founder" },
+    { "type": "image_picker", "id": "quote_image_left", "label": "Left image", "info": "800 × 600 px minimum" },
+    { "type": "image_picker", "id": "quote_image_right", "label": "Right image", "info": "800 × 600 px minimum" },
+    { "type": "header", "content": "Bottom bar" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
+    { "type": "text", "id": "copyright_text", "label": "Copyright text", "default": "All rights reserved." },
+    { "type": "link_list", "id": "legal_menu", "label": "Legal menu", "info": "Falls back to store policies" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "About" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" },
+        { "type": "checkbox", "id": "show_localization", "label": "Show 'Shipping to' below", "default": false },
+        { "type": "text", "id": "localization_heading", "label": "'Shipping to' heading", "default": "Shipping to" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZX Footer",
+      "blocks": [
+        { "type": "menu", "settings": { "heading": "About", "show_localization": true } },
+        { "type": "menu", "settings": { "heading": "Support" } },
+        { "type": "menu", "settings": { "heading": "More" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,35 @@
+{%- liquid
+  assign text = block.settings.text
+  if block.settings.metafield_text != blank
+    assign text = block.settings.metafield_text
+  endif
+-%}
+{%- if text != blank -%}
+  <li class="zx-frow" {{ block.shopify_attributes }}>
+    <span class="zx-frow__icon">{% render 'zx-icon', icon: block.settings.icon %}</span>
+    <span class="zx-frow__text">{{ text }}</span>
+  </li>
+{%- endif -%}
+
+{% stylesheet %}
+  .zx-frow { display: flex; align-items: flex-start; gap: 12px; font-size: 12px; line-height: 16px; }
+  .zx-frow__icon { flex-shrink: 0; width: 20px; height: 20px; }
+  .zx-frow__icon .zx-icon { width: 20px; height: 20px; }
+  .zx-frow__text p { margin: 0; }
+  .zx-frow__text a { color: inherit; text-decoration: underline; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Feature row",
+  "settings": [
+    { "type": "select", "id": "icon", "label": "Icon", "default": "sparkle", "options": [
+      { "value": "sparkle", "label": "Sparkle" }, { "value": "drop", "label": "Drop" }, { "value": "clock", "label": "Clock" },
+      { "value": "heart", "label": "Heart" }, { "value": "lips", "label": "Lips" }, { "value": "wand", "label": "Wand" },
+      { "value": "truck", "label": "Delivery" }, { "value": "gift", "label": "Gift" }, { "value": "coin", "label": "Coin" }
+    ] },
+    { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Feature" },
+    { "type": "inline_richtext", "id": "metafield_text", "label": "Dynamic text (overrides text)", "info": "Connect a product metafield" }
+  ]
+}
+{% endschema %}

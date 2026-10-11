@@ -1,0 +1,129 @@
+{%- comment -%}
+  zx- brand tokens and shared component styles (product card, section titles, buttons).
+  Rendered once from the zx-footer section, which sits in the footer group on every page.
+  Values measured from the reference at 1440px (computed styles) — see deviation register.
+{%- endcomment -%}
+{% stylesheet %}
+  :root {
+    --zx-ink: #3a080a;
+    --zx-ink-muted: #856d6d;
+    --zx-blush: #fde8e0;
+    --zx-badge-ink: #6e2132;
+    --zx-sale: #e41929;
+    --zx-tile: #f5f5f5;
+    --zx-band: #f5f3f3;
+    --zx-gutter: 32px;
+    --zx-font-sans: var(--font-body--family);
+    --zx-font-condensed: var(--font-subheading--family);
+    --zx-font-display: var(--font-heading--family);
+    --zx-tracking: 0.5px;
+  }
+
+  @media (max-width: 749px) {
+    :root { --zx-gutter: 16px; }
+  }
+
+  .zx-section { color: var(--zx-ink); font-family: var(--zx-font-sans); letter-spacing: var(--zx-tracking); }
+  .zx-wrap { padding-inline: var(--zx-gutter); }
+  .zx-icon { width: 24px; height: 24px; display: block; }
+
+  .zx-title {
+    font-family: var(--zx-font-display);
+    font-size: 28px;
+    line-height: 30px;
+    font-weight: 400;
+    letter-spacing: var(--zx-tracking);
+    text-align: center;
+    margin: 0;
+    padding-bottom: 24px;
+    color: var(--zx-ink);
+  }
+
+  .zx-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 24px;
+    font-family: var(--zx-font-condensed);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: var(--zx-tracking);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--zx-ink);
+    background: transparent;
+    border: 1px solid var(--zx-ink);
+    border-radius: 0;
+    cursor: pointer;
+    transition: background-color .2s, color .2s;
+  }
+  .zx-btn:hover { background: var(--zx-ink); color: #fff; }
+  .zx-btn[disabled] { color: #ae9e9e; border-color: transparent; background: var(--zx-band); cursor: not-allowed; }
+  .zx-btn--solid { background: var(--zx-ink); color: #fff; }
+  .zx-btn--solid:hover { background: #5a1a1d; }
+  .zx-btn--rose { background: #c99a8b; border-color: #c99a8b; color: #fff; }
+  .zx-btn--rose:hover { background: #b88676; border-color: #b88676; }
+
+  .zx-link { color: var(--zx-ink); font-size: 16px; line-height: 18px; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* Product card — 250px wide at 1440, 1:1 tile, blush badge strip, outlined CTA */
+  .zx-card { display: flex; flex-direction: column; background: #fff; color: var(--zx-ink); height: 100%; }
+  .zx-card__media { position: relative; display: block; aspect-ratio: 1 / 1; background: var(--zx-tile); overflow: hidden; }
+  .zx-card__media img { width: 100%; height: 100%; object-fit: contain; display: block; mix-blend-mode: multiply; transition: opacity .3s; }
+  .zx-card__media img + img { position: absolute; inset: 0; opacity: 0; }
+  @media (hover: hover) { .zx-card:hover .zx-card__media img + img { opacity: 1; } }
+  .zx-card__badge {
+    min-height: 24px;
+    padding: 4px 8px;
+    background: var(--zx-blush);
+    font-family: var(--zx-font-condensed);
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+    letter-spacing: var(--zx-tracking);
+    color: var(--zx-badge-ink);
+  }
+  .zx-card__badge--empty { background: transparent; }
+  .zx-card__body { display: flex; flex-direction: column; flex: 1; padding: 12px 8px 0; }
+  .zx-card__title {
+    margin: 0;
+    font-family: var(--zx-font-condensed);
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: var(--zx-tracking);
+  }
+  .zx-card__title a { color: inherit; text-decoration: none; }
+  .zx-card__subtitle { margin: 4px 0 0; font-size: 14px; line-height: 18px; }
+  .zx-card__price {
+    margin: auto 0 0;
+    padding-top: 12px;
+    font-family: var(--zx-font-condensed);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 18px;
+  }
+  .zx-card__price s { font-weight: 400; margin-right: 4px; }
+  .zx-card__price .zx-sale { color: var(--zx-sale); }
+  .zx-card__cta { margin-top: 16px; }
+  .zx-card__cta .zx-btn, .zx-card__cta form { width: 100%; }
+  @media (max-width: 749px) {
+    .zx-card__title { font-size: 14px; line-height: 16px; }
+    .zx-card__subtitle { font-size: 12px; line-height: 16px; }
+    .zx-card__cta .zx-btn { font-size: 14px; padding: 0 8px; }
+  }
+
+  /* Host overrides: announcement bar, header nav, buttons — reference typography */
+  .header-announcements, .announcement-bar { --color-foreground: var(--zx-ink); }
+  .menu-list__link, .menu-list__link-title { text-transform: uppercase; font-family: var(--zx-font-condensed); letter-spacing: var(--zx-tracking); }
+  .product-information .add-to-cart-button,
+  .product-information .button {
+    font-family: var(--zx-font-condensed);
+    text-transform: uppercase;
+    letter-spacing: var(--zx-tracking);
+    font-weight: 700;
+  }
+{% endstylesheet %}

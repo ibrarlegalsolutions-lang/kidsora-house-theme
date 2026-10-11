@@ -1,0 +1,84 @@
+{%- comment -%}
+  zx- product card.
+  Accepts:
+  - product {product}: the product (blank renders an editor placeholder card)
+  - choose_label {string}: CTA label for multi-variant products
+  - add_label {string}: CTA label for single-variant products
+  - show_subtitle {boolean}
+  Badge source (real data only): product.metafields.custom.badge, else a "badge:" tag, else a computed "Save X%".
+{%- endcomment -%}
+{%- liquid
+  assign choose_label = choose_label | default: 'Choose shades'
+  assign add_label = add_label | default: 'Add to bag'
+-%}
+{%- if product == blank -%}
+  <article class="zx-card">
+    <div class="zx-card__media">{{ 'product-1' | placeholder_svg_tag }}</div>
+    <div class="zx-card__badge">New!</div>
+    <div class="zx-card__body">
+      <h3 class="zx-card__title">Product title</h3>
+      {%- if show_subtitle -%}<p class="zx-card__subtitle">Product type</p>{%- endif -%}
+      <p class="zx-card__price">{{ 4800 | money }}</p>
+      <div class="zx-card__cta"><span class="zx-btn">{{ add_label }}</span></div>
+    </div>
+  </article>
+{%- else -%}
+  {%- liquid
+    assign badge = product.metafields.custom.badge.value
+    if badge == blank
+      for tag in product.tags
+        assign tag_down = tag | downcase
+        if tag_down contains 'badge:'
+          assign badge = tag | split: ':' | last | strip
+          break
+        endif
+      endfor
+    endif
+    if badge == blank and product.compare_at_price > product.price
+      assign saving = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+      assign badge = 'Save ' | append: saving | append: '%'
+    endif
+    assign variant = product.selected_or_first_available_variant
+  -%}
+  <article class="zx-card">
+    <a class="zx-card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_media -%}
+        {{ product.featured_media | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 250px, 45vw', widths: '250, 400, 500, 600', alt: product.featured_media.alt | default: product.title }}
+        {%- if product.media.size > 1 -%}
+          {{ product.media[1] | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 250px, 45vw', widths: '250, 400, 500, 600', alt: '' }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </a>
+    <div class="zx-card__badge{% if badge == blank %} zx-card__badge--empty{% endif %}">{{ badge | escape }}</div>
+    <div class="zx-card__body">
+      <h3 class="zx-card__title"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+      {%- if show_subtitle and product.type != blank -%}
+        <p class="zx-card__subtitle">{{ product.type | escape }}</p>
+      {%- endif -%}
+      <p class="zx-card__price">
+        {%- if product.compare_at_price > product.price -%}
+          <s><span class="visually-hidden">Regular price</span>{{ product.compare_at_price | money }}</s>
+          <span class="zx-sale"><span class="visually-hidden">Sale price</span>{{ product.price | money }}</span>
+        {%- elsif product.price_varies -%}
+          From {{ product.price_min | money }}
+        {%- else -%}
+          {{ product.price | money }}
+        {%- endif -%}
+      </p>
+      <div class="zx-card__cta">
+        {%- if product.available == false -%}
+          <button type="button" class="zx-btn" disabled>{{ 'products.product.sold_out' | t }}</button>
+        {%- elsif product.has_only_default_variant == false and product.variants.size > 1 -%}
+          <a class="zx-btn" href="{{ product.url }}">{{ choose_label }}</a>
+        {%- else -%}
+          {%- form 'product', product, class: 'zx-card__form' -%}
+            <input type="hidden" name="id" value="{{ variant.id }}">
+            <button type="submit" class="zx-btn" aria-label="{{ add_label }}: {{ product.title | escape }}">{{ add_label }}</button>
+          {%- endform -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </article>
+{%- endif -%}

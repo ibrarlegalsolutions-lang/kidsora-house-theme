@@ -1,0 +1,62 @@
+{%- liquid
+  assign p = closest.product
+  assign out = ''
+  if p
+    case block.settings.source
+      when 'type'
+        assign out = p.type | escape
+      when 'vendor'
+        assign out = p.vendor | escape
+      when 'description'
+        assign out = p.description
+      when 'excerpt'
+        assign out = p.description | strip_html | truncatewords: block.settings.words
+      when 'metafield'
+        assign mf = p.metafields[block.settings.namespace][block.settings.key]
+        if mf != blank
+          if mf.type == 'rich_text_field'
+            assign out = mf | metafield_tag
+          else
+            assign out = mf.value | escape | newline_to_br
+          endif
+        endif
+    endcase
+  endif
+  if out == blank
+    assign out = block.settings.fallback
+  endif
+-%}
+{%- if out != blank -%}
+  <div class="zx-pfield zx-pfield--{{ block.settings.style }}" {{ block.shopify_attributes }}>{{ out }}</div>
+{%- endif -%}
+
+{% stylesheet %}
+  .zx-pfield { color: var(--zx-ink, #3a080a); font-size: 14px; line-height: 20px; }
+  .zx-pfield p { margin: 0 0 8px; }
+  .zx-pfield a { color: inherit; text-decoration: underline; }
+  .zx-pfield--subtitle { font-family: var(--font-subheading--family); font-size: 18px; line-height: 20px; text-transform: uppercase; letter-spacing: .5px; }
+  .zx-pfield--small { font-size: 12px; line-height: 16px; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZX Product field",
+  "settings": [
+    { "type": "select", "id": "source", "label": "Source", "default": "type", "options": [
+      { "value": "type", "label": "Product type" },
+      { "value": "vendor", "label": "Vendor" },
+      { "value": "description", "label": "Description" },
+      { "value": "excerpt", "label": "Description excerpt" },
+      { "value": "metafield", "label": "Metafield" }
+    ] },
+    { "type": "range", "id": "words", "label": "Excerpt length (words)", "min": 10, "max": 80, "step": 5, "default": 30 },
+    { "type": "text", "id": "namespace", "label": "Metafield namespace", "default": "custom" },
+    { "type": "text", "id": "key", "label": "Metafield key" },
+    { "type": "richtext", "id": "fallback", "label": "Fallback content", "info": "Shown when the source is empty" },
+    { "type": "select", "id": "style", "label": "Style", "default": "body", "options": [
+      { "value": "body", "label": "Body" }, { "value": "subtitle", "label": "Subtitle" }, { "value": "small", "label": "Small" }
+    ] }
+  ],
+  "presets": [{ "name": "ZX Product field", "category": "Product" }]
+}
+{% endschema %}

@@ -1,0 +1,81 @@
+<section class="zx-section zx-tiles{% if section.settings.band %} zx-tiles--band{% endif %}" style="--zx-tiles-cols: {{ section.settings.columns }}; --zx-tiles-pt: {{ section.settings.padding_top }}px; --zx-tiles-pb: {{ section.settings.padding_bottom }}px;">
+  <div class="zx-wrap">
+    {%- if section.settings.heading != blank -%}<h2 class="zx-title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+    <div class="zx-tiles__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign img = block.settings.image
+          if img == blank and block.settings.collection != blank
+            assign img = block.settings.collection.featured_image
+          endif
+          assign url = block.settings.link | default: block.settings.collection.url
+          assign label = block.settings.label | default: block.settings.collection.title
+        -%}
+        <a class="zx-tiles__item" href="{{ url | default: '#' }}" {{ block.shopify_attributes }}>
+          <span class="zx-tiles__media">
+            {%- if img != blank -%}
+              {{ img | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 300px, 50vw', widths: '300, 450, 600, 800', alt: label | escape }}
+            {%- else -%}
+              {{ 'collection-' | append: forloop.index | placeholder_svg_tag }}
+            {%- endif -%}
+          </span>
+          {%- if label != blank -%}<span class="zx-tiles__label">{{ label | escape }}</span>{%- endif -%}
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .zx-tiles { padding: var(--zx-tiles-pt) 0 var(--zx-tiles-pb); }
+  .zx-tiles--band { background: var(--zx-band); }
+  .zx-tiles__grid { display: grid; grid-template-columns: repeat(var(--zx-tiles-cols), minmax(0, 294px)); justify-content: center; gap: 16px; }
+  .zx-tiles__item { display: flex; flex-direction: column; gap: 16px; color: var(--zx-ink); text-decoration: none; text-align: center; font-size: 16px; line-height: 18px; }
+  .zx-tiles__media { display: block; aspect-ratio: 1 / 1; overflow: hidden; background: var(--zx-tile); }
+  .zx-tiles__media img, .zx-tiles__media svg { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+  .zx-tiles__item:hover img { transform: scale(1.03); }
+  .zx-tiles__item:hover .zx-tiles__label { text-decoration: underline; }
+  @media (max-width: 749px) {
+    .zx-tiles { padding: calc(var(--zx-tiles-pt) * .6) 0 calc(var(--zx-tiles-pb) * .6); }
+    .zx-tiles__grid { grid-template-columns: repeat(2, 1fr); gap: 16px 8px; }
+    .zx-tiles__item { font-size: 14px; gap: 8px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZX Image tiles",
+  "class": "zx-tiles-section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop By Category" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "band", "label": "Grey background band", "default": false },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 60 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Square, 800 × 800 px minimum" },
+        { "type": "collection", "id": "collection", "label": "Collection", "info": "Used for the link, label and image when those are empty" },
+        { "type": "text", "id": "label", "label": "Label" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ZX Image tiles",
+      "blocks": [
+        { "type": "tile", "settings": { "label": "Makeup" } },
+        { "type": "tile", "settings": { "label": "Skincare" } },
+        { "type": "tile", "settings": { "label": "Foundation" } },
+        { "type": "tile", "settings": { "label": "New In" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

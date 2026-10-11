@@ -1,0 +1,169 @@
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign active_count = 0
+  for filter in collection.filters
+    assign active_count = active_count | plus: filter.active_values.size
+    if filter.type == 'price_range'
+      if filter.min_value.value != null or filter.max_value.value != null
+        assign active_count = active_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+<section class="zx-section zx-plp" id="zx-plp-{{ section.id }}" style="--zx-plp-cols: {{ section.settings.columns }};">
+  {%- paginate collection.products by section.settings.per_page -%}
+    <zx-facets class="zx-wrap zx-plp__bar">
+      <form class="zx-plp__form" action="{{ collection.url }}" method="get">
+        {%- if section.settings.enable_filtering and collection.filters.size > 0 -%}
+          <details class="zx-plp__filters">
+            <summary class="zx-btn">Filter{% if active_count > 0 %} ({{ active_count }}){% endif %}</summary>
+            <div class="zx-plp__panel">
+              {%- for filter in collection.filters -%}
+                <fieldset class="zx-plp__group">
+                  <legend>{{ filter.label | escape }}</legend>
+                  {%- case filter.type -%}
+                    {%- when 'price_range' -%}
+                      <div class="zx-plp__price">
+                        <label>Min <input type="number" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | remove: ',' }}" placeholder="0" min="0" inputmode="decimal"></label>
+                        <label>Max <input type="number" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | remove: ',' }}" placeholder="{{ filter.range_max | money_without_currency | remove: ',' }}" min="0" inputmode="decimal"></label>
+                      </div>
+                    {%- else -%}
+                      {%- for value in filter.values -%}
+                        <label class="zx-plp__check{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                          {{ value.label | escape }} <span>({{ value.count }})</span>
+                        </label>
+                      {%- endfor -%}
+                  {%- endcase -%}
+                </fieldset>
+              {%- endfor -%}
+              <div class="zx-plp__panel-actions">
+                <button type="submit" class="zx-btn zx-btn--solid">Apply</button>
+                <a class="zx-link" href="{{ collection.url }}?sort_by={{ sort_by }}">Clear all</a>
+              </div>
+            </div>
+          </details>
+        {%- endif -%}
+        <p class="zx-plp__count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
+        {%- if section.settings.enable_sorting -%}
+          <label class="zx-plp__sort">
+            <span class="visually-hidden">Sort by</span>
+            <select name="sort_by" data-autosubmit>
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>{{ option.name | escape }}</option>
+              {%- endfor -%}
+            </select>
+          </label>
+        {%- endif -%}
+      </form>
+    </zx-facets>
+
+    <ul class="zx-plp__grid zx-wrap" role="list">
+      {%- liquid
+        assign promos = section.blocks | where: 'type', 'promo'
+        assign page_offset = paginate.current_offset
+      -%}
+      {%- for product in collection.products -%}
+        {%- assign absolute = page_offset | plus: forloop.index -%}
+        {%- for block in promos -%}
+          {%- if block.settings.position == absolute -%}
+            <li class="zx-plp__promo" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.link | default: '#' }}" class="zx-plp__promo-link">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 25vw, 50vw', widths: '350, 500, 700', alt: block.settings.image.alt | default: block.settings.heading | escape }}
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag }}
+                {%- endif -%}
+                {%- if block.settings.heading != blank -%}<span class="zx-plp__promo-text">{{ block.settings.heading | escape }}</span>{%- endif -%}
+              </a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+        <li class="zx-plp__item">
+          {% render 'zx-product-card', product: product, show_subtitle: true, choose_label: section.settings.choose_label, add_label: section.settings.add_label %}
+        </li>
+      {%- else -%}
+        <li class="zx-plp__empty">
+          No products found.{% if active_count > 0 %} <a class="zx-link" href="{{ collection.url }}">Clear filters</a>{% endif %}
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="zx-plp__pagination" aria-label="Pagination">
+        {%- if paginate.previous -%}<a class="zx-btn" href="{{ paginate.previous.url }}">Previous</a>{%- endif -%}
+        <span class="zx-plp__pageinfo">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+        {%- if paginate.next -%}<a class="zx-btn" href="{{ paginate.next.url }}">Load more</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+<script type="module">
+  if (!customElements.get('zx-facets')) {
+    customElements.define('zx-facets', class extends HTMLElement {
+      connectedCallback() {
+        this.querySelector('[data-autosubmit]')?.addEventListener('change', (e) => e.target.form.requestSubmit());
+      }
+    });
+  }
+</script>
+
+{% stylesheet %}
+  .zx-plp { padding-bottom: 64px; }
+  .zx-plp__bar { position: relative; }
+  .zx-plp__form { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-top: 1px solid #ece4e4; border-bottom: 1px solid #ece4e4; margin-bottom: 24px; }
+  .zx-plp__count { margin: 0; flex: 1; text-align: center; font-size: 14px; }
+  .zx-plp__sort select { height: 44px; padding: 0 32px 0 12px; border: 1px solid var(--zx-ink); border-radius: 0; background: #fff; color: var(--zx-ink); font-family: var(--zx-font-condensed); font-size: 14px; text-transform: uppercase; letter-spacing: var(--zx-tracking); }
+  .zx-plp__filters summary { list-style: none; }
+  .zx-plp__filters summary::-webkit-details-marker { display: none; }
+  .zx-plp__panel { position: absolute; z-index: 5; left: var(--zx-gutter); top: 72px; width: min(360px, calc(100vw - 32px)); max-height: 70vh; overflow: auto; background: #fff; border: 1px solid #ece4e4; padding: 16px; box-shadow: 0 8px 24px rgba(58, 8, 10, .08); }
+  .zx-plp__group { border: 0; border-bottom: 1px solid #ece4e4; margin: 0 0 12px; padding: 0 0 12px; }
+  .zx-plp__group legend { font-family: var(--zx-font-condensed); font-weight: 700; text-transform: uppercase; font-size: 14px; margin-bottom: 8px; }
+  .zx-plp__check { display: flex; gap: 8px; align-items: center; font-size: 14px; padding: 4px 0; }
+  .zx-plp__check.is-disabled { opacity: .45; }
+  .zx-plp__price { display: flex; gap: 12px; }
+  .zx-plp__price input { width: 100%; height: 36px; border: 1px solid #b9a9a9; padding: 0 8px; }
+  .zx-plp__panel-actions { display: flex; align-items: center; gap: 16px; }
+  .zx-plp__grid { list-style: none; margin: 0; display: grid; grid-template-columns: repeat(var(--zx-plp-cols, 4), minmax(0, 1fr)); gap: 40px 8px; }
+  .zx-plp__promo-link { position: relative; display: block; height: 100%; min-height: 100%; overflow: hidden; background: var(--zx-tile); color: #fff; text-decoration: none; }
+  .zx-plp__promo-link img, .zx-plp__promo-link svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .zx-plp__promo-text { position: absolute; left: 16px; right: 16px; bottom: 16px; font-family: var(--zx-font-condensed); font-size: 20px; text-transform: uppercase; letter-spacing: var(--zx-tracking); }
+  .zx-plp__empty { grid-column: 1 / -1; text-align: center; padding: 48px 0; }
+  .zx-plp__pagination { display: flex; justify-content: center; align-items: center; gap: 24px; margin-top: 48px; }
+  .zx-plp__pageinfo { font-size: 14px; }
+  @media (max-width: 989px) { .zx-plp__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 749px) {
+    .zx-plp__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 8px; }
+    .zx-plp__count { display: none; }
+    .zx-plp__form { justify-content: space-between; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZX Product grid",
+  "class": "zx-plp-section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 48 },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 3, "max": 6, "step": 1, "default": 4 },
+    { "type": "checkbox", "id": "enable_filtering", "label": "Enable filtering", "default": true, "info": "Configure filters in Search & Discovery" },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true },
+    { "type": "text", "id": "choose_label", "label": "Multi-variant button label", "default": "Choose shades" },
+    { "type": "text", "id": "add_label", "label": "Single-variant button label", "default": "Add to bag" }
+  ],
+  "blocks": [
+    {
+      "type": "promo",
+      "name": "Promo tile",
+      "settings": [
+        { "type": "range", "id": "position", "label": "Show before product number", "min": 1, "max": 48, "step": 1, "default": 3 },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Portrait, 700 × 1100 px minimum" },
+        { "type": "text", "id": "heading", "label": "Overlay text" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

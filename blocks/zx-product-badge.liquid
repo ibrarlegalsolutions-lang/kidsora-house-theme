@@ -1,0 +1,45 @@
+{%- liquid
+  assign p = closest.product
+  assign badge = block.settings.text
+  if badge == blank and p
+    assign badge = p.metafields.custom.badge.value
+    if badge == blank
+      for tag in p.tags
+        assign tag_down = tag | downcase
+        if tag_down contains 'badge:'
+          assign badge = tag | split: ':' | last | strip
+          break
+        endif
+      endfor
+    endif
+  endif
+-%}
+{%- if badge != blank -%}
+  <p class="zx-pbadge" {{ block.shopify_attributes }}>{{ badge | escape }}</p>
+{%- endif -%}
+
+{% stylesheet %}
+  .zx-pbadge {
+    display: inline-block;
+    align-self: flex-start;
+    margin: 0;
+    padding: 4px 8px;
+    background: var(--zx-blush, #fde8e0);
+    color: var(--zx-badge-ink, #6e2132);
+    font-family: var(--font-subheading--family);
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZX Product badge",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Text", "info": "Leave empty to use the product's custom.badge metafield or a 'badge:' tag" }
+  ],
+  "presets": [{ "name": "ZX Product badge", "category": "Product" }]
+}
+{% endschema %}

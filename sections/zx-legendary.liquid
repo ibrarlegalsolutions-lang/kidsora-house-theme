@@ -1,0 +1,64 @@
+<section class="zx-section zx-legend" style="--zx-legend-pt: {{ section.settings.padding_top }}px; --zx-legend-pb: {{ section.settings.padding_bottom }}px;">
+  <div class="zx-legend__panel">
+    {%- if section.settings.heading != blank -%}<h2 class="zx-title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+    <div class="zx-legend__media">
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, image_size: '1100x' }}
+      {%- elsif section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 700px, 100vw', widths: '500, 700, 1000, 1400', alt: section.settings.image.alt | escape }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <ul class="zx-legend__pillars" role="list">
+        {%- for block in section.blocks -%}
+          <li {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .zx-legend { padding: var(--zx-legend-pt) var(--zx-gutter) var(--zx-legend-pb); }
+  .zx-legend__panel { max-width: 1110px; margin: 0 auto; background: var(--zx-band); padding: 32px 32px 40px; text-align: center; }
+  .zx-legend__media { max-width: 700px; margin: 0 auto; aspect-ratio: 16 / 9; overflow: hidden; background: var(--zx-tile); }
+  .zx-legend__media video, .zx-legend__media img, .zx-legend__media svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .zx-legend__pillars { list-style: none; margin: 32px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 24px; }
+  .zx-legend__pillars li { font-family: var(--zx-font-condensed); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: var(--zx-tracking); }
+  .zx-legend__pillars li + li::before { content: '\25C6'; font-size: 10px; margin-right: 24px; vertical-align: 1px; }
+  @media (max-width: 749px) {
+    .zx-legend__panel { padding: 24px 16px; }
+    .zx-legend__pillars { flex-direction: column; gap: 8px; }
+    .zx-legend__pillars li + li::before { display: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ZX Brand pillars",
+  "class": "zx-legend-section",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Legendary Beauty For A Reason" },
+    { "type": "video", "id": "video", "label": "Video", "info": "Plays muted on loop" },
+    { "type": "image_picker", "id": "image", "label": "Image (used when no video)" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    { "type": "pillar", "name": "Pillar", "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Pillar" }] }
+  ],
+  "presets": [
+    {
+      "name": "ZX Brand pillars",
+      "blocks": [
+        { "type": "pillar", "settings": { "text": "Makeup artist approved" } },
+        { "type": "pillar", "settings": { "text": "Skincare performance expert" } },
+        { "type": "pillar", "settings": { "text": "Fragrance innovator" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
