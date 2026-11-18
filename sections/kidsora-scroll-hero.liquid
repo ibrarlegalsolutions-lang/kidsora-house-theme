@@ -1,0 +1,1771 @@
+{%- comment -%}
+  Kidsora scroll hero
+  An animated product hero: each slide has its own background colour, product cut-out,
+  price and sizes. Slides change while the visitor scrolls (the stage stays pinned),
+  or automatically / with the arrows.
+  Tip: use transparent PNG product cut-outs for the "floating" look.
+{%- endcomment -%}
+{%- liquid
+  assign slides = section.blocks | where: 'type', 'slide'
+  assign slide_count = slides.size
+  assign mode = section.settings.animation_mode
+  assign scroll_length = section.settings.scroll_length | times: slide_count
+
+  assign first_fg = '#ffffff'
+  assign first_contrast = '#1f1f1f'
+  if slide_count > 0
+    assign first_fg = slides.first.settings.text_color
+    assign first_contrast = slides.first.settings.color_2
+  endif
+
+  assign heading_tag = 'h2'
+  if section.index == 1
+    assign heading_tag = 'h1'
+  endif
+-%}
+
+<kidsora-scroll-hero
+  class="kx-hero kx-hero--{{ section.id }}{% if mode == 'scroll' and slide_count > 1 %} kx-hero--scroll{% unless section.settings.scroll_mobile %} kx-hero--scroll-desktop-only{% endunless %}{% endif %}"
+  data-count="{{ slide_count }}"
+  data-mode="{{ mode }}"
+  data-scroll-mobile="{{ section.settings.scroll_mobile }}"
+  data-autoplay-speed="{{ section.settings.autoplay_speed }}"
+  data-dir="next"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="{{ section.settings.heading | strip_html | escape | default: 'Featured products' }}"
+  style="
+    --kx-fg: {{ first_fg }};
+    --kx-contrast: {{ first_contrast }};
+    --kx-scroll-length: {{ scroll_length }}vh;
+    --kx-min-height: {{ section.settings.min_height }}px;
+    --kx-mobile-min-height: {{ section.settings.mobile_min_height }}px;
+    --kx-inset: {{ section.settings.inset }}px;
+    --kx-radius: {{ section.settings.radius }}px;
+    --kx-image-size: {{ section.settings.image_size }};
+    --kx-heading-size: {{ section.settings.heading_size }}px;
+    --kx-page-bg: {{ section.settings.page_background }};
+  "
+>
+  <div class="kx-hero__stage" data-kx-stage>
+    <div class="kx-hero__card">
+      {%- comment -%} Background colour layers {%- endcomment -%}
+      <div class="kx-hero__bgs" aria-hidden="true">
+        {%- for block in slides -%}
+          <div
+            class="kx-hero__bg{% if forloop.first %} is-active{% endif %}"
+            data-kx-index="{{ forloop.index0 }}"
+            data-kx-type="bg"
+            data-fg="{{ block.settings.text_color }}"
+            data-contrast="{{ block.settings.color_2 }}"
+            style="--kx-c1: {{ block.settings.color_1 }}; --kx-c2: {{ block.settings.color_2 }};"
+          ></div>
+        {%- endfor -%}
+        <div class="kx-hero__vignette"></div>
+      </div>
+
+      {%- comment -%} Floating product images {%- endcomment -%}
+      <div class="kx-hero__media">
+        <div class="kx-hero__shadow" aria-hidden="true"></div>
+        {%- for block in slides -%}
+          {%- liquid
+            assign product = block.settings.product
+            assign image = block.settings.image | default: product.featured_image
+            assign alt = image.alt | default: product.title | default: block.settings.title
+            assign loading = 'lazy'
+            assign priority = 'auto'
+            if forloop.first and section.index <= 2
+              assign loading = 'eager'
+              if section.index == 1
+                assign priority = 'high'
+              endif
+            endif
+          -%}
+          <div
+            class="kx-hero__img{% if forloop.first %} is-active{% endif %}"
+            data-kx-index="{{ forloop.index0 }}"
+            data-kx-type="img"
+            {% unless forloop.first %}aria-hidden="true"{% endunless %}
+          >
+            <div class="kx-hero__float">
+              {%- if image -%}
+                {{
+                  image
+                  | image_url: width: 1400
+                  | image_tag:
+                    widths: '400, 600, 800, 1000, 1200, 1400',
+                    sizes: '(min-width: 990px) 45vw, 80vw',
+                    loading: loading,
+                    fetchpriority: priority,
+                    alt: alt,
+                    class: 'kx-hero__picture'
+                }}
+              {%- else -%}
+                {{ 'product-apparel-1' | placeholder_svg_tag: 'kx-hero__picture kx-hero__placeholder' }}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="kx-hero__layout">
+        {%- comment -%} Left: arrows + heading + text + button {%- endcomment -%}
+        <div class="kx-hero__main">
+          {%- if section.settings.show_arrows and slide_count > 1 -%}
+            <div class="kx-hero__arrows">
+              <button type="button" class="kx-hero__arrow" data-kx-prev aria-label="Previous slide">
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button type="button" class="kx-hero__arrow" data-kx-next aria-label="Next slide">
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          {%- endif -%}
+
+          <div class="kx-hero__panels">
+            {%- for block in slides -%}
+              {%- liquid
+                assign product = block.settings.product
+                assign s_heading = block.settings.heading | default: section.settings.heading
+                assign s_heading_2 = block.settings.heading_line_2 | default: section.settings.heading_line_2
+                assign s_text = block.settings.text | default: section.settings.text
+                assign s_button = block.settings.button_label | default: section.settings.button_label
+                assign s_link = block.settings.button_link | default: product.url | default: routes.all_products_collection_url
+                assign sig_source = s_heading | append: '|' | append: s_heading_2 | append: '|' | append: s_text | append: '|' | append: s_button | append: '|' | append: s_link
+                assign sig = sig_source | md5
+                assign this_tag = 'h2'
+                if forloop.first
+                  assign this_tag = heading_tag
+                endif
+              -%}
+              <div
+                class="kx-hero__panel{% if forloop.first %} is-active{% endif %}"
+                data-kx-index="{{ forloop.index0 }}"
+                data-kx-type="info"
+                data-sig="{{ sig }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- if s_heading != blank or s_heading_2 != blank -%}
+                  <{{ this_tag }} class="kx-hero__heading">
+                    {%- if s_heading != blank -%}<span>{{ s_heading }}</span>{%- endif -%}
+                    {%- if s_heading_2 != blank -%}<span>{{ s_heading_2 }}</span>{%- endif -%}
+                  </{{ this_tag }}>
+                {%- endif -%}
+                {%- if s_text != blank -%}
+                  <div class="kx-hero__text">{{ s_text }}</div>
+                {%- endif -%}
+                {%- if s_button != blank -%}
+                  <a
+                    class="kx-hero__cta"
+                    href="{{ s_link }}"
+                    data-kx-cta
+                    {% if block.settings.button_link == blank and product %}data-kx-cta-dynamic{% endif %}
+                  >
+                    <span>{{ s_button | escape }}</span>
+                    <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        {%- comment -%} Right: price + sizes {%- endcomment -%}
+        <div class="kx-hero__aside">
+          {%- for block in slides -%}
+            {%- liquid
+              assign product = block.settings.product
+              assign price = block.settings.price
+              assign compare = block.settings.compare_price
+              if price == blank and product
+                assign price = product.selected_or_first_available_variant.price | money
+              endif
+              if compare == blank and product
+                assign v = product.selected_or_first_available_variant
+                if v.compare_at_price > v.price
+                  assign compare = v.compare_at_price | money
+                endif
+              endif
+
+              assign size_option = nil
+              if product and product.has_only_default_variant == false
+                for option in product.options_with_values
+                  assign option_name = option.name | downcase
+                  if option_name contains 'size' or option_name contains 'age'
+                    assign size_option = option
+                    break
+                  endif
+                endfor
+              endif
+
+              assign manual_sizes = block.settings.sizes | split: ','
+              assign size_label = block.settings.size_label | default: section.settings.size_label
+              assign aside_sig_source = price | append: '|' | append: compare | append: '|' | append: size_label | append: '|' | append: block.settings.sizes
+              if size_option
+                assign aside_sig_source = aside_sig_source | append: '|' | append: product.id
+              endif
+              assign aside_sig = aside_sig_source | md5
+            -%}
+            <div
+              class="kx-hero__price-panel{% if forloop.first %} is-active{% endif %}"
+              data-kx-index="{{ forloop.index0 }}"
+              data-kx-type="aside"
+              data-sig="{{ aside_sig }}"
+            >
+              {%- if price != blank -%}
+                <p class="kx-hero__price">
+                  <span class="visually-hidden">Price:</span>
+                  <span data-kx-price>{{ price }}</span>
+                </p>
+              {%- endif -%}
+              <p class="kx-hero__compare"{% if compare == blank %} hidden{% endif %}>
+                <span class="visually-hidden">Regular price:</span>
+                <s data-kx-compare>{{ compare }}</s>
+              </p>
+
+              {%- if size_option -%}
+                {%- liquid
+                  assign pos = size_option.position | minus: 1
+                  assign current_value = product.selected_or_first_available_variant.options[pos]
+                -%}
+                <div class="kx-hero__sizes">
+                  {%- if size_label != blank -%}
+                    <p class="kx-hero__size-label" id="KxSizeLabel-{{ section.id }}-{{ forloop.index0 }}">{{ size_label | escape }}</p>
+                  {%- endif -%}
+                  <div class="kx-hero__size-list" role="group" aria-labelledby="KxSizeLabel-{{ section.id }}-{{ forloop.index0 }}">
+                    {%- for value in size_option.values -%}
+                      {%- liquid
+                        assign value_name = value.name
+                        assign match_variant = nil
+                        assign available_variant = nil
+                        for variant in product.variants
+                          if variant.options[pos] == value_name
+                            unless match_variant
+                              assign match_variant = variant
+                            endunless
+                            if variant.available
+                              unless available_variant
+                                assign available_variant = variant
+                              endunless
+                            endif
+                          endif
+                        endfor
+                        assign use_variant = available_variant | default: match_variant
+                        assign v_compare = ''
+                        if use_variant.compare_at_price > use_variant.price
+                          assign v_compare = use_variant.compare_at_price | money
+                        endif
+                      -%}
+                      <button
+                        type="button"
+                        class="kx-hero__size{% unless available_variant %} is-unavailable{% endunless %}"
+                        data-kx-size
+                        data-url="{{ use_variant.url }}"
+                        data-price="{{ use_variant.price | money | escape }}"
+                        data-compare="{{ v_compare | escape }}"
+                        aria-pressed="{% if value_name == current_value %}true{% else %}false{% endif %}"
+                        {% unless available_variant %}aria-label="{{ value_name | escape }} (sold out)"{% endunless %}
+                      >
+                        {{- value_name | escape -}}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- elsif block.settings.sizes != blank -%}
+                <div class="kx-hero__sizes">
+                  {%- if size_label != blank -%}
+                    <p class="kx-hero__size-label" id="KxSizeLabel-{{ section.id }}-{{ forloop.index0 }}">{{ size_label | escape }}</p>
+                  {%- endif -%}
+                  <div class="kx-hero__size-list" role="group" aria-labelledby="KxSizeLabel-{{ section.id }}-{{ forloop.index0 }}">
+                    {%- for size in manual_sizes -%}
+                      {%- assign size_name = size | strip -%}
+                      {%- if size_name != blank -%}
+                        <button
+                          type="button"
+                          class="kx-hero__size"
+                          data-kx-size
+                          aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+                        >
+                          {{- size_name | escape -}}
+                        </button>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} Bottom row: socials / tagline / next product {%- endcomment -%}
+        <div class="kx-hero__footer">
+          <div class="kx-hero__socials">
+            {%- if section.settings.show_socials -%}
+              {%- if section.settings.instagram_url != blank -%}
+                <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>
+                </a>
+              {%- endif -%}
+              {%- if section.settings.facebook_url != blank -%}
+                <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">
+                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v6h4v-6H17l.5-4h-4V8.8c0-.5.3-.8.5-.8z" fill="currentColor"/></svg>
+                </a>
+              {%- endif -%}
+              {%- if section.settings.tiktok_url != blank -%}
+                <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok">
+                  <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M16.5 3c.4 2.2 1.9 3.8 4 4v3.3c-1.5 0-2.9-.4-4-1.2v6.4A5.5 5.5 0 1 1 11 10v3.4a2.2 2.2 0 1 0 2.2 2.2V3h3.3z" fill="currentColor"/></svg>
+                </a>
+              {%- endif -%}
+              {%- if section.settings.youtube_url != blank -%}
+                <a href="{{ section.settings.youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube">
+                  <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1c.3-1.2.4-2.5.4-3.8s-.1-2.6-.4-3.8zM10 15.1V8.9l5.2 3.1L10 15.1z" fill="currentColor"/></svg>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+
+          {%- if section.settings.tagline != blank or section.settings.tagline_line_2 != blank -%}
+            <p class="kx-hero__tagline">
+              {%- if section.settings.tagline != blank -%}<span>{{ section.settings.tagline | escape }}</span>{%- endif -%}
+              {%- if section.settings.tagline_line_2 != blank -%}<span>{{ section.settings.tagline_line_2 | escape }}</span>{%- endif -%}
+            </p>
+          {%- endif -%}
+
+          <div class="kx-hero__next-wrap">
+            {%- if section.settings.show_next and slide_count > 1 -%}
+              <button type="button" class="kx-hero__next" data-kx-next>
+                <span class="visually-hidden">Next product</span>
+                {%- for block in slides -%}
+                  {%- liquid
+                    assign product = block.settings.product
+                    assign image = block.settings.image | default: product.featured_image
+                  -%}
+                  <span
+                    class="kx-hero__thumb{% if forloop.index0 == 1 %} is-active{% endif %}"
+                    data-kx-thumb="{{ forloop.index0 }}"
+                    aria-hidden="true"
+                  >
+                    {%- if image -%}
+                      {{ image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '', class: 'kx-hero__thumb-img' }}
+                    {%- else -%}
+                      {{ 'product-apparel-1' | placeholder_svg_tag: 'kx-hero__thumb-img kx-hero__placeholder' }}
+                    {%- endif -%}
+                  </span>
+                {%- endfor -%}
+              </button>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <p class="visually-hidden" aria-live="polite" aria-atomic="true" data-kx-status></p>
+    </div>
+  </div>
+</kidsora-scroll-hero>
+
+{% stylesheet %}
+  kidsora-scroll-hero {
+    display: block;
+  }
+
+  .kx-hero {
+    --kx-ease: cubic-bezier(0.65, 0, 0.2, 1);
+    --kx-header-offset: 0px;
+    --kx-stage-height: max(100vh, var(--kx-min-height));
+    position: relative;
+    display: block;
+    background: var(--kx-page-bg);
+    color: var(--kx-fg);
+  }
+
+  @supports (height: 100svh) {
+    .kx-hero {
+      --kx-stage-height: max(100svh, var(--kx-min-height));
+    }
+  }
+
+  /* Transparent header (Horizon) – keep content clear of the header */
+  body:has(#header-component[transparent]) .content-for-layout > .shopify-section:first-child .kx-hero {
+    --kx-header-offset: var(--header-group-height, 0px);
+  }
+
+  /* Scroll-driven mode: the section is taller than the screen and the stage stays pinned */
+  .kx-hero--scroll {
+    height: calc(var(--kx-stage-height) + var(--kx-scroll-length));
+  }
+
+  .kx-hero--scroll .kx-hero__stage {
+    position: sticky;
+    top: 0;
+  }
+
+  .kx-hero__stage {
+    height: var(--kx-stage-height);
+    padding: var(--kx-inset);
+    box-sizing: border-box;
+  }
+
+  .kx-hero__card {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: var(--kx-radius);
+    color: var(--kx-fg);
+    transition: color 0.8s var(--kx-ease);
+  }
+
+  /* Backgrounds */
+  .kx-hero__bgs,
+  .kx-hero__bg,
+  .kx-hero__vignette {
+    position: absolute;
+    inset: 0;
+  }
+
+  .kx-hero__bgs {
+    z-index: 0;
+  }
+
+  .kx-hero__bg {
+    background: radial-gradient(120% 95% at 45% 42%, var(--kx-c1) 0%, var(--kx-c2) 100%);
+    background:
+      radial-gradient(120% 95% at 45% 42%, var(--kx-c1) 0%, color-mix(in srgb, var(--kx-c1) 55%, var(--kx-c2)) 45%, var(--kx-c2) 100%);
+    opacity: 0;
+    transition: opacity 1s var(--kx-ease);
+  }
+
+  .kx-hero__bg.is-active {
+    opacity: 1;
+  }
+
+  .kx-hero__vignette {
+    background: radial-gradient(140% 120% at 50% 45%, transparent 55%, rgb(0 0 0 / 0.22) 100%);
+    pointer-events: none;
+  }
+
+  /* Product images */
+  .kx-hero__media {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: calc(50% + var(--kx-header-offset) / 2);
+    width: min(44%, 720px);
+    height: calc((100% - var(--kx-header-offset)) * var(--kx-image-size) / 100);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .kx-hero__img {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.6s var(--kx-ease),
+      transform 1s var(--kx-ease),
+      visibility 0s linear 1s;
+    will-change: transform, opacity;
+  }
+
+  .kx-hero__img.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 0.75s var(--kx-ease) 0.15s,
+      transform 1.05s var(--kx-ease) 0.05s,
+      visibility 0s;
+  }
+
+  /* Leaving: next = flies up and away, prev = drops down */
+  .kx-hero[data-dir='next'] .kx-hero__img.is-leaving {
+    visibility: visible;
+    opacity: 0;
+    transform: translate3d(-22%, -58%, 0) scale(0.5) rotate(-12deg);
+    transition:
+      opacity 0.7s ease 0.1s,
+      transform 1s var(--kx-ease),
+      visibility 0s;
+  }
+
+  .kx-hero[data-dir='prev'] .kx-hero__img.is-leaving {
+    visibility: visible;
+    opacity: 0;
+    transform: translate3d(0, 45%, 0) scale(0.86);
+    transition:
+      opacity 0.6s ease,
+      transform 1s var(--kx-ease),
+      visibility 0s;
+  }
+
+  /* Entering start positions (applied for one frame, without transition) */
+  .kx-hero[data-dir='next'] .kx-hero__img.is-before {
+    transform: translate3d(0, 45%, 0) scale(0.86);
+  }
+
+  .kx-hero[data-dir='prev'] .kx-hero__img.is-before {
+    transform: translate3d(-22%, -58%, 0) scale(0.5) rotate(-12deg);
+  }
+
+  .kx-hero .kx-hero__img.is-before {
+    opacity: 0;
+    visibility: visible;
+    transition: none;
+  }
+
+  .kx-hero__float {
+    position: absolute;
+    inset: 0;
+    animation: kx-float 6s ease-in-out infinite;
+  }
+
+  .kx-hero__picture {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: contain;
+    filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.28));
+  }
+
+  .kx-hero__placeholder {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+    opacity: 0.55;
+    filter: none;
+  }
+
+  .kx-hero__shadow {
+    position: absolute;
+    left: 50%;
+    bottom: -2%;
+    width: 46%;
+    height: 7%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(0 0 0 / 0.4), transparent);
+    filter: blur(6px);
+    animation: kx-shadow 6s ease-in-out infinite;
+  }
+
+  @keyframes kx-float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -14px, 0);
+    }
+  }
+
+  @keyframes kx-shadow {
+    0%,
+    100% {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(-50%) scale(0.86);
+      opacity: 0.7;
+    }
+  }
+
+  /* Layout */
+  .kx-hero__layout {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+      'main aside'
+      'footer footer';
+    padding: calc(var(--kx-header-offset) + clamp(20px, 3vw, 40px)) clamp(20px, 4.5vw, 72px) clamp(18px, 2.5vw, 32px);
+    pointer-events: none;
+  }
+
+  .kx-hero__layout a,
+  .kx-hero__layout button {
+    pointer-events: auto;
+  }
+
+  .kx-hero__main {
+    grid-area: main;
+    align-self: center;
+    max-width: 440px;
+  }
+
+  .kx-hero__arrows {
+    display: flex;
+    gap: 8px;
+    margin-bottom: clamp(14px, 1.6vw, 22px);
+  }
+
+  .kx-hero__arrow {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(0 0 0 / 0.22);
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+  }
+
+  .kx-hero__arrow:hover {
+    background: rgb(0 0 0 / 0.38);
+    transform: scale(1.06);
+  }
+
+  .kx-hero__arrow:focus-visible,
+  .kx-hero__size:focus-visible,
+  .kx-hero__cta:focus-visible,
+  .kx-hero__next:focus-visible,
+  .kx-hero__socials a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  /* Stacked panels (one per slide) */
+  .kx-hero__panels,
+  .kx-hero__aside {
+    display: grid;
+  }
+
+  .kx-hero__panel,
+  .kx-hero__price-panel {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 18px, 0);
+    transition:
+      opacity 0.45s ease,
+      transform 0.6s var(--kx-ease),
+      visibility 0s linear 0.6s;
+  }
+
+  .kx-hero__panel.is-active,
+  .kx-hero__price-panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 0.6s ease 0.3s,
+      transform 0.8s var(--kx-ease) 0.25s,
+      visibility 0s;
+  }
+
+  .kx-hero .kx-instant {
+    transition: none !important;
+  }
+
+  .kx-hero__heading {
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-heading--family, inherit);
+    font-weight: 600;
+    font-style: normal;
+    font-size: clamp(2rem, 4.4vw, var(--kx-heading-size));
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+
+  .kx-hero__heading span {
+    display: block;
+  }
+
+  .kx-hero__text {
+    margin-top: clamp(12px, 1.4vw, 20px);
+    max-width: 38ch;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    opacity: 0.92;
+  }
+
+  .kx-hero__text > * {
+    margin: 0;
+  }
+
+  .kx-hero__text > * + * {
+    margin-top: 0.6em;
+  }
+
+  .kx-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: clamp(16px, 1.8vw, 26px);
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--kx-fg);
+    color: var(--kx-contrast);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.8s var(--kx-ease), background-color 0.8s var(--kx-ease);
+  }
+
+  .kx-hero__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgb(0 0 0 / 0.22);
+  }
+
+  .kx-hero__cta svg {
+    transition: transform 0.25s ease;
+  }
+
+  .kx-hero__cta:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* Right column */
+  .kx-hero__aside {
+    grid-area: aside;
+    align-self: center;
+    justify-self: end;
+    justify-items: end;
+    text-align: right;
+  }
+
+  .kx-hero__price-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .kx-hero__price,
+  .kx-hero__compare {
+    margin: 0;
+    font-family: var(--font-heading--family, inherit);
+    font-size: clamp(1.8rem, 3vw, 2.7rem);
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  .kx-hero__compare {
+    opacity: 0.9;
+  }
+
+  .kx-hero__compare[hidden] {
+    display: none;
+  }
+
+  .kx-hero__compare s {
+    text-decoration-thickness: 2px;
+  }
+
+  .kx-hero__sizes {
+    margin-top: clamp(18px, 2.4vw, 34px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .kx-hero__size-label {
+    margin: 0 0 12px;
+    font-size: 0.8rem;
+    opacity: 0.92;
+  }
+
+  .kx-hero__size-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    max-width: 260px;
+  }
+
+  .kx-hero__size {
+    min-width: 44px;
+    height: 44px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 999px;
+    background: rgb(0 0 0 / 0.22);
+    color: inherit;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
+  }
+
+  .kx-hero__size:hover {
+    transform: translateY(-2px);
+  }
+
+  .kx-hero__size[aria-pressed='true'] {
+    background: var(--kx-fg);
+    color: var(--kx-contrast);
+  }
+
+  .kx-hero__size.is-unavailable {
+    opacity: 0.5;
+    text-decoration: line-through;
+  }
+
+  /* Footer row */
+  .kx-hero__footer {
+    grid-area: footer;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    gap: 16px;
+  }
+
+  .kx-hero__socials {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .kx-hero__socials a {
+    display: inline-grid;
+    place-items: center;
+    color: inherit;
+    opacity: 0.9;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .kx-hero__socials a:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  .kx-hero__tagline {
+    margin: 0;
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+
+  .kx-hero__tagline span {
+    display: block;
+  }
+
+  .kx-hero__next-wrap {
+    justify-self: end;
+  }
+
+  .kx-hero__next {
+    position: relative;
+    display: block;
+    width: clamp(64px, 7vw, 104px);
+    aspect-ratio: 1;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    transition: transform 0.35s var(--kx-ease);
+  }
+
+  .kx-hero__next:hover {
+    transform: translateY(-4px) scale(1.05);
+  }
+
+  .kx-hero__thumb {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.9);
+    transition: opacity 0.5s ease, transform 0.7s var(--kx-ease);
+  }
+
+  .kx-hero__thumb.is-active {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.25s;
+  }
+
+  .kx-hero__thumb-img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 14px rgb(0 0 0 / 0.3));
+  }
+
+  /* Tablet */
+  @media (max-width: 989px) {
+    .kx-hero__media {
+      width: 52%;
+    }
+
+    .kx-hero__main {
+      max-width: 340px;
+    }
+
+    .kx-hero__text {
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 749px) {
+    .kx-hero {
+      --kx-stage-height: max(100vh, var(--kx-mobile-min-height));
+    }
+
+    @supports (height: 100svh) {
+      .kx-hero {
+        --kx-stage-height: max(100svh, var(--kx-mobile-min-height));
+      }
+    }
+
+    .kx-hero--scroll-desktop-only {
+      height: auto;
+    }
+
+    .kx-hero--scroll-desktop-only .kx-hero__stage {
+      position: relative;
+    }
+
+    .kx-hero__layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr auto auto;
+      grid-template-areas:
+        'main'
+        '.'
+        'aside'
+        'footer';
+      padding: calc(var(--kx-header-offset) + 18px) 20px 18px;
+      row-gap: 12px;
+    }
+
+    .kx-hero__main {
+      align-self: start;
+      max-width: none;
+    }
+
+    .kx-hero__arrows {
+      margin-bottom: 12px;
+    }
+
+    .kx-hero__heading {
+      font-size: clamp(1.9rem, 8.5vw, 2.5rem);
+    }
+
+    .kx-hero__text {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .kx-hero__cta {
+      margin-top: 14px;
+    }
+
+    .kx-hero__media {
+      width: 78%;
+      top: calc(57% + var(--kx-header-offset) / 2);
+      height: calc((100% - var(--kx-header-offset)) * var(--kx-image-size) / 100 * 0.52);
+    }
+
+    .kx-hero__aside {
+      justify-self: stretch;
+      justify-items: stretch;
+      text-align: left;
+    }
+
+    .kx-hero__price-panel {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      align-items: end;
+      column-gap: 16px;
+    }
+
+    .kx-hero__price,
+    .kx-hero__compare {
+      grid-column: 1;
+      font-size: 1.5rem;
+    }
+
+    .kx-hero__sizes {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      margin: 0;
+      align-self: end;
+    }
+
+    .kx-hero__size-label {
+      margin-bottom: 8px;
+      font-size: 0.75rem;
+    }
+
+    .kx-hero__size {
+      min-width: 38px;
+      height: 38px;
+      font-size: 0.72rem;
+    }
+
+    .kx-hero__footer {
+      grid-template-columns: 1fr auto;
+    }
+
+    .kx-hero__tagline {
+      text-align: left;
+      font-size: 0.78rem;
+    }
+
+    .kx-hero__socials {
+      display: none;
+    }
+
+    .kx-hero__next {
+      width: 58px;
+    }
+  }
+
+  @media (max-width: 749px) and (max-height: 720px) {
+    .kx-hero__media {
+      height: calc((100% - var(--kx-header-offset)) * var(--kx-image-size) / 100 * 0.42);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kx-hero__float,
+    .kx-hero__shadow {
+      animation: none;
+    }
+
+    .kx-hero__img,
+    .kx-hero__img.is-active,
+    .kx-hero[data-dir] .kx-hero__img.is-leaving,
+    .kx-hero[data-dir] .kx-hero__img.is-before,
+    .kx-hero__panel,
+    .kx-hero__price-panel,
+    .kx-hero__thumb {
+      transform: none !important;
+    }
+
+    .kx-hero__img,
+    .kx-hero__img.is-active,
+    .kx-hero[data-dir] .kx-hero__img.is-leaving {
+      transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    if (customElements.get('kidsora-scroll-hero')) return;
+
+    class KidsoraScrollHero extends HTMLElement {
+      connectedCallback() {
+        this.count = parseInt(this.dataset.count, 10) || 0;
+        if (this.count < 1) return;
+
+        this.index = 0;
+        this.mode = this.dataset.mode || 'scroll';
+        this.stage = this.querySelector('[data-kx-stage]');
+        this.status = this.querySelector('[data-kx-status]');
+        this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        this.desktopQuery = window.matchMedia('(min-width: 750px)');
+        this.items = [];
+        for (let i = 0; i < this.count; i++) {
+          this.items.push(Array.from(this.querySelectorAll('[data-kx-index="' + i + '"]')));
+        }
+        this.thumbs = Array.from(this.querySelectorAll('[data-kx-thumb]'));
+
+        this.onScroll = this.onScroll.bind(this);
+        this.onClick = this.onClick.bind(this);
+        this.onKeydown = this.onKeydown.bind(this);
+        this.onBlockSelect = this.onBlockSelect.bind(this);
+        this.onBlockDeselect = this.onBlockDeselect.bind(this);
+        this.onModeChange = this.onModeChange.bind(this);
+        this.onVisibility = this.onVisibility.bind(this);
+        this.onPointerDown = this.onPointerDown.bind(this);
+        this.onPointerUp = this.onPointerUp.bind(this);
+        this.pause = this.pause.bind(this);
+        this.resume = this.resume.bind(this);
+
+        this.addEventListener('click', this.onClick);
+        this.addEventListener('keydown', this.onKeydown);
+        this.addEventListener('mouseenter', this.pause);
+        this.addEventListener('mouseleave', this.resume);
+        this.addEventListener('focusin', this.pause);
+        this.addEventListener('focusout', this.resume);
+        this.stage.addEventListener('pointerdown', this.onPointerDown);
+        this.stage.addEventListener('pointerup', this.onPointerUp);
+        document.addEventListener('shopify:block:select', this.onBlockSelect);
+        document.addEventListener('shopify:block:deselect', this.onBlockDeselect);
+        document.addEventListener('visibilitychange', this.onVisibility);
+        // Capture phase catches scrolling of any element (Horizon scrolls .page-wrapper on desktop)
+        document.addEventListener('scroll', this.onScroll, { capture: true, passive: true });
+        window.addEventListener('resize', this.onScroll, { passive: true });
+        if (this.desktopQuery.addEventListener) {
+          this.desktopQuery.addEventListener('change', this.onModeChange);
+        }
+
+        if ('IntersectionObserver' in window) {
+          this.observer = new IntersectionObserver((entries) => {
+            this.inView = entries[0].isIntersecting;
+            this.inView ? this.resume() : this.pause();
+          });
+          this.observer.observe(this);
+        } else {
+          this.inView = true;
+        }
+
+        this.onModeChange();
+      }
+
+      disconnectedCallback() {
+        this.stopAutoplay();
+        document.removeEventListener('shopify:block:select', this.onBlockSelect);
+        document.removeEventListener('shopify:block:deselect', this.onBlockDeselect);
+        document.removeEventListener('visibilitychange', this.onVisibility);
+        document.removeEventListener('scroll', this.onScroll, { capture: true });
+        window.removeEventListener('resize', this.onScroll);
+        if (this.desktopQuery && this.desktopQuery.removeEventListener) {
+          this.desktopQuery.removeEventListener('change', this.onModeChange);
+        }
+        if (this.observer) this.observer.disconnect();
+      }
+
+      /* ---------- Mode ---------- */
+
+      get scrollActive() {
+        if (this.mode !== 'scroll' || this.count < 2) return false;
+        return this.dataset.scrollMobile === 'true' || this.desktopQuery.matches;
+      }
+
+      get autoplayActive() {
+        if (this.count < 2) return false;
+        // Scroll mode switched off on mobile falls back to autoplay
+        return this.mode === 'autoplay' || (this.mode === 'scroll' && !this.scrollActive);
+      }
+
+      onModeChange() {
+        this.stopAutoplay();
+        if (this.scrollActive) {
+          this.updateFromScroll();
+        } else {
+          this.startAutoplay();
+        }
+      }
+
+      /* ---------- Slide change ---------- */
+
+      goTo(target, dir) {
+        if (this.count < 2) return;
+        const next = ((target % this.count) + this.count) % this.count;
+        if (next === this.index) return;
+
+        const prev = this.index;
+        this.dataset.dir = dir || (next > prev ? 'next' : 'prev');
+        this.index = next;
+
+        const outs = this.items[prev];
+        const ins = this.items[next];
+        const instantEls = [];
+
+        ins.forEach((el) => {
+          const type = el.dataset.kxType;
+          const out = outs.find((o) => o.dataset.kxType === type);
+
+          if ((type === 'info' || type === 'aside') && out && out.dataset.sig === el.dataset.sig) {
+            el.classList.add('kx-instant');
+            out.classList.add('kx-instant');
+            instantEls.push(el, out);
+          }
+
+          if (type === 'img') {
+            clearTimeout(el._kxTimer);
+            el.classList.remove('is-leaving');
+            el.classList.add('is-before');
+            void el.offsetWidth; // commit the start position
+            el.classList.remove('is-before');
+            el.removeAttribute('aria-hidden');
+          }
+
+          el.classList.add('is-active');
+        });
+
+        outs.forEach((el) => {
+          el.classList.remove('is-active');
+          if (el.dataset.kxType === 'img') {
+            el.setAttribute('aria-hidden', 'true');
+            el.classList.add('is-leaving');
+            clearTimeout(el._kxTimer);
+            el._kxTimer = setTimeout(() => el.classList.remove('is-leaving'), 1100);
+          }
+        });
+
+        if (instantEls.length) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => instantEls.forEach((el) => el.classList.remove('kx-instant')));
+          });
+        }
+
+        const bg = ins.find((el) => el.dataset.kxType === 'bg');
+        if (bg) {
+          this.style.setProperty('--kx-fg', bg.dataset.fg);
+          this.style.setProperty('--kx-contrast', bg.dataset.contrast);
+        }
+
+        const nextThumb = (next + 1) % this.count;
+        this.thumbs.forEach((thumb) => {
+          thumb.classList.toggle('is-active', parseInt(thumb.dataset.kxThumb, 10) === nextThumb);
+        });
+
+        if (this.status) this.status.textContent = 'Slide ' + (next + 1) + ' of ' + this.count;
+      }
+
+      step(delta) {
+        if (this.scrollActive) {
+          this.scrollToIndex(this.index + delta);
+        } else {
+          this.goTo(this.index + delta, delta > 0 ? 'next' : 'prev');
+          this.restartAutoplay();
+        }
+      }
+
+      /* ---------- Scroll-driven ---------- */
+
+      onScroll() {
+        if (!this.scrollActive || this.ticking) return;
+        this.ticking = true;
+        requestAnimationFrame(() => {
+          this.ticking = false;
+          this.updateFromScroll();
+        });
+      }
+
+      getScrollDistance() {
+        return this.offsetHeight - this.stage.offsetHeight;
+      }
+
+      updateFromScroll() {
+        if (!this.scrollActive) return;
+        const distance = this.getScrollDistance();
+        if (distance <= 1) return;
+        const top = this.getBoundingClientRect().top;
+        const progress = Math.min(1, Math.max(0, -top / distance));
+        const target = Math.min(this.count - 1, Math.floor(progress * this.count));
+        this.style.setProperty('--kx-progress', progress.toFixed(4));
+        if (target !== this.index) this.goTo(target, target > this.index ? 'next' : 'prev');
+      }
+
+      getScroller() {
+        let el = this.parentElement;
+        while (el && el !== document.body && el !== document.documentElement) {
+          const overflowY = getComputedStyle(el).overflowY;
+          if ((overflowY === 'auto' || overflowY === 'scroll') && el.scrollHeight > el.clientHeight) return el;
+          el = el.parentElement;
+        }
+        return window;
+      }
+
+      scrollToIndex(target) {
+        const distance = this.getScrollDistance();
+        const top = this.getBoundingClientRect().top;
+        let delta;
+        if (target >= this.count) {
+          delta = distance + top + 2; // scroll past the hero
+        } else if (target < 0) {
+          delta = top; // back to the start of the hero
+        } else {
+          delta = ((target + 0.5) / this.count) * distance + top;
+        }
+        this.getScroller().scrollBy({
+          top: delta,
+          behavior: this.reducedMotion.matches ? 'auto' : 'smooth',
+        });
+      }
+
+      /* ---------- Autoplay ---------- */
+
+      startAutoplay() {
+        if (!this.autoplayActive || this.reducedMotion.matches) return;
+        this.stopAutoplay();
+        const speed = (parseFloat(this.dataset.autoplaySpeed) || 5) * 1000;
+        this.timer = setInterval(() => this.goTo(this.index + 1, 'next'), speed);
+      }
+
+      stopAutoplay() {
+        clearInterval(this.timer);
+        this.timer = null;
+      }
+
+      restartAutoplay() {
+        if (this.timer) this.startAutoplay();
+      }
+
+      pause() {
+        this.paused = true;
+        this.stopAutoplay();
+      }
+
+      resume() {
+        if (this.editorLocked || this.inView === false || document.hidden) return;
+        if (this.contains(document.activeElement) || this.matches(':hover')) return;
+        this.paused = false;
+        this.startAutoplay();
+      }
+
+      onVisibility() {
+        document.hidden ? this.stopAutoplay() : this.resume();
+      }
+
+      /* ---------- Interaction ---------- */
+
+      onClick(event) {
+        const prevBtn = event.target.closest('[data-kx-prev]');
+        const nextBtn = event.target.closest('[data-kx-next]');
+        const sizeBtn = event.target.closest('[data-kx-size]');
+
+        if (prevBtn) {
+          event.preventDefault();
+          this.step(-1);
+        } else if (nextBtn) {
+          event.preventDefault();
+          this.step(1);
+        } else if (sizeBtn) {
+          this.selectSize(sizeBtn);
+        }
+      }
+
+      selectSize(button) {
+        const panel = button.closest('[data-kx-type="aside"]');
+        if (!panel) return;
+        panel.querySelectorAll('[data-kx-size]').forEach((btn) => {
+          btn.setAttribute('aria-pressed', btn === button ? 'true' : 'false');
+        });
+
+        if (button.dataset.price) {
+          const price = panel.querySelector('[data-kx-price]');
+          if (price) price.textContent = button.dataset.price;
+          const compare = panel.querySelector('[data-kx-compare]');
+          if (compare) {
+            compare.textContent = button.dataset.compare || '';
+            compare.parentElement.hidden = !button.dataset.compare;
+          }
+        }
+
+        if (button.dataset.url) {
+          const info = this.querySelector(
+            '[data-kx-type="info"][data-kx-index="' + panel.dataset.kxIndex + '"] [data-kx-cta-dynamic]'
+          );
+          if (info) info.setAttribute('href', button.dataset.url);
+        }
+      }
+
+      onKeydown(event) {
+        if (event.target.matches('input, textarea, select')) return;
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault();
+          this.step(-1);
+        } else if (event.key === 'ArrowRight') {
+          event.preventDefault();
+          this.step(1);
+        }
+      }
+
+      onPointerDown(event) {
+        if (this.scrollActive || event.pointerType === 'mouse') return;
+        this.startX = event.clientX;
+        this.startY = event.clientY;
+      }
+
+      onPointerUp(event) {
+        if (this.startX == null) return;
+        const dx = event.clientX - this.startX;
+        const dy = event.clientY - this.startY;
+        this.startX = null;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) this.step(dx < 0 ? 1 : -1);
+      }
+
+      /* ---------- Theme editor ---------- */
+
+      onBlockSelect(event) {
+        if (!this.contains(event.target)) return;
+        const index = parseInt(event.target.dataset.kxIndex, 10);
+        if (isNaN(index)) return;
+        this.editorLocked = true;
+        this.stopAutoplay();
+        if (this.scrollActive) {
+          this.scrollToIndex(index);
+        } else {
+          this.goTo(index, index > this.index ? 'next' : 'prev');
+        }
+      }
+
+      onBlockDeselect(event) {
+        if (!this.contains(event.target)) return;
+        this.editorLocked = false;
+        this.resume();
+      }
+    }
+
+    customElements.define('kidsora-scroll-hero', KidsoraScrollHero);
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Kidsora scroll hero",
+  "tag": "section",
+  "class": "kx-hero-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "animation_mode",
+      "label": "Slide change",
+      "options": [
+        { "value": "scroll", "label": "On scroll (pinned)" },
+        { "value": "autoplay", "label": "Autoplay" },
+        { "value": "manual", "label": "Arrows only" }
+      ],
+      "default": "scroll"
+    },
+    {
+      "type": "range",
+      "id": "scroll_length",
+      "label": "Scroll distance per slide",
+      "min": 40,
+      "max": 150,
+      "step": 10,
+      "unit": "vh",
+      "default": 80,
+      "info": "Used when slides change on scroll"
+    },
+    {
+      "type": "checkbox",
+      "id": "scroll_mobile",
+      "label": "Change slides on scroll on mobile",
+      "default": true,
+      "info": "When off, mobile uses autoplay instead"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading line 1",
+      "default": "Stand out"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Heading line 2",
+      "default": "Without trying"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>It's not just about staying warm. It's about stepping outside and instantly feeling confident, comfortable, and completely yourself. Designed to elevate even the simplest outfit, this piece wraps your little one in lightweight warmth.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Get the look"
+    },
+    {
+      "type": "text",
+      "id": "size_label",
+      "label": "Size label",
+      "default": "Choose your size:"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Bottom tagline line 1",
+      "default": "Confidence,"
+    },
+    {
+      "type": "text",
+      "id": "tagline_line_2",
+      "label": "Bottom tagline line 2",
+      "default": "wrapped in warmth"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_next",
+      "label": "Show next product preview",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 32,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "label": "Product image size",
+      "min": 40,
+      "max": 95,
+      "step": 5,
+      "unit": "%",
+      "default": 75
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height on desktop",
+      "min": 500,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 640
+    },
+    {
+      "type": "range",
+      "id": "mobile_min_height",
+      "label": "Minimum height on mobile",
+      "min": 480,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "inset",
+      "label": "Card spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "info": "Add spacing for a floating card look"
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "page_background",
+      "label": "Background behind card",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Social links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_socials",
+      "label": "Show social icons",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Fills image, price, sizes and link automatically"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product cut-out image",
+          "info": "Transparent PNG recommended. Overrides the product image."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Image description",
+          "info": "Used for accessibility when no product is selected"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "color_1",
+          "label": "Background light",
+          "default": "#E8762B"
+        },
+        {
+          "type": "color",
+          "id": "color_2",
+          "label": "Background dark",
+          "default": "#7A3410"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "header",
+          "content": "Price & sizes"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "info": "Leave blank to use the product price"
+        },
+        {
+          "type": "text",
+          "id": "compare_price",
+          "label": "Compare-at price",
+          "info": "Leave blank to use the product compare-at price"
+        },
+        {
+          "type": "text",
+          "id": "sizes",
+          "label": "Sizes",
+          "info": "Comma separated, e.g. 2Y, 4Y, 6Y. Used when the product has no Size option."
+        },
+        {
+          "type": "text",
+          "id": "size_label",
+          "label": "Size label override"
+        },
+        {
+          "type": "header",
+          "content": "Text overrides",
+          "info": "Leave blank to use the section text"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading line 1"
+        },
+        {
+          "type": "text",
+          "id": "heading_line_2",
+          "label": "Heading line 2"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link",
+          "info": "Leave blank to link to the product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kidsora scroll hero",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": { "color_1": "#E8762B", "color_2": "#7A3410", "text_color": "#FFFFFF", "price": "$149", "compare_price": "$199", "sizes": "36, 38, 40" }
+        },
+        {
+          "type": "slide",
+          "settings": { "color_1": "#5A5A5A", "color_2": "#1C1C1C", "text_color": "#FFFFFF", "price": "$149", "compare_price": "$199", "sizes": "36, 38, 40" }
+        },
+        {
+          "type": "slide",
+          "settings": { "color_1": "#D7DBDF", "color_2": "#868B92", "text_color": "#FFFFFF", "price": "$149", "compare_price": "$199", "sizes": "36, 38, 40" }
+        },
+        {
+          "type": "slide",
+          "settings": { "color_1": "#D8253A", "color_2": "#6A0612", "text_color": "#FFFFFF", "price": "$149", "compare_price": "$199", "sizes": "36, 38, 40" }
+        },
+        {
+          "type": "slide",
+          "settings": { "color_1": "#C99AA7", "color_2": "#7B4E5B", "text_color": "#FFFFFF", "price": "$149", "compare_price": "$199", "sizes": "36, 38, 40" }
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}
